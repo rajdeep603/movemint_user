@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "879214998637",
+    "project_id": "movemint-1e775",
+    "storage_bucket": "movemint-1e775.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879214998637:android:429a2c2809db349a0bfb64",
+        "android_client_info": {
+          "package_name": "com.movemint.user.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeJ1wQ2nqj2EGDS4ww0w-Hu2W3PA99G30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
