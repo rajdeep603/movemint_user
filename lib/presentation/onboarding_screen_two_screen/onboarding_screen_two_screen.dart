@@ -8,42 +8,38 @@ import 'package:movemint_user/core/app_export.dart';
 import 'provider/onboarding_screen_two_provider.dart';
 
 class OnboardingScreenTwoScreen extends StatefulWidget {
-  const OnboardingScreenTwoScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const OnboardingScreenTwoScreen({super.key});
 
   @override
   OnboardingScreenTwoScreenState createState() =>
       OnboardingScreenTwoScreenState();
+
   static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => OnboardingScreenTwoProvider(),
-      child: OnboardingScreenTwoScreen(),
+    return ChangeNotifierProvider<OnboardingScreenTwoProvider>(
+      create: (BuildContext context) => OnboardingScreenTwoProvider(),
+      child: const OnboardingScreenTwoScreen(),
     );
   }
 }
 
 class OnboardingScreenTwoScreenState extends State<OnboardingScreenTwoScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  late OnboardingScreenTwoProvider provider;
 
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<OnboardingScreenTwoProvider>(context);
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
           width: double.maxFinite,
           child: Column(
-            children: [
+            children: <Widget>[
               // SizedBox(height: 173.v),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       SizedBox(height: 50.v),
                       Container(
                         height: 303.v,
@@ -51,7 +47,7 @@ class OnboardingScreenTwoScreenState extends State<OnboardingScreenTwoScreen> {
                         margin: EdgeInsets.only(left: 56.h),
                         child: Stack(
                           alignment: Alignment.bottomRight,
-                          children: [
+                          children: <Widget>[
                             CustomImageView(
                               imagePath: ImageConstant.imgFrame,
                               height: 239.v,
@@ -93,7 +89,7 @@ class OnboardingScreenTwoScreenState extends State<OnboardingScreenTwoScreen> {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           SizedBox(height: 12.v),
           Align(
             alignment: Alignment.centerLeft,
@@ -126,18 +122,16 @@ class OnboardingScreenTwoScreenState extends State<OnboardingScreenTwoScreen> {
           ),
           SizedBox(height: 48.v),
           CustomElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => OnboardingScreenThreeScreen()));
-            },
+            onPressed: () => provider.onNextClickEvent(),
             text: "lbl_next".tr,
           ),
           SizedBox(height: 32.v),
-          Text(
-            "lbl_skip".tr,
-            style: CustomTextStyles.titleMediumGreen900,
+          InkWell(
+            onTap: () => provider.onSkipClickEvent(),
+            child: Text(
+              "lbl_skip".tr,
+              style: CustomTextStyles.titleMediumGreen900,
+            ),
           ),
           SizedBox(height: 60.v),
           SizedBox(

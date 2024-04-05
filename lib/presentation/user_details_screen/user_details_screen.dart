@@ -12,31 +12,26 @@ import 'package:flutter/material.dart';
 import 'provider/user_details_provider.dart';
 
 class UserDetailsScreen extends StatefulWidget {
-  const UserDetailsScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const UserDetailsScreen({super.key});
 
   @override
   UserDetailsScreenState createState() => UserDetailsScreenState();
+
   static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => UserDetailsProvider(),
-      child: UserDetailsScreen(),
+    return ChangeNotifierProvider<UserDetailsProvider>(
+      create: (BuildContext context) => UserDetailsProvider(context),
+      child: const UserDetailsScreen(),
     );
   }
 }
 
 class UserDetailsScreenState extends State<UserDetailsScreen> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  late UserDetailsProvider provider;
 
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<UserDetailsProvider>(context);
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -47,7 +42,7 @@ class UserDetailsScreenState extends State<UserDetailsScreen> {
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
             child: Form(
-              key: _formKey,
+              key: provider.formKey,
               child: Container(
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(
@@ -56,7 +51,7 @@ class UserDetailsScreenState extends State<UserDetailsScreen> {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     SizedBox(height: 83.v),
                     Align(
                       alignment: Alignment.center,
@@ -141,41 +136,22 @@ class UserDetailsScreenState extends State<UserDetailsScreen> {
   /// Section Widget
   Widget _buildFirstName(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 8.h),
-      child: Selector<UserDetailsProvider, TextEditingController?>(
-        selector: (
-          context,
-          provider,
-        ) =>
-            provider.firstNameController,
-        builder: (context, firstNameController, child) {
-          return UserDetailsTextFieldContainer(
-            controller: firstNameController,
-            hintText: "msg_enter_your_first".tr,
-            obscureText: false,
-          );
-        },
-      ),
-    );
+        padding: EdgeInsets.only(right: 8.h),
+        child: UserDetailsTextFieldContainer(
+          controller: provider.firstNameController,
+          hintText: "msg_enter_your_first".tr,
+          obscureText: false,
+        ));
   }
 
   /// Section Widget
   Widget _buildLastName(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(right: 8.h),
-      child: Selector<UserDetailsProvider, TextEditingController?>(
-        selector: (
-          context,
-          provider,
-        ) =>
-            provider.lastNameController,
-        builder: (context, lastNameController, child) {
-          return UserDetailsTextFieldContainer(
-            controller: lastNameController,
-            hintText: "msg_enter_your_last".tr,
-            obscureText: false,
-          );
-        },
+      child: UserDetailsTextFieldContainer(
+        controller: provider.lastNameController,
+        hintText: "msg_enter_your_last".tr,
+        obscureText: false,
       ),
     );
   }
@@ -184,19 +160,10 @@ class UserDetailsScreenState extends State<UserDetailsScreen> {
   Widget _buildEmail(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(right: 8.h),
-      child: Selector<UserDetailsProvider, TextEditingController?>(
-        selector: (
-          context,
-          provider,
-        ) =>
-            provider.emailController,
-        builder: (context, emailController, child) {
-          return UserDetailsTextFieldContainer(
-            controller: emailController,
-            hintText: "msg_enter_your_email".tr,
-            obscureText: false,
-          );
-        },
+      child: UserDetailsTextFieldContainer(
+        controller: provider.emailController,
+        hintText: "msg_enter_your_email".tr,
+        obscureText: false,
       ),
     );
   }
@@ -205,33 +172,10 @@ class UserDetailsScreenState extends State<UserDetailsScreen> {
   Widget _buildPassword(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(right: 8.h),
-      child: Selector<UserDetailsProvider, TextEditingController?>(
-        selector: (
-          context,
-          provider,
-        ) =>
-            provider.passwordController,
-        builder: (context, passwordController, child) {
-          return UserDetailsTextFieldContainer(
-            controller: passwordController,
-            hintText: "msg_enter_a_password".tr,
-            obscureText: true,
-          );
-
-          CustomTextFormField(
-            controller: passwordController,
-            hintText: "msg_enter_a_password".tr,
-            textInputType: TextInputType.visiblePassword,
-            validator: (value) {
-              if (value == null ||
-                  (!isValidPassword(value, isRequired: true))) {
-                return "err_msg_please_enter_valid_password".tr;
-              }
-              return null;
-            },
-            obscureText: true,
-          );
-        },
+      child: UserDetailsTextFieldContainer(
+        controller: provider.passwordController,
+        hintText: "msg_enter_a_password".tr,
+        obscureText: true,
       ),
     );
   }
@@ -240,19 +184,10 @@ class UserDetailsScreenState extends State<UserDetailsScreen> {
   Widget _buildConfirmpassword(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(right: 8.h),
-      child: Selector<UserDetailsProvider, TextEditingController?>(
-        selector: (
-          context,
-          provider,
-        ) =>
-            provider.confirmpasswordController,
-        builder: (context, confirmpasswordController, child) {
-          return UserDetailsTextFieldContainer(
-            controller: confirmpasswordController,
-            hintText: "msg_confirm_password2".tr,
-            obscureText: true,
-          );
-        },
+      child: UserDetailsTextFieldContainer(
+        controller: provider.confirmPasswordController,
+        hintText: "msg_confirm_password2".tr,
+        obscureText: true,
       ),
     );
   }
@@ -260,10 +195,7 @@ class UserDetailsScreenState extends State<UserDetailsScreen> {
   /// Section Widget
   Widget _buildSubmit(BuildContext context) {
     return CustomElevatedButton(
-      onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PackerHomePage()));
-      },
+      onPressed: () => provider.onSubmitButtonClicked(),
       text: "lbl_submit".tr,
       margin: EdgeInsets.only(left: 3.h),
     );

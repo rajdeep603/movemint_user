@@ -7,17 +7,15 @@ import 'package:movemint_user/core/app_export.dart';
 import 'provider/onboarding_screen_one_provider.dart';
 
 class OnboardingScreenOneScreen extends StatefulWidget {
-  const OnboardingScreenOneScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const OnboardingScreenOneScreen({super.key});
 
   @override
   OnboardingScreenOneScreenState createState() =>
       OnboardingScreenOneScreenState();
+
   static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => OnboardingScreenOneProvider(),
+    return ChangeNotifierProvider<OnboardingScreenOneProvider>(
+      create: (BuildContext context) => OnboardingScreenOneProvider(),
       child: OnboardingScreenOneScreen(),
     );
   }
@@ -29,8 +27,11 @@ class OnboardingScreenOneScreenState extends State<OnboardingScreenOneScreen> {
     super.initState();
   }
 
+  late OnboardingScreenOneProvider provider;
+
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<OnboardingScreenOneProvider>(context);
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -124,18 +125,16 @@ class OnboardingScreenOneScreenState extends State<OnboardingScreenOneScreen> {
           ),
           SizedBox(height: 48.v),
           CustomElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => OnboardingScreenTwoScreen()));
-            },
+            onPressed: () => provider.onNextClickEvent(),
             text: "lbl_next".tr,
           ),
           SizedBox(height: 32.v),
-          Text(
-            "lbl_skip".tr,
-            style: CustomTextStyles.titleMediumGreen900,
+          InkWell(
+            onTap: () => provider.onSkipClickEvent(),
+            child: Text(
+              "lbl_skip".tr,
+              style: CustomTextStyles.titleMediumGreen900,
+            ),
           ),
           SizedBox(height: 60.v),
           SizedBox(

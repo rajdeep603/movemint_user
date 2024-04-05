@@ -6,43 +6,39 @@ import 'package:movemint_user/core/app_export.dart';
 import 'provider/onboarding_screen_three_provider.dart';
 
 class OnboardingScreenThreeScreen extends StatefulWidget {
-  const OnboardingScreenThreeScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const OnboardingScreenThreeScreen({super.key});
 
   @override
   OnboardingScreenThreeScreenState createState() =>
       OnboardingScreenThreeScreenState();
+
   static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => OnboardingScreenThreeProvider(),
-      child: OnboardingScreenThreeScreen(),
+    return ChangeNotifierProvider<OnboardingScreenThreeProvider>(
+      create: (BuildContext context) => OnboardingScreenThreeProvider(),
+      child: const OnboardingScreenThreeScreen(),
     );
   }
 }
 
 class OnboardingScreenThreeScreenState
     extends State<OnboardingScreenThreeScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  late OnboardingScreenThreeProvider provider;
 
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<OnboardingScreenThreeProvider>(context);
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
           width: double.maxFinite,
           child: Column(
-            children: [
+            children: <Widget>[
               // SizedBox(height: 173.v),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       SizedBox(height: 70.v),
                       Container(
                         height: 303.v,
@@ -50,7 +46,7 @@ class OnboardingScreenThreeScreenState
                         margin: EdgeInsets.only(left: 56.h),
                         child: Stack(
                           alignment: Alignment.bottomRight,
-                          children: [
+                          children: <Widget>[
                             CustomImageView(
                               imagePath: ImageConstant.imgFrame,
                               height: 239.v,
@@ -92,7 +88,7 @@ class OnboardingScreenThreeScreenState
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           SizedBox(height: 12.v),
           Align(
             alignment: Alignment.centerLeft,
@@ -126,15 +122,20 @@ class OnboardingScreenThreeScreenState
           SizedBox(height: 48.v),
           CustomElevatedButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => LoginScreen()));
             },
             text: "lbl_next".tr,
           ),
           SizedBox(height: 32.v),
-          Text(
-            "lbl_skip".tr,
-            style: CustomTextStyles.titleMediumGreen900,
+          InkWell(
+            onTap: () => provider.onSkipClickEvent(),
+            child: Text(
+              "lbl_skip".tr,
+              style: CustomTextStyles.titleMediumGreen900,
+            ),
           ),
           SizedBox(height: 60.v),
           SizedBox(

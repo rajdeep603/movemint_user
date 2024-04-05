@@ -10,17 +10,15 @@ import 'package:movemint_user/core/app_export.dart';
 import 'provider/login_provider.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const LoginScreen({super.key});
 
   @override
   LoginScreenState createState() => LoginScreenState();
+
   static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => LoginProvider(),
-      child: LoginScreen(),
+    return ChangeNotifierProvider<LoginProvider>(
+      create: (BuildContext context) => LoginProvider(),
+      child: const LoginScreen(),
     );
   }
 }
@@ -33,9 +31,11 @@ class LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
+  late LoginProvider provider;
+
   @override
   Widget build(BuildContext context) {
-    LoginProvider loginProvider = Provider.of<LoginProvider>(context);
+    provider = Provider.of<LoginProvider>(context);
 
     return SafeArea(
       child: Scaffold(
@@ -46,12 +46,12 @@ class LoginScreenState extends State<LoginScreen> {
           child: SizedBox(
             width: double.maxFinite,
             child: Column(
-              children: [
+              children: <Widget>[
                 // SizedBox(height: 158.v),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
-                      children: [
+                      children: <Widget>[
                         SizedBox(height: 120.v),
                         _buildTwentyThree(context),
                         SizedBox(height: 88.v),
@@ -76,7 +76,7 @@ class LoginScreenState extends State<LoginScreen> {
       width: 358.h,
       child: Stack(
         alignment: Alignment.bottomCenter,
-        children: [
+        children: <Widget>[
           Align(
             alignment: Alignment.center,
             child: Container(
@@ -96,7 +96,7 @@ class LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [
+                children: <Widget>[
                   SizedBox(height: 251.v),
                   CustomImageView(
                     imagePath: ImageConstant.imgLtPathGt,
@@ -134,7 +134,7 @@ class LoginScreenState extends State<LoginScreen> {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           SizedBox(height: 23.v),
           Align(
             alignment: Alignment.centerLeft,
@@ -164,13 +164,13 @@ class LoginScreenState extends State<LoginScreen> {
               right: 2.h,
             ),
             child: Consumer<LoginProvider>(
-              builder: (context, provider, child) {
+              builder: (BuildContext context, LoginProvider provider,
+                  Widget? child) {
                 return CustomPhoneNumber(
-                  country: provider.selectedCountry ??
-                      CountryPickerUtils.getCountryByPhoneCode('91'),
+                  country: provider.selectedCountry,
                   controller: provider.phoneNumberController,
                   onTap: (Country value) {
-                    context.read<LoginProvider>().changeCountry(value);
+                    provider.changeCountry(value);
                   },
                 );
               },
@@ -178,25 +178,8 @@ class LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(height: 33.v),
           CustomElevatedButton(
-            onPressed: () async {
-              print("182 working");
-              LoginProvider loginProvider =
-                  Provider.of<LoginProvider>(context, listen: false);
-              await FirebaseAuth.instance.verifyPhoneNumber(
-                  verificationCompleted: (PhoneAuthCredential credential) {},
-                  verificationFailed: (FirebaseAuthException ex) {},
-                  codeSent: (String verificationId, int? resendToken) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OtpVerificationScreen(
-                                  verificationId: verificationId,
-                                )));
-                  },
-                  codeAutoRetrievalTimeout: (String verificationId) {},
-                  phoneNumber:
-                      loginProvider.phoneNumberController.text.toString());
-            },
+            isLoading: provider.isLoading,
+            onPressed: () => provider.onGetOTPClickEvent(),
             text: "lbl_get_otp".tr,
           ),
           SizedBox(height: 200.v),

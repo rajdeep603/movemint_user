@@ -11,17 +11,21 @@ import 'package:movemint_user/core/app_export.dart';
 import 'provider/otp_verification_provider.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
-  String verificationId;
-  OtpVerificationScreen({super.key, required this.verificationId});
+  const OtpVerificationScreen({super.key});
+
+  static Widget builder(BuildContext context) {
+    final OtpVerificationRouteModel routeModel = ModalRoute.of(context)!
+        .settings
+        .arguments! as OtpVerificationRouteModel;
+    return ChangeNotifierProvider<OtpVerificationProvider>(
+      create: (BuildContext context) =>
+          OtpVerificationProvider(routeModel, context),
+      child: const OtpVerificationScreen(),
+    );
+  }
 
   @override
   OtpVerificationScreenState createState() => OtpVerificationScreenState();
-  // static Widget builder(BuildContext context) {
-  //   return ChangeNotifierProvider(
-  //     create: (context) => OtpVerificationProvider(),
-  //     child: OtpVerificationScreen(),
-  //   );
-  // }
 }
 
 class OtpVerificationScreenState extends State<OtpVerificationScreen> {
@@ -30,8 +34,11 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
     super.initState();
   }
 
+  late OtpVerificationProvider provider;
+
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<OtpVerificationProvider>(context);
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -40,7 +47,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
           padding: EdgeInsets.symmetric(vertical: 12.v),
           child: SingleChildScrollView(
             child: Column(
-              children: [
+              children: <Widget>[
                 SizedBox(height: 50.v),
                 Text(
                   "msg_otp_verification".tr,
@@ -55,7 +62,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   ),
                   child: RichText(
                     text: TextSpan(
-                      children: [
+                      children: <InlineSpan>[
                         TextSpan(
                           text: "msg_we_will_send_you2".tr,
                           style: CustomTextStyles.bodyLargeInterff000000,
@@ -71,27 +78,24 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 ),
                 SizedBox(height: 20.v),
                 Text(
-                  "msg_91_00000000000".tr,
+                  '+${provider.routeModel.selectedCountry.phoneCode} - ${provider.routeModel.mobileNo}',
                   style: CustomTextStyles.titleMediumBlack900,
                 ),
                 SizedBox(height: 18.v),
                 Padding(
-                  padding: EdgeInsets.only(
-                    left: 84.h,
-                    right: 85.h,
-                  ),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.h, vertical: 10.v),
                   child:
                       Selector<OtpVerificationProvider, TextEditingController?>(
-                    selector: (
-                      context,
-                      provider,
-                    ) =>
+                    selector: (BuildContext context,
+                            OtpVerificationProvider provider) =>
                         provider.otpController,
-                    builder: (context, otpController, child) {
+                    builder: (BuildContext context,
+                        TextEditingController? otpController, Widget? child) {
                       return CustomPinCodeTextField(
                         context: context,
                         controller: otpController,
-                        onChanged: (value) {
+                        onChanged: (String value) {
                           otpController?.text = value;
                         },
                       );
@@ -106,13 +110,11 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 SizedBox(height: 15.v),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: <Widget>[
                     Opacity(
                       opacity: 0.3,
-                      child: Text(
-                        "msg_do_not_send_otp".tr,
-                        style: theme.textTheme.bodyMedium,
-                      ),
+                      child: Text("msg_do_not_send_otp".tr,
+                          style: theme.textTheme.bodyMedium),
                     ),
                     Opacity(
                       opacity: 0.3,
@@ -143,7 +145,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
       width: 427.h,
       child: Stack(
         alignment: Alignment.bottomCenter,
-        children: [
+        children: <Widget>[
           CustomImageView(
             imagePath: ImageConstant.imgFrameGray200,
             height: 346.v,
@@ -162,31 +164,10 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: [
+                children: <Widget>[
                   CustomElevatedButton(
-                    onPressed: () async {
-                      OtpVerificationProvider otpProvider =
-                          Provider.of<OtpVerificationProvider>(context,
-                              listen: false);
-                      try {
-                        PhoneAuthCredential credential =
-                            await PhoneAuthProvider.credential(
-                                verificationId: widget.verificationId,
-                                smsCode:
-                                    otpProvider.otpController.text.toString());
-                        FirebaseAuth.instance
-                            .signInWithCredential(credential)
-                            .then((value) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UserDetailsScreen()));
-                        });
-                      } catch (ex) {
-                        // log(ex.toString());
-                        print(ex.toString());
-                      }
-                    },
+                    isLoading: provider.isLoading,
+                    onPressed: () => provider.onVerifyClickEvent(),
                     text: "lbl_verify".tr,
                   ),
                   SizedBox(height: 70.v),

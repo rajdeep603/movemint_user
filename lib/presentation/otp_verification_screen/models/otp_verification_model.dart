@@ -1,3 +1,12 @@
-import '../../../core/app_export.dart';
+import 'package:country_pickers/country.dart';
 
-class OtpVerificationModel {}
+class OtpVerificationRouteModel {
+  OtpVerificationRouteModel(
+      {required this.selectedCountry,
+      required this.mobileNo,
+      required this.verificationId});
+
+  final Country selectedCountry;
+  final String mobileNo;
+  final String verificationId;
+}

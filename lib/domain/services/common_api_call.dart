@@ -24,7 +24,7 @@ class ApiCalling {
           'Jwt token will Expire on: ${JwtDecoder.getExpirationDate(token)}');
     }
     if (hasExpired) {
-      return CustomResponse(error: CustomException.tokenExpired);
+      return CustomResponse(error: CustomException.tokenExpired.message);
     }
     final bool isConnected = await _networkInfo.isConnected();
     if (!isConnected) {
@@ -37,7 +37,7 @@ class ApiCalling {
           NavigatorService.pushNamed(AppRoutes.noInternetScreen);
         }
       }
-      return CustomResponse(error: CustomException.noInternet);
+      return CustomResponse(error: CustomException.noInternet.message);
     }
 
     try {
@@ -75,14 +75,14 @@ class ApiCalling {
           }
         }
         return CustomResponse(
-            error: CustomException.serverError,
+            error: CustomException.serverError.message,
             statusCode: e.response?.statusCode);
       }
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.sendTimeout ||
           e.type == DioExceptionType.receiveTimeout) {
         return CustomResponse(
-            error: CustomException.timeOutError,
+            error: CustomException.timeOutError.message,
             statusCode: e.response?.statusCode);
       }
       if (e.response != null) {
@@ -124,11 +124,9 @@ class ApiCalling {
 
 class CustomResponse {
   CustomResponse(
-      {this.response,
-      this.statusCode,
-      this.error = CustomException.unknownError});
+      {this.response, this.statusCode, this.error = 'Something Went Wrong'});
 
   final Response<dynamic>? response;
   final int? statusCode;
-  final CustomException error;
+  String error;
 }

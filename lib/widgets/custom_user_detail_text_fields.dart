@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:movemint_user/core/app_export.dart';
 
@@ -38,7 +37,7 @@ class UserDetailsTextFieldContainer extends StatelessWidget {
           obscureText: obscureText,
           controller: controller,
           hintText: hintText,
-          validator: (value) {
+          validator: (String? value) {
             if (!isText(value)) {
               return "err_msg_please_enter_valid_text".tr;
             }

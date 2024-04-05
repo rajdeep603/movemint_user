@@ -27,7 +27,7 @@ class CustomPinCodeTextField extends StatelessWidget {
 
   final TextStyle? hintStyle;
 
-  Function(String) onChanged;
+  final Function(String) onChanged;
 
   final FormFieldValidator<String>? validator;
 
@@ -48,7 +48,7 @@ class CustomPinCodeTextField extends StatelessWidget {
         keyboardType: TextInputType.number,
         textStyle: textStyle,
         hintStyle: hintStyle,
-        inputFormatters: [
+        inputFormatters: <TextInputFormatter>[
           FilteringTextInputFormatter.digitsOnly,
         ],
         pinTheme: PinTheme(
@@ -58,9 +58,9 @@ class CustomPinCodeTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.h),
           inactiveColor: appTheme.gray500,
           activeColor: appTheme.gray500,
-          selectedColor: Colors.transparent,
+          selectedColor: Colors.orange,
         ),
-        onChanged: (value) => onChanged(value),
+        onChanged: onChanged,
         validator: validator,
       );
 }

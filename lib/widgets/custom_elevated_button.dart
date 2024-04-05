@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../core/app_export.dart';
 import 'base_button.dart';
+import 'custom_circular_loading.dart';
 
 class CustomElevatedButton extends BaseButton {
   CustomElevatedButton({
-    Key? key,
     this.decoration,
     this.leftIcon,
     this.rightIcon,
+    this.isLoading = false,
     EdgeInsets? margin,
     VoidCallback? onPressed,
     ButtonStyle? buttonStyle,
     Alignment? alignment,
     TextStyle? buttonTextStyle,
-    bool? isDisabled,
+    bool isDisabled = false,
     double? height,
     double? width,
     required String text,
@@ -35,6 +37,8 @@ class CustomElevatedButton extends BaseButton {
 
   final Widget? rightIcon;
 
+  final bool isLoading;
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -52,19 +56,29 @@ class CustomElevatedButton extends BaseButton {
         decoration: decoration,
         child: ElevatedButton(
           style: buttonStyle,
-          onPressed: isDisabled ?? false ? null : onPressed ?? () {},
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              leftIcon ?? const SizedBox.shrink(),
-              Text(
-                text,
-                style: buttonTextStyle ?? theme.textTheme.titleMedium,
-              ),
-              rightIcon ?? const SizedBox.shrink(),
-            ],
-          ),
+          onPressed: isDisabled
+              ? null
+              : isLoading
+                  ? () {}
+                  : () {
+                      HapticFeedback.lightImpact();
+                      onPressed?.call();
+                    },
+          child: isLoading
+              ? CustomCircularLoading(color: appTheme.whiteA700)
+              : isLoading
+                  ? CustomCircularLoading(color: appTheme.whiteA700)
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        leftIcon ?? const SizedBox.shrink(),
+                        Text(
+                          text,
+                          style: buttonTextStyle ?? theme.textTheme.titleMedium,
+                        ),
+                        rightIcon ?? const SizedBox.shrink(),
+                      ],
+                    ),
         ),
       );
 }

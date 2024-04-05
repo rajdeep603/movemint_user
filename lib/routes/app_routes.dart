@@ -5,6 +5,8 @@ import '../presentation/packer_additems_two_tab_container_screen/packer_additems
 import '../presentation/packer_details_date_time_screen/packer_details_date_time_screen.dart';
 import '../presentation/packer_details_within_city_tab_container_screen/packer_details_within_city_tab_container_screen.dart';
 import '../presentation/packer_home_container_screen/packer_home_container_screen.dart';
+import '../presentation/packer_home_page/packer_home_page.dart';
+import '../presentation/user_details_screen/user_details_screen.dart';
 import '../presentation/wellcome_screen/wellcome_screen.dart';
 import '../presentation/onboarding_screen_two_screen/onboarding_screen_two_screen.dart';
 import '../presentation/otp_verification_screen/otp_verification_screen.dart';
@@ -28,6 +30,8 @@ class AppRoutes {
       '/onboarding_screen_three_screen';
 
   static const String otpVerificationScreen = '/otp_verification_screen';
+
+  static const String userDetailsScreen = '/user_details_screen';
 
   static const String onboardingScreenOneScreen =
       '/onboarding_screen_one_screen';
@@ -66,17 +70,19 @@ class AppRoutes {
 
   static const String initialRoute = '/initialRoute';
 
-  static Map<String, WidgetBuilder> get routes => {
+  static Map<String, WidgetBuilder> get routes => <String, WidgetBuilder>{
         initialRoute: Logger.mode == LogMode.debug
-            ? WellcomeScreen.builder
+            ? UserDetailsScreen.builder
             : WellcomeScreen.builder,
         noInternetScreen: NoInternetScreen.builder,
         serverErrorScreen: ServerErrorScreen.builder,
         wellcomeScreen: WellcomeScreen.builder,
-        onboardingScreenTwoScreen: OnboardingScreenTwoScreen.builder,
-        // otpVerificationScreen: OtpVerificationScreen.builder,
         onboardingScreenOneScreen: OnboardingScreenOneScreen.builder,
+        onboardingScreenTwoScreen: OnboardingScreenTwoScreen.builder,
         loginScreen: LoginScreen.builder,
+        otpVerificationScreen: OtpVerificationScreen.builder,
+        userDetailsScreen: UserDetailsScreen.builder,
+        packerHomePage: PackerHomePage.builder,
         packerHomeContainerScreen: PackerHomeContainerScreen.builder,
         packerDetailsWithinCityTabContainerScreen:
             PackerDetailsWithinCityTabContainerScreen.builder,
