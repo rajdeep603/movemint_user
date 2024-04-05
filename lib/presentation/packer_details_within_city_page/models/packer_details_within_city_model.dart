@@ -1,4 +1,5 @@
 import '../../../core/app_export.dart';
+import '../../../domain/models/selectionPopupModel/selection_popup_model.dart';
 
 class PackerDetailsWithinCityModel {
   List<SelectionPopupModel> dropdownItemList = [

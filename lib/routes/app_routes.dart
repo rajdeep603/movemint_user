@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../core/utils/enums.dart';
+import '../core/utils/logger.dart';
 import '../presentation/packer_additems_two_tab_container_screen/packer_additems_two_tab_container_screen.dart';
 import '../presentation/packer_details_date_time_screen/packer_details_date_time_screen.dart';
 import '../presentation/packer_details_within_city_tab_container_screen/packer_details_within_city_tab_container_screen.dart';
@@ -9,8 +11,14 @@ import '../presentation/otp_verification_screen/otp_verification_screen.dart';
 import '../presentation/onboarding_screen_one_screen/onboarding_screen_one_screen.dart';
 import '../presentation/login_screen/login_screen.dart';
 import '../presentation/app_navigation_screen/app_navigation_screen.dart';
+import '../widgets/no_internet_screen.dart';
+import '../widgets/server_error_screen.dart';
 
 class AppRoutes {
+  static const String noInternetScreen = '/NoInternetScreen';
+
+  static const String serverErrorScreen = '/ServerErrorScreen';
+
   static const String wellcomeScreen = '/wellcome_screen';
 
   static const String onboardingScreenTwoScreen =
@@ -59,6 +67,11 @@ class AppRoutes {
   static const String initialRoute = '/initialRoute';
 
   static Map<String, WidgetBuilder> get routes => {
+        initialRoute: Logger.mode == LogMode.debug
+            ? WellcomeScreen.builder
+            : WellcomeScreen.builder,
+        noInternetScreen: NoInternetScreen.builder,
+        serverErrorScreen: ServerErrorScreen.builder,
         wellcomeScreen: WellcomeScreen.builder,
         onboardingScreenTwoScreen: OnboardingScreenTwoScreen.builder,
         // otpVerificationScreen: OtpVerificationScreen.builder,
@@ -71,6 +84,5 @@ class AppRoutes {
             PackerAdditemsTwoTabContainerScreen.builder,
         // packerDetailsDateTimeScreen: PackerDetailsDateTimeScreen.builder,
         appNavigationScreen: AppNavigationScreen.builder,
-        initialRoute: WellcomeScreen.builder
       };
 }

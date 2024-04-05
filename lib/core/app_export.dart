@@ -6,7 +6,6 @@ export 'package:movemint_user/core/utils/logger.dart';
 export 'package:movemint_user/core/utils/navigator_service.dart';
 export 'package:movemint_user/core/utils/pref_utils.dart';
 export 'package:movemint_user/core/utils/size_utils.dart';
-export 'package:movemint_user/data/models/selectionPopupModel/selection_popup_model.dart';
 export 'package:movemint_user/localization/app_localization.dart';
 export 'package:movemint_user/routes/app_routes.dart';
 export 'package:movemint_user/theme/app_decoration.dart';

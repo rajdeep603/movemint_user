@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:movemint_user/presentation/app_navigation_screen/provider/app_navigation_provider.dart';
 import 'package:movemint_user/presentation/login_screen/provider/login_provider.dart';
@@ -20,14 +23,21 @@ import 'package:movemint_user/presentation/wellcome_screen/provider/wellcome_pro
 import 'core/app_export.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'core/utils/enums.dart';
+import 'core/utils/server_date_time.dart';
+import 'core/utils/toast_helper.dart';
+import 'domain/local_storage/local_storage.dart';
+import 'domain/providers/app_state_provider.dart';
+
 var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
 void main() async {
+  dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await LocalStorage.initialize();
   Future.wait([
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]),
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
     PrefUtils().init()
   ]).then((value) {
     runApp(Multiprovider());
@@ -43,6 +53,9 @@ class Multiprovider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<AppStateProvider>(
+          create: (BuildContext context) => AppStateProvider(),
+        ),
         ChangeNotifierProvider<WellcomeProvider>(
             create: (_) => WellcomeProvider()),
         ChangeNotifierProvider<OtpVerificationProvider>(
@@ -94,39 +107,83 @@ class Multiprovider extends StatelessWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late StreamSubscription<List<ConnectivityResult>> subscription;
+
+  @override
+  void initState() {
+    super.initState();
+    // ServerDateTime().fetchDateTimeFromServer();
+    final NetworkInfo networkInfo = NetworkInfo();
+    subscription = networkInfo.onConnectivityChanged
+        .listen((List<ConnectivityResult> connectivityResult) {
+      Logger.log(
+          'connectivityResult : ${connectivityResult.map((ConnectivityResult e) => e.name)}');
+      if (connectivityResult.every(
+          (ConnectivityResult element) => element == ConnectivityResult.none)) {
+        ToastHelper.showToast(CustomException.noInternet.message);
+      } else {
+        if (NavigatorService.navigatorKey.currentContext != null) {
+          final bool isNoInternetScreenMounted = NavigatorService
+              .navigatorKey.currentContext!
+              .read<AppStateProvider>()
+              .isNoInternetScreenOpen;
+          if (isNoInternetScreenMounted && NavigatorService.canPop()) {
+            NavigatorService.goBack();
+          }
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    ServerDateTime().dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Sizer(
-      builder: (context, orientation, deviceType) {
-        return ChangeNotifierProvider(
-          create: (context) => ThemeProvider(),
-          child: Consumer<ThemeProvider>(
-            builder: (context, provider, child) {
-              return MaterialApp(
-                theme: theme,
-                title: 'movemint_user',
-                navigatorKey: NavigatorService.navigatorKey,
-                debugShowCheckedModeBanner: false,
-                localizationsDelegates: [
-                  AppLocalizationDelegate(),
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: [
-                  Locale(
-                    'en',
-                    '',
-                  ),
-                ],
-                initialRoute: AppRoutes.initialRoute,
-                routes: AppRoutes.routes,
-              );
-            },
-          ),
-        );
+    return GestureDetector(
+      onTap: () {
+        final FocusScopeNode currentFocus = FocusScope.of(context);
+        if (currentFocus.hasFocus) {
+          currentFocus.focusedChild?.unfocus();
+        }
       },
+      child: Sizer(
+        builder: (context, orientation, deviceType) {
+          return ChangeNotifierProvider(
+            create: (context) => ThemeProvider(),
+            child: Consumer<ThemeProvider>(
+              builder: (context, provider, child) {
+                return MaterialApp(
+                  theme: theme,
+                  title: 'movemint_user',
+                  navigatorKey: NavigatorService.navigatorKey,
+                  debugShowCheckedModeBanner: false,
+                  localizationsDelegates: const <LocalizationsDelegate<
+                      dynamic>>[
+                    AppLocalizationDelegate(),
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: [Locale('en', '')],
+                  initialRoute: AppRoutes.initialRoute,
+                  routes: AppRoutes.routes,
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }

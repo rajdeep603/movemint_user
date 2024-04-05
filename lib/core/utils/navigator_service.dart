@@ -9,8 +9,16 @@ class NavigatorService {
         ?.pushNamed(routeName, arguments: arguments);
   }
 
-  static void goBack() {
-    return navigatorKey.currentState?.pop();
+  static void goBack([Object? object]) {
+    return navigatorKey.currentState?.pop(object);
+  }
+
+  static void popUntil(String routeName) {
+    return navigatorKey.currentState?.popUntil(ModalRoute.withName(routeName));
+  }
+
+  static bool canPop() {
+    return navigatorKey.currentState?.canPop() ?? false;
   }
 
   static Future<dynamic> pushNamedAndRemoveUntil(String routeName,

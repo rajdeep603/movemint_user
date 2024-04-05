@@ -1,6 +1,14 @@
 class ImageConstant {
   // Image folder path
   static String imagePath = 'assets/images';
+  static String gifPath = 'assets/gif';
+  static String lottiePath = 'assets/lottie';
+
+  //----------------------------------------- Lottie ------------------------------------------------//
+
+  static String noInternetLottie = '$lottiePath/no_internet.json';
+
+  static String serverErrorLottie = '$lottiePath/server_error.json';
 
   // Wellcome images
   static String imgGroup1171281249 = '$imagePath/img_group_1171281249.png';

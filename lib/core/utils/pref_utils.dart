@@ -1,7 +1,3 @@
-//ignore: unused_import
-import 'dart:convert';
-import 'dart:ui';
-import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefUtils {
@@ -19,7 +15,7 @@ class PrefUtils {
     print('SharedPreference Initialized');
   }
 
-  ///will clear all the data stored in preference
+  ///will clear all the domain stored in preference
   void clearPreferencesData() async {
     _sharedPreferences!.clear();
   }
