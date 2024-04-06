@@ -11,7 +11,7 @@ class ApiServices {
     return LocalStorage.getToken();
   }
 
-  Future<CustomResponse> signIn(SignInModel signInModel) async {
+  Future<CustomResponse> signIn(SignInRequestModel signInModel) async {
     try {
       final CustomResponse customResponse = await ApiCalling().callApi(
           apiTypes: ApiTypes.post, url: AppUrls.signIn, data: signInModel.toMap());

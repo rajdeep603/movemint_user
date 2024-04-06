@@ -5,6 +5,7 @@ import '../../../core/app_export.dart';
 import '../../../core/utils/toast_helper.dart';
 import '../../../domain/models/sign_in_model/sign_in_request_model.dart';
 import '../../../domain/models/sign_in_model/sign_in_response_model.dart';
+import '../../../domain/providers/user_provider.dart';
 import '../../../domain/services/api_services.dart';
 import '../../../domain/services/common_api_call.dart';
 import '../../register_screen/models/register_screen_route_model.dart';
@@ -70,8 +71,8 @@ class OtpVerificationProvider extends ChangeNotifier {
 
   Future<void> _signInUser() async {
     try {
-      final SignInModel signInModel =
-          SignInModel(phoneNo: routeModel.mobileNo, role: 'user');
+      final SignInRequestModel signInModel =
+          SignInRequestModel(phoneNo: routeModel.mobileNo, role: 'user');
       final CustomResponse customResponse =
           await ApiServices().signIn(signInModel);
       if (customResponse.response == null || customResponse.statusCode != 200) {
@@ -81,6 +82,7 @@ class OtpVerificationProvider extends ChangeNotifier {
       //TODO: save in local storage
       final SignInResponseModel signInResponseModel =
           SignInResponseModel.fromMap(customResponse.response?.data);
+      _screenContext.read<UserProvider>().userModel = signInResponseModel;
       NavigatorService.pushNamedAndRemoveUntil(AppRoutes.packerHomePage);
     } on Exception catch (e) {
       ToastHelper.somethingWentWrong();

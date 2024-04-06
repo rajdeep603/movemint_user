@@ -1,5 +1,5 @@
-class SignInModel {
-  SignInModel({
+class SignInRequestModel {
+  SignInRequestModel({
     required this.phoneNo,
     required this.role,
   });
@@ -7,7 +7,7 @@ class SignInModel {
   String phoneNo;
   String role;
 
-  factory SignInModel.fromMap(Map<String, dynamic> json) => SignInModel(
+  factory SignInRequestModel.fromMap(Map<String, dynamic> json) => SignInRequestModel(
         phoneNo: json['phoneNo'] ?? '',
         role: json['role'] ?? '',
       );

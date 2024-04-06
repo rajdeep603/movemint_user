@@ -24,7 +24,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class LoginScreenState extends State<LoginScreen> {
         extendBody: true,
         // resizeToAvoidBottomInset: false,
         body: Form(
-          key: _formKey,
+          key:provider.formKey,
           child: SizedBox(
             width: double.maxFinite,
             child: Column(
