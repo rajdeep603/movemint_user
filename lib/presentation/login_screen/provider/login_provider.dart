@@ -37,13 +37,6 @@ class LoginProvider extends ChangeNotifier {
             );
             NavigatorService.pushNamed(AppRoutes.otpVerificationScreen,
                 arguments: routeModel);
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (BuildContext context) =>
-            //             OtpVerificationScreen(
-            //               verificationId: verificationId,
-            //             )));
           },
           codeAutoRetrievalTimeout: (String verificationId) {},
           phoneNumber:

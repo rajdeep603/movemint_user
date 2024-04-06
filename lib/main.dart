@@ -22,7 +22,6 @@ import 'presentation/packer_details_within_city_page/provider/packer_details_wit
 import 'presentation/packer_details_within_city_tab_container_screen/provider/packer_details_within_city_tab_container_provider.dart';
 import 'presentation/packer_home_container_screen/provider/packer_home_container_provider.dart';
 import 'presentation/packer_home_page/provider/packer_home_provider.dart';
-import 'presentation/user_details_screen/provider/user_details_provider.dart';
 import 'presentation/wellcome_screen/provider/wellcome_provider.dart';
 
 var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();

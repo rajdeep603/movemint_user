@@ -7,31 +7,32 @@ import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_text_form_field.dart';
 import '../../widgets/custom_user_detail_text_fields.dart';
 import '../packer_home_page/packer_home_page.dart';
-import 'models/user_details_model.dart';
+import 'models/register_screen_route_model.dart';
 import 'package:flutter/material.dart';
-import 'provider/user_details_provider.dart';
+import 'provider/register_provider.dart';
 
-class UserDetailsScreen extends StatefulWidget {
-  const UserDetailsScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  UserDetailsScreenState createState() => UserDetailsScreenState();
+  RegisterScreenState createState() => RegisterScreenState();
 
   static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider<UserDetailsProvider>(
-      create: (BuildContext context) => UserDetailsProvider(context),
-      child: const UserDetailsScreen(),
+    final RegisterScreenRouteModel routeModel =
+        ModalRoute.of(context)!.settings.arguments! as RegisterScreenRouteModel;
+    return ChangeNotifierProvider<RegisterProvider>(
+      create: (BuildContext context) => RegisterProvider(context, routeModel),
+      child: const RegisterScreen(),
     );
   }
 }
 
-class UserDetailsScreenState extends State<UserDetailsScreen> {
-
-  late UserDetailsProvider provider;
+class RegisterScreenState extends State<RegisterScreen> {
+  late RegisterProvider provider;
 
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<UserDetailsProvider>(context);
+    provider = Provider.of<RegisterProvider>(context);
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,

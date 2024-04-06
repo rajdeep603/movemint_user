@@ -1,13 +1,8 @@
-import 'dart:math';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:movemint_user/widgets/custom_pin_code_text_field.dart';
-import 'package:movemint_user/widgets/custom_elevated_button.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../user_details_screen/user_details_screen.dart';
+import '../../widgets/custom_pin_code_text_field.dart';
+import '../../widgets/custom_elevated_button.dart';
 import 'models/otp_verification_model.dart';
 import 'package:flutter/material.dart';
-import 'package:movemint_user/core/app_export.dart';
+import '../../core/app_export.dart';
 import 'provider/otp_verification_provider.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
