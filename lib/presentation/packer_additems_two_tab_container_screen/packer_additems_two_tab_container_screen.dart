@@ -41,12 +41,11 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
     provider = Provider.of<PackerAddItemsProvider>(context);
     return PopScope(
       onPopInvoked: (bool? value) {
-        if (value == true) {
           context.read<CreateOrderProvider>().disposeValues();
-        }
       },
       child: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: true,
           appBar: _buildAppBar(context),
           body: SizedBox(
             width: SizeUtils.width,
