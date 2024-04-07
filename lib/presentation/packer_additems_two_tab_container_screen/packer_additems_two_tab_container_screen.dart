@@ -2,30 +2,27 @@ import '../../core/app_export.dart';
 import '../../widgets/app_bar/appbar_leading_image.dart';
 import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
+import '../../widgets/custom_elevated_button.dart';
 import '../packer_additems_one_page/packer_additems_one_page.dart';
 import 'models/packer_additems_two_tab_container_model.dart';
 import 'package:flutter/material.dart';
 import 'provider/packer_additems_two_tab_container_provider.dart';
 
-class PackerAdditemsTwoTabContainerScreen extends StatefulWidget {
-  const PackerAdditemsTwoTabContainerScreen({Key? key})
-      : super(
-          key: key,
-        );
+class PackerAdditemsScreen extends StatefulWidget {
+  const PackerAdditemsScreen({super.key});
 
   @override
-  PackerAdditemsTwoTabContainerScreenState createState() =>
-      PackerAdditemsTwoTabContainerScreenState();
+  PackerAdditemsScreenState createState() => PackerAdditemsScreenState();
+
   static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => PackerAdditemsTwoTabContainerProvider(),
-      child: PackerAdditemsTwoTabContainerScreen(),
+    return ChangeNotifierProvider<PackerAdditemsProvider>(
+      create: (context) => PackerAdditemsProvider(),
+      child: PackerAdditemsScreen(),
     );
   }
 }
 
-class PackerAdditemsTwoTabContainerScreenState
-    extends State<PackerAdditemsTwoTabContainerScreen>
+class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
     with TickerProviderStateMixin {
   late TabController tabviewController;
 
@@ -35,8 +32,11 @@ class PackerAdditemsTwoTabContainerScreenState
     tabviewController = TabController(length: 4, vsync: this);
   }
 
+  late PackerAdditemsProvider provider;
+
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<PackerAdditemsProvider>(context);
     return SafeArea(
       child: Scaffold(
         appBar: _buildAppBar(context),
@@ -86,7 +86,7 @@ class PackerAdditemsTwoTabContainerScreenState
                               ),
                               SizedBox(height: 11.v),
                               Text(
-                                "lbl_details".tr,
+                                'lbl_details'.tr,
                                 style:
                                     CustomTextStyles.labelLargePrimaryContainer,
                               ),
@@ -114,7 +114,7 @@ class PackerAdditemsTwoTabContainerScreenState
                               ),
                               SizedBox(height: 12.v),
                               Text(
-                                "lbl_add_items".tr,
+                                'lbl_add_items'.tr,
                                 style:
                                     CustomTextStyles.labelLargePrimaryContainer,
                               ),
@@ -140,7 +140,7 @@ class PackerAdditemsTwoTabContainerScreenState
                               ),
                               SizedBox(height: 13.v),
                               Text(
-                                "lbl_summary".tr,
+                                'lbl_summary'.tr,
                                 style: CustomTextStyles.labelLargeGray300,
                               ),
                             ],
@@ -193,6 +193,41 @@ class PackerAdditemsTwoTabContainerScreenState
             ),
           ),
         ),
+        bottomNavigationBar: _buildActionBottom2(context),
+      ),
+    );
+  }
+
+  /// Section Widget
+  Widget _buildActionBottom2(BuildContext context) {
+    return Container(
+      decoration: AppDecoration.outlineGray300,
+      padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 20.v),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "lbl_total_items".tr,
+                  style: CustomTextStyles.titleMediumInterff71727a,
+                ),
+                TextSpan(
+                  text: "lbl_0".tr,
+                  style: CustomTextStyles.titleMediumInterff000000,
+                ),
+              ],
+            ),
+            textAlign: TextAlign.left,
+          ),
+          CustomElevatedButton(
+            isLoading: provider.isLoading,
+            onPressed: () => provider.onNextClickEvent(context),
+            width: 224.h,
+            text: "Submit",
+          ),
+        ],
       ),
     );
   }
@@ -202,6 +237,9 @@ class PackerAdditemsTwoTabContainerScreenState
     return CustomAppBar(
       leadingWidth: 44.h,
       leading: AppbarLeadingImage(
+        onTap: () {
+          NavigatorService.goBack();
+        },
         imagePath: ImageConstant.imgLeftButtonOnerrorcontainer,
         margin: EdgeInsets.only(
           left: 24.h,
@@ -211,7 +249,7 @@ class PackerAdditemsTwoTabContainerScreenState
       ),
       centerTitle: true,
       title: AppbarTitle(
-        text: "lbl_add_items".tr,
+        text: 'lbl_add_items'.tr,
       ),
       styleType: Style.bgFill,
     );
@@ -221,12 +259,10 @@ class PackerAdditemsTwoTabContainerScreenState
   Widget _buildTabview(BuildContext context) {
     return Container(
       height: 48.v,
-      width: 390.h,
+      // width: 390.h,
       decoration: BoxDecoration(
         color: appTheme.gray100,
-        borderRadius: BorderRadius.circular(
-          16.h,
-        ),
+        borderRadius: BorderRadius.circular(16.h),
       ),
       child: Padding(
         padding: const EdgeInsets.all(5),
@@ -257,24 +293,32 @@ class PackerAdditemsTwoTabContainerScreenState
           ),
           tabs: [
             Tab(
-              child: Text(
-                "lbl_household".tr,
-                // style: TextStyle(color: Colors.white),
+              child: Center(
+                child: Text(
+                  'lbl_household'.tr,
+                  // style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
             Tab(
-              child: Text(
-                "lbl_commercial".tr,
+              child: Center(
+                child: Text(
+                  'lbl_commercial'.tr,
+                ),
               ),
             ),
             Tab(
-              child: Text(
-                "lbl_electronics".tr,
+              child: Center(
+                child: Text(
+                  'lbl_electronics'.tr,
+                ),
               ),
             ),
             Tab(
-              child: Text(
-                "lbl_other".tr,
+              child: Center(
+                child: Text(
+                  'lbl_other'.tr,
+                ),
               ),
             ),
           ],

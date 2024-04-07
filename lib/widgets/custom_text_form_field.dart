@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../core/app_export.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -25,7 +26,9 @@ class CustomTextFormField extends StatelessWidget {
     this.borderDecoration,
     this.fillColor,
     this.filled = false,
+    this.readOnly = false,
     this.validator,
+    this.inputFormatters,
   }) : super(
           key: key,
         );
@@ -72,7 +75,10 @@ class CustomTextFormField extends StatelessWidget {
 
   final bool? filled;
 
+  final bool readOnly;
+
   final FormFieldValidator<String>? validator;
+ final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +96,7 @@ class CustomTextFormField extends StatelessWidget {
           scrollPadding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           controller: controller,
+          readOnly: readOnly,
           focusNode: focusNode ?? FocusNode(),
           autofocus: autofocus!,
           style: textStyle ?? CustomTextStyles.bodyLargeInterGray500,
@@ -99,8 +106,10 @@ class CustomTextFormField extends StatelessWidget {
           maxLines: maxLines ?? 1,
           decoration: decoration,
           validator: validator,
+          inputFormatters: inputFormatters,
         ),
       );
+
   InputDecoration get decoration => InputDecoration(
         hintText: hintText ?? "",
         hintStyle: hintStyle ?? CustomTextStyles.bodyLargeInterGray500,

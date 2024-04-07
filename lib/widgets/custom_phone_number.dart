@@ -1,6 +1,7 @@
 import 'package:country_pickers/country_pickers.dart';
 import 'package:country_pickers/utils/utils.dart';
 import 'package:country_pickers/country.dart';
+import 'package:flutter/services.dart';
 import 'package:movemint_user/core/utils/validation_functions.dart';
 import 'package:movemint_user/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -28,13 +29,8 @@ class CustomPhoneNumber extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: appTheme.whiteA700,
-        borderRadius: BorderRadius.circular(
-          10.h,
-        ),
-        border: Border.all(
-          color: appTheme.gray300,
-          width: 1.h,
-        ),
+        borderRadius: BorderRadius.circular(10.h),
+        border: Border.all(color: appTheme.gray300, width: 1.h),
       ),
       child: Row(
         children: [
@@ -64,13 +60,17 @@ class CustomPhoneNumber extends StatelessWidget {
                 controller: controller,
                 borderDecoration: InputBorder.none,
                 hintText: "msg_enter_mobile_number".tr,
-                textInputType: TextInputType.phone,
-                validator: (value) {
-                  if (!isValidPhone(value)) {
-                    return "err_msg_please_enter_valid_phone_number".tr;
-                  }
-                  return null;
-                },
+                textInputType: TextInputType.number,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(10),
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                // validator: (value) {
+                //   if (!isValidPhone(value)) {
+                //     return "err_msg_please_enter_valid_phone_number".tr;
+                //   }
+                //   return null;
+                // },
                 contentPadding: EdgeInsets.symmetric(horizontal: 30.h),
               ),
             ),
@@ -102,6 +102,7 @@ class CustomPhoneNumber extends StatelessWidget {
           ),
         ],
       );
+
   void _openCountryPicker(BuildContext context) => showDialog(
         context: context,
         builder: (context) => CountryPickerDialog(

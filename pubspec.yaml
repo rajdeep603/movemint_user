@@ -37,6 +37,20 @@ dependencies:
   firebase_auth: ^4.2.2
   url_launcher: ^6.2.3
   uuid: ^4.3.3
+
+
+# Create launcher icon for both android and ios
+# Use these commands to create flutter launcher icons:
+# 1. flutter pub get
+# 2. flutter pub run flutter_launcher_icons
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/img_group_1171281249.png"
+  min_sdk_android: 21
+
+
 dev_dependencies:
   flutter_lints:
   flutter_test: 

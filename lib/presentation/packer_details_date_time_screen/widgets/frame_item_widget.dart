@@ -4,44 +4,38 @@ import '../../../theme/theme_helper.dart';
 import '../models/frame_item_model.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
+import '../provider/packer_details_date_time_provider.dart';
+
 class FrameItemWidget extends StatelessWidget {
   FrameItemWidget(
-    this.frameItemModelObj, {
-    Key? key,
+    this.date, {
+    super.key,
     this.onSelectedChipView1,
-  }) : super(
-          key: key,
-        );
+  });
 
-  FrameItemModel frameItemModelObj;
+  DateTimeListModel date;
 
   Function(bool)? onSelectedChipView1;
 
   @override
   Widget build(BuildContext context) {
     return RawChip(
-      padding: EdgeInsets.symmetric(
-        horizontal: 30.h,
-        vertical: 11.v,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.v),
       showCheckmark: false,
-      labelPadding: EdgeInsets.zero,
       label: Text(
-        frameItemModelObj.tag!,
+        date.date.format(DateTimeUtils.dMonFormat),
         style: TextStyle(
-          color: (frameItemModelObj.isSelected ?? false)
-              ? theme.colorScheme.primary
-              : appTheme.gray700,
+          color:
+              (date.isSelected) ? theme.colorScheme.primary : appTheme.gray700,
           fontSize: 12.fSize,
           fontFamily: 'Inter',
           fontWeight: FontWeight.w600,
         ),
       ),
-      selected: (frameItemModelObj.isSelected ?? false),
+      selected: date.isSelected,
       backgroundColor: appTheme.gray10001,
       selectedColor: appTheme.gray10001,
-      shape: (frameItemModelObj.isSelected ?? false)
+      shape: (date.isSelected)
           ? RoundedRectangleBorder(
               side: BorderSide(
                 color: theme.colorScheme.primary,
@@ -57,7 +51,7 @@ class FrameItemWidget extends StatelessWidget {
                 8.h,
               ),
             ),
-      onSelected: (value) {
+      onSelected: (bool value) {
         onSelectedChipView1?.call(value);
       },
     );

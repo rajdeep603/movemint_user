@@ -77,7 +77,7 @@ class AppNavigationScreenState extends State<AppNavigationScreen> {
                           context,
                           screenTitle: "packer_additems_Two - Tab Container".tr,
                           onTapScreenTitle: () => onTapScreenTitle(
-                              AppRoutes.packerAdditemsTwoTabContainerScreen),
+                              AppRoutes.packerAdditemsScreen),
                         ),
                         _buildScreenTitle(
                           context,

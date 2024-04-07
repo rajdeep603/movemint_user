@@ -50,8 +50,6 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
                     _buildHorizontalCard1(context),
                     SizedBox(height: 13.v),
                     _buildHorizontalCard2(context),
-                    SizedBox(height: 314.v),
-                    _buildActionBottom2(context),
                   ],
                 ),
               ],

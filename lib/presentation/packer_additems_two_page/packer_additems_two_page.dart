@@ -31,7 +31,7 @@ class PackerAdditemsTwoPageState extends State<PackerAdditemsTwoPage>
     super.initState();
     Future.delayed(const Duration(milliseconds: 3000), () {
       NavigatorService.popAndPushNamed(
-        AppRoutes.packerAdditemsTwoTabContainerScreen,
+        AppRoutes.packerAdditemsScreen,
       );
     });
   }

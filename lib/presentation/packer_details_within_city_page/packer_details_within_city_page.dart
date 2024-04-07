@@ -1,96 +1,74 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 
 import '../../core/app_export.dart';
+import '../../domain/providers/create_order_provider.dart';
 import '../../widgets/custom_drop_down.dart';
 import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/custom_icon.dart';
 import '../../widgets/custom_icon_button.dart';
 import '../packer_details_date_time_screen/packer_details_date_time_screen.dart';
+import '../packer_location_set_screen/provider/packer_location_set_provider.dart';
 import 'models/packer_details_within_city_model.dart';
-import 'package:flutter/material.dart';
-import 'provider/packer_details_within_city_provider.dart';
 
-// ignore_for_file: must_be_immutable
-class PackerDetailsWithinCityPage extends StatefulWidget {
-  const PackerDetailsWithinCityPage({Key? key})
-      : super(
-          key: key,
-        );
+class PackerDetailsWithinCityPage extends StatelessWidget {
+  const PackerDetailsWithinCityPage({super.key, required this.provider});
 
-  @override
-  PackerDetailsWithinCityPageState createState() =>
-      PackerDetailsWithinCityPageState();
-  static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => PackerDetailsWithinCityProvider(),
-      child: PackerDetailsWithinCityPage(),
-    );
-  }
-}
+  final PackerLocationSetProvider provider;
 
-class PackerDetailsWithinCityPageState
-    extends State<PackerDetailsWithinCityPage>
-    with AutomaticKeepAliveClientMixin<PackerDetailsWithinCityPage> {
-  @override
-  bool get wantKeepAlive => true;
-  TextEditingController dropController = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
+  static Widget builder(
+      BuildContext context, PackerLocationSetProvider provider) {
+    return PackerDetailsWithinCityPage(provider: provider);
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SizedBox(
-          width: SizeUtils.width,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(top: 20.v),
-              child: Column(
-                children: [
-                  SizedBox(height: 21.v),
-                  Column(
-                    children: [
-                      _buildDropdown(context),
-                      SizedBox(height: 23.v),
-                      _buildPickupDrop(context),
-                      SizedBox(height: 31.v),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 20.h),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "msg_services_we_offer".tr,
-                                style: theme.textTheme.titleMedium,
-                              ),
-                              SizedBox(height: 81.v),
-                              CustomIconButton(
-                                height: 40.adaptSize,
-                                width: 40.adaptSize,
-                                padding: EdgeInsets.all(12.h),
-                                alignment: Alignment.centerRight,
-                                child: CustomImageView(
-                                  imagePath: ImageConstant.imgPlay,
-                                ),
-                              ),
-                            ],
+    return SizedBox(
+      width: SizeUtils.width,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 10.v, horizontal: 15.h),
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 21.v),
+              Column(
+                children: <Widget>[
+                  _buildSearchCity(context),
+                  SizedBox(height: 23.v),
+                  _buildPickUpLocationWidget(context),
+                  SizedBox(height: 20.v),
+                  _buildDropLocationWidget(context),
+                  SizedBox(height: 31.v),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "msg_services_we_offer".tr,
+                          style: theme.textTheme.titleMedium,
+                        ),
+                        SizedBox(height: 81.v),
+                        CustomIconButton(
+                          height: 40.adaptSize,
+                          width: 40.adaptSize,
+                          padding: EdgeInsets.all(12.h),
+                          alignment: Alignment.centerRight,
+                          child: CustomImageView(
+                            imagePath: ImageConstant.imgPlay,
                           ),
                         ),
-                      ),
-                      SizedBox(height: 10.v),
-                      _buildProcess(context),
-                      _buildAction(context),
-                    ],
+                      ],
+                    ),
                   ),
+                  SizedBox(height: 10.v),
+                  _buildProcess(context),
                 ],
               ),
-            ),
+            ],
           ),
         ),
       ),
@@ -98,505 +76,427 @@ class PackerDetailsWithinCityPageState
   }
 
   /// Section Widget
-  Widget _buildDropdown(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "lbl_select_city".tr,
-            style: CustomTextStyles.labelLargeOnErrorContainer,
-          ),
-          SizedBox(height: 6.v),
-          Selector<PackerDetailsWithinCityProvider,
-              PackerDetailsWithinCityModel?>(
-            selector: (
-              context,
-              provider,
-            ) =>
-                provider.packerDetailsWithinCityModelObj,
-            builder: (context, packerDetailsWithinCityModelObj, child) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: appTheme.whiteA700,
-                  borderRadius: BorderRadius.circular(
-                    10.h,
-                  ),
-                  border: Border.all(
-                    color: Colors.transparent,
-                    width: 1.h,
-                  ),
+  Widget _buildSearchCity(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("lbl_select_city".tr,
+            style: CustomTextStyles.labelLargeOnErrorContainer),
+        SizedBox(height: 6.v),
+        Container(
+            decoration: BoxDecoration(
+              color: appTheme.whiteA700,
+              borderRadius: BorderRadius.circular(10.h),
+              border: Border.all(color: Colors.grey, width: 1.h),
+            ),
+            height: 50.v,
+            padding: EdgeInsets.symmetric(horizontal: 10.h),
+            child: Row(
+              children: [
+                Flexible(
+                  child: PopupMenuButton<String>(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(context
+                            .watch<CreateOrderProvider>()
+                            .searchCityController
+                            .text
+                            .isEmpty
+                            ? 'Select City'
+                            : context
+                            .read<CreateOrderProvider>()
+                            .searchCityController
+                            .text),
+                        CustomIcon(Icons.arrow_drop_down)
+                      ],
+                    ),
+                      onSelected: (String? value) => provider.onDropDownChange(
+                          context, value ?? ''),
+                      itemBuilder: (BuildContext context) => [
+                            "Hyderbad",
+                            "Bengaluru"
+                          ]
+                              .map((String item) => PopupMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                      item,
+                                      style: theme.textTheme.titleMedium
+                                          ?.copyWith(color: appTheme.black900))))
+                              .toList()),
                 ),
-                // padding: EdgeInsets.symmetric(horizontal: 20),
-                child: GooglePlaceAutoCompleteTextField(
-                  textEditingController: dropController,
-                  googleAPIKey: "AIzaSyBdGUa2fdwWq0iyEFsmqbdDjpQ8hqbtjtY",
-                  inputDecoration: InputDecoration(
-                    hintStyle:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
-                    hintText: "Search your location",
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                  ),
-                  debounceTime: 400,
-                  countries: ["in", "fr"],
-                  isLatLngRequired: true,
-                  getPlaceDetailWithLatLng: (Prediction prediction) {
-                    print("placeDetails" + prediction.lat.toString());
-                  },
+              ],
+            )
 
-                  itemClick: (Prediction prediction) {
-                    dropController.text = prediction.description ?? "";
-                    dropController.selection = TextSelection.fromPosition(
-                        TextPosition(
-                            offset: prediction.description?.length ?? 0));
-                  },
-                  seperatedBuilder: Divider(),
-                  containerHorizontalPadding: 10,
-
-                  // OPTIONAL// If you want to customize list view item builder
-                  itemBuilder: (context, index, Prediction prediction) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: appTheme.whiteA700,
-                        borderRadius: BorderRadius.circular(
-                          10.h,
-                        ),
-                        border: Border.all(
-                          color: appTheme.gray300,
-                          width: 1.h,
-                        ),
-                      ),
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          Icon(Icons.location_on),
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Expanded(
-                              child: Text("${prediction.description ?? ""}"))
-                        ],
-                      ),
-                    );
-                  },
-
-                  isCrossBtnShown: true,
-
-                  // default 600 ms ,
-                ),
-              );
-
-              //   CustomDropDown(
-              //   icon: Icon(
-              //     Icons.keyboard_arrow_down,
-              //     color: Colors.green,
-              //   ),
-              //
-              //   // icon: Container(
-              //   //   margin: EdgeInsets.fromLTRB(30.h, 18.v, 16.h, 18.v),
-              //   //   child: CustomImageView(
-              //   //     color: Colors.red,
-              //   //     imagePath: ImageConstant.imgIcon,
-              //   //     height: 12.adaptSize,
-              //   //     width: 12.adaptSize,
-              //   //   ),
-              //   // ),
-              //   hintText: "lbl_bangalore".tr,
-              //   items: packerDetailsWithinCityModelObj?.dropdownItemList ?? [],
-              // );
-            },
-          ),
-        ],
-      ),
+            // GooglePlaceAutoCompleteTextField(
+            //   textEditingController: context.read<CreateOrderProvider>().searchCityController,
+            //   googleAPIKey: "AIzaSyBdGUa2fdwWq0iyEFsmqbdDjpQ8hqbtjtY",
+            //   inputDecoration: const InputDecoration(
+            //     hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+            //     hintText: "Search your location",
+            //     border: InputBorder.none,
+            //     enabledBorder: InputBorder.none,
+            //   ),
+            //   debounceTime: 400,
+            //   countries: <String>["in", "fr"],
+            //   isLatLngRequired: true,
+            //   getPlaceDetailWithLatLng: (Prediction prediction) {
+            //     print("placeDetails" + prediction.lat.toString());
+            //   },
+            //
+            //   itemClick: (Prediction prediction) {
+            //     context.read<CreateOrderProvider>().searchCityController.text = prediction.description ?? "";
+            //     context.read<CreateOrderProvider>().searchCityController.selection =
+            //         TextSelection.fromPosition(TextPosition(
+            //             offset: prediction.description?.length ?? 0));
+            //   },
+            //   seperatedBuilder: const Divider(),
+            //   containerHorizontalPadding: 10,
+            //
+            //   // OPTIONAL// If you want to customize list view item builder
+            //   itemBuilder:
+            //       (BuildContext context, int index, Prediction prediction) {
+            //     return Container(
+            //       decoration: BoxDecoration(
+            //         color: appTheme.whiteA700,
+            //         borderRadius: BorderRadius.circular(
+            //           10.h,
+            //         ),
+            //         border: Border.all(
+            //           color: appTheme.gray300,
+            //           width: 1.h,
+            //         ),
+            //       ),
+            //       padding: const EdgeInsets.all(10),
+            //       child: Row(
+            //         children: <Widget>[
+            //           const Icon(Icons.location_on),
+            //           const SizedBox(
+            //             width: 7,
+            //           ),
+            //           Expanded(child: Text("${prediction.description ?? ""}"))
+            //         ],
+            //       ),
+            //     );
+            //   },
+            //
+            //   isCrossBtnShown: true,
+            //
+            //   // default 600 ms ,
+            // ),
+            ),
+      ],
     );
   }
 
-  /// Section Widget
-  Widget _buildPickupDrop(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "lbl_pickup_from".tr,
-            style: theme.textTheme.labelLarge,
+  Widget _buildPickUpLocationWidget(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("lbl_pickup_from".tr, style: theme.textTheme.labelLarge),
+        SizedBox(height: 10.v),
+        Container(
+          decoration: BoxDecoration(
+            color: appTheme.whiteA700,
+            borderRadius: BorderRadius.circular(10.h),
+            border: Border.all(color: Colors.transparent, width: 1.h),
           ),
-          SizedBox(height: 9.v),
-          Selector<PackerDetailsWithinCityProvider, TextEditingController?>(
-            selector: (
-              context,
-              provider,
-            ) =>
-                provider.trackFieldController,
-            builder: (context, trackFieldController, child) {
+          // padding: EdgeInsets.symmetric(horizontal: 20),
+          child: GooglePlaceAutoCompleteTextField(
+            textEditingController:
+                context.read<CreateOrderProvider>().pickUpLocationController,
+            googleAPIKey: "AIzaSyBdGUa2fdwWq0iyEFsmqbdDjpQ8hqbtjtY",
+            inputDecoration: const InputDecoration(
+              hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+              hintText: "PickUp Location",
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+            ),
+            debounceTime: 400,
+            countries: <String>["in", "fr"],
+            isLatLngRequired: true,
+            getPlaceDetailWithLatLng: (Prediction prediction) {
+              print("placeDetails" + prediction.lat.toString());
+            },
+
+            itemClick: (Prediction prediction) {
+              context
+                  .read<CreateOrderProvider>()
+                  .pickUpLocationController
+                  .text = prediction.description ?? "";
+              context
+                      .read<CreateOrderProvider>()
+                      .pickUpLocationController
+                      .selection =
+                  TextSelection.fromPosition(TextPosition(
+                      offset: prediction.description?.length ?? 0));
+            },
+            seperatedBuilder: const Divider(),
+            containerHorizontalPadding: 10,
+
+            // OPTIONAL// If you want to customize list view item builder
+            itemBuilder:
+                (BuildContext context, int index, Prediction prediction) {
               return Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 17.h,
-                  vertical: 11.v,
+                decoration: BoxDecoration(
+                  color: appTheme.whiteA700,
+                  borderRadius: BorderRadius.circular(10.h),
+                  border: Border.all(color: appTheme.gray300, width: 1.h),
                 ),
-                decoration: AppDecoration.outlineGray300.copyWith(
-                  borderRadius: BorderRadiusStyle.roundedBorder9,
-                ),
+                padding: const EdgeInsets.all(10),
                 child: Row(
-                  children: [
-                    CustomImageView(
-                      imagePath: ImageConstant.imgLinkedin,
-                      height: 22.adaptSize,
-                      width: 22.adaptSize,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 13.h),
-                      child: SizedBox(
-                        height: 22.v,
-                        child: VerticalDivider(
-                          width: 1.h,
-                          thickness: 1.v,
-                          indent: 2.h,
-                          endIndent: 2.h,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 12.h,
-                        top: 2.v,
-                      ),
-                      child: Text(
-                        "msg_9th_main_nehru_street".tr,
-                        style: theme.textTheme.bodyLarge,
-                      ),
-                    ),
+                  children: <Widget>[
+                    const Icon(Icons.location_on),
+                    const SizedBox(width: 7),
+                    Expanded(child: Text("${prediction.description ?? ""}"))
                   ],
                 ),
               );
             },
+
+            isCrossBtnShown: true,
+
+            // default 600 ms ,
           ),
-          SizedBox(height: 17.v),
-          Text(
-            "lbl_drop_location".tr,
-            style: theme.textTheme.labelLarge,
-          ),
-          SizedBox(height: 9.v),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 17.h,
-              vertical: 11.v,
-            ),
-            decoration: AppDecoration.outlineGray300.copyWith(
-              borderRadius: BorderRadiusStyle.roundedBorder9,
-            ),
-            child: Row(
-              children: [
-                CustomImageView(
-                  imagePath: ImageConstant.imgLinkedin,
-                  height: 22.adaptSize,
-                  width: 22.adaptSize,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 13.h),
-                  child: SizedBox(
-                    height: 22.v,
-                    child: VerticalDivider(
-                      width: 1.h,
-                      thickness: 1.v,
-                      indent: 2.h,
-                      endIndent: 2.h,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 12.h,
-                    top: 2.v,
-                  ),
-                  child: Text(
-                    "msg_bagmane_tech_park".tr,
-                    style: theme.textTheme.bodyLarge,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   /// Section Widget
-  Widget _buildAction(BuildContext context) {
-    return SizedBox(
-      height: 110.v,
-      width: double.maxFinite,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              height: 107.v,
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                color: appTheme.whiteA700,
-              ),
-            ),
+  Widget _buildDropLocationWidget(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("lbl_drop_location".tr, style: theme.textTheme.labelLarge),
+        SizedBox(height: 10.v),
+        Container(
+          decoration: BoxDecoration(
+            color: appTheme.whiteA700,
+            borderRadius: BorderRadius.circular(10.h),
+            border: Border.all(color: Colors.transparent, width: 1.h),
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 22.h),
-              decoration: AppDecoration.outlineGray3001,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: 25.v),
-                  CustomElevatedButton(
-                    text: "lbl_next".tr,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  // PackerAdditemsThreeBottomsheet
-                                  PackerDetailsDateTimeScreen()));
-                    },
-                  ),
-                ],
-              ),
+          // padding: EdgeInsets.symmetric(horizontal: 20),
+          child: GooglePlaceAutoCompleteTextField(
+            textEditingController:
+                context.read<CreateOrderProvider>().dropLocationController,
+            googleAPIKey: "AIzaSyBdGUa2fdwWq0iyEFsmqbdDjpQ8hqbtjtY",
+            inputDecoration: const InputDecoration(
+              hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+              hintText: "Drop Location",
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
             ),
+            debounceTime: 400,
+            countries: <String>["in", "fr"],
+            isLatLngRequired: true,
+            getPlaceDetailWithLatLng: (Prediction prediction) {
+              print("placeDetails" + prediction.lat.toString());
+            },
+
+            itemClick: (Prediction prediction) {
+              context.read<CreateOrderProvider>().dropLocationController.text =
+                  prediction.description ?? "";
+              context
+                      .read<CreateOrderProvider>()
+                      .dropLocationController
+                      .selection =
+                  TextSelection.fromPosition(TextPosition(
+                      offset: prediction.description?.length ?? 0));
+            },
+            seperatedBuilder: const Divider(),
+            containerHorizontalPadding: 10,
+
+            // OPTIONAL// If you want to customize list view item builder
+            itemBuilder:
+                (BuildContext context, int index, Prediction prediction) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: appTheme.whiteA700,
+                  borderRadius: BorderRadius.circular(10.h),
+                  border: Border.all(color: appTheme.gray300, width: 1.h),
+                ),
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: <Widget>[
+                    const Icon(Icons.location_on),
+                    const SizedBox(width: 7),
+                    Expanded(child: Text("${prediction.description ?? ""}"))
+                  ],
+                ),
+              );
+            },
+
+            isCrossBtnShown: true,
+
+            // default 600 ms ,
           ),
-        ],
-      ),
+        )
+      ],
     );
   }
 
   /// Section Widget
   Widget _buildProcess(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 30.h,
-        right: 13.h,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "lbl_how_it_worlks".tr,
-            style: theme.textTheme.titleMedium,
-          ),
-          SizedBox(height: 22.v),
-          Padding(
-            padding: EdgeInsets.only(right: 79.h),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomImageView(
-                  imagePath: ImageConstant.imgStepSymbol,
-                  height: 32.adaptSize,
-                  width: 32.adaptSize,
-                  margin: EdgeInsets.only(
-                    top: 5.v,
-                    bottom: 8.v,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "msg_share_your_shifting".tr,
-                        style: theme.textTheme.titleSmall,
-                      ),
-                      SizedBox(height: 3.v),
-                      SizedBox(
-                        width: 266.h,
-                        child: Text(
-                          "msg_lorem_ipsum_dolor".tr,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          CustomImageView(
-            imagePath: ImageConstant.imgStepTrail,
-            height: 50.v,
-            width: 32.h,
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 91.h),
-            child: Row(
-              children: [
-                CustomImageView(
-                  imagePath: ImageConstant.imgStepSymbolWhiteA700,
-                  height: 32.adaptSize,
-                  width: 32.adaptSize,
-                  margin: EdgeInsets.symmetric(vertical: 7.v),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "msg_receives_free_instant".tr,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.titleSmall,
-                      ),
-                      SizedBox(height: 5.v),
-                      SizedBox(
-                        width: 254.h,
-                        child: Text(
-                          "msg_lorem_ipsum_dolor2".tr,
-                          maxLines: null,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          CustomImageView(
-            imagePath: ImageConstant.imgStepTrail,
-            height: 50.v,
-            width: 32.h,
-          ),
-          Row(
-            children: [
-              CustomImageView(
-                imagePath: ImageConstant.imgStepSymbolWhiteA70032x32,
-                height: 32.adaptSize,
-                width: 32.adaptSize,
-                margin: EdgeInsets.symmetric(vertical: 7.v),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          "lbl_how_it_worlks".tr,
+          style: theme.textTheme.titleMedium,
+        ),
+        SizedBox(height: 22.v),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CustomImageView(
+              imagePath: ImageConstant.imgStepSymbol,
+              height: 32.adaptSize,
+              width: 32.adaptSize,
+              margin: EdgeInsets.only(
+                top: 5.v,
+                bottom: 8.v,
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "msg_assing_qualitiy".tr,
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.titleSmall,
-                    ),
-                    SizedBox(height: 5.v),
-                    SizedBox(
-                      width: 345.h,
-                      child: Text(
-                        "msg_lorem_ipsum_dolor".tr,
-                        maxLines: null,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          CustomImageView(
-            imagePath: ImageConstant.imgStepTrailBlueGray200,
-            height: 50.v,
-            width: 32.h,
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 44.h),
-            child: Row(
-              children: [
-                CustomImageView(
-                  imagePath: ImageConstant.imgStepSymbol32x32,
-                  height: 32.adaptSize,
-                  width: 32.adaptSize,
-                  margin: EdgeInsets.symmetric(vertical: 7.v),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "msg_leave_the_heavy".tr,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.titleSmall,
-                      ),
-                      SizedBox(height: 5.v),
-                      SizedBox(
-                        width: 301.h,
-                        child: Text(
-                          "msg_lorem_ipsum_dolor3".tr,
-                          maxLines: null,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
             ),
-          ),
-        ],
-      ),
+            Padding(
+              padding: EdgeInsets.only(left: 10.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "msg_share_your_shifting".tr,
+                    style: theme.textTheme.titleSmall,
+                  ),
+                  SizedBox(height: 3.v),
+                  SizedBox(
+                    width: 266.h,
+                    child: Text(
+                      "msg_lorem_ipsum_dolor".tr,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        CustomImageView(
+          imagePath: ImageConstant.imgStepTrail,
+          height: 50.v,
+          width: 32.h,
+        ),
+        Row(
+          children: <Widget>[
+            CustomImageView(
+              imagePath: ImageConstant.imgStepSymbolWhiteA700,
+              height: 32.adaptSize,
+              width: 32.adaptSize,
+              margin: EdgeInsets.symmetric(vertical: 7.v),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "msg_receives_free_instant".tr,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.titleSmall,
+                  ),
+                  SizedBox(height: 5.v),
+                  SizedBox(
+                    width: 254.h,
+                    child: Text(
+                      "msg_lorem_ipsum_dolor2".tr,
+                      maxLines: null,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        CustomImageView(
+          imagePath: ImageConstant.imgStepTrail,
+          height: 50.v,
+          width: 32.h,
+        ),
+        Row(
+          children: <Widget>[
+            CustomImageView(
+              imagePath: ImageConstant.imgStepSymbolWhiteA70032x32,
+              height: 32.adaptSize,
+              width: 32.adaptSize,
+              margin: EdgeInsets.symmetric(vertical: 7.v),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "msg_assing_qualitiy".tr,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.titleSmall,
+                  ),
+                  SizedBox(height: 5.v),
+                  SizedBox(
+                    width: 345.h,
+                    child: Text(
+                      "msg_lorem_ipsum_dolor".tr,
+                      maxLines: null,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        CustomImageView(
+          imagePath: ImageConstant.imgStepTrailBlueGray200,
+          height: 50.v,
+          width: 32.h,
+        ),
+        Row(
+          children: <Widget>[
+            CustomImageView(
+              imagePath: ImageConstant.imgStepSymbol32x32,
+              height: 32.adaptSize,
+              width: 32.adaptSize,
+              margin: EdgeInsets.symmetric(vertical: 7.v),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "msg_leave_the_heavy".tr,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.titleSmall,
+                  ),
+                  SizedBox(height: 5.v),
+                  SizedBox(
+                    width: 301.h,
+                    child: Text(
+                      "msg_lorem_ipsum_dolor3".tr,
+                      maxLines: null,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
-
-// placesAutoCompleteTextField() {
-//   return Container(
-//     padding: EdgeInsets.symmetric(horizontal: 20),
-//     child: GooglePlaceAutoCompleteTextField(
-//       textEditingController: controller,
-//       googleAPIKey: "YOUR_GOOGLE_API_KEY",
-//       inputDecoration: InputDecoration(
-//         hintText: "Search your location",
-//         border: InputBorder.none,
-//         enabledBorder: InputBorder.none,
-//       ),
-//       debounceTime: 400,
-//       countries: ["in", "fr"],
-//       isLatLngRequired: true,
-//       getPlaceDetailWithLatLng: (Prediction prediction) {
-//         print("placeDetails" + prediction.lat.toString());
-//       },
-//
-//       itemClick: (Prediction prediction) {
-//         controller.text = prediction.description ?? "";
-//         controller.selection = TextSelection.fromPosition(
-//             TextPosition(offset: prediction.description?.length ?? 0));
-//       },
-//       seperatedBuilder: Divider(),
-//       containerHorizontalPadding: 10,
-//
-//       // OPTIONAL// If you want to customize list view item builder
-//       itemBuilder: (context, index, Prediction prediction) {
-//         return Container(
-//           padding: EdgeInsets.all(10),
-//           child: Row(
-//             children: [
-//               Icon(Icons.location_on),
-//               SizedBox(
-//                 width: 7,
-//               ),
-//               Expanded(child: Text("${prediction.description ?? ""}"))
-//             ],
-//           ),
-//         );
-//       },
-//
-//       isCrossBtnShown: true,
-//
-//       // default 600 ms ,
-//     ),
-//   );
-// }

@@ -1,36 +1,40 @@
+import 'package:nested/nested.dart';
+
 import '../../core/app_export.dart';
+import '../../domain/providers/create_order_provider.dart';
 import '../../widgets/custom_bottom_bar.dart';
+import '../order_list_screen/order_list_screen.dart';
 import '../packer_home_page/packer_home_page.dart';
+import '../packer_summary_one_screen/packer_summary_one_screen.dart';
 import 'models/packer_home_container_model.dart';
 import 'package:flutter/material.dart';
 import 'provider/packer_home_container_provider.dart';
 
-class PackerHomeContainerScreen extends StatefulWidget {
-  const PackerHomeContainerScreen({Key? key}) : super(key: key);
+class DashBoard extends StatefulWidget {
+  const DashBoard({Key? key}) : super(key: key);
 
   @override
-  PackerHomeContainerScreenState createState() =>
-      PackerHomeContainerScreenState();
+  DashBoardState createState() => DashBoardState();
 
   static Widget builder(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context) => PackerHomeContainerProvider(),
-        child: PackerHomeContainerScreen());
+        create: (BuildContext context) => PackerHomeContainerProvider(),
+        child: DashBoard());
   }
 }
 
 // ignore_for_file: must_be_immutable
-class PackerHomeContainerScreenState extends State<PackerHomeContainerScreen> {
+class DashBoardState extends State<DashBoard> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 3000), () {
-      NavigatorService.popAndPushNamed(
-        AppRoutes.packerDetailsWithinCityTabContainerScreen,
-      );
-    });
+    // Future.delayed(const Duration(milliseconds: 3000), () {
+    //   NavigatorService.popAndPushNamed(
+    //     AppRoutes.packerDetailsWithinCityTabContainerScreen,
+    //   );
+    // });
   }
 
   @override
@@ -40,10 +44,12 @@ class PackerHomeContainerScreenState extends State<PackerHomeContainerScreen> {
             body: Navigator(
                 key: navigatorKey,
                 initialRoute: AppRoutes.packerHomePage,
-                onGenerateRoute: (routeSetting) => PageRouteBuilder(
-                    pageBuilder: (ctx, ani, ani1) =>
-                        getCurrentPage(context, routeSetting.name!),
-                    transitionDuration: Duration(seconds: 0))),
+                onGenerateRoute: (RouteSettings routeSetting) =>
+                    PageRouteBuilder(
+                        pageBuilder: (BuildContext ctx, Animation<double> ani,
+                                Animation<double> ani1) =>
+                            getCurrentPage(context, routeSetting.name!),
+                        transitionDuration: Duration(seconds: 0))),
             bottomNavigationBar: _buildBottomBar(context)));
   }
 
@@ -60,11 +66,11 @@ class PackerHomeContainerScreenState extends State<PackerHomeContainerScreen> {
       case BottomBarEnum.Home:
         return AppRoutes.packerHomePage;
       case BottomBarEnum.Orders:
-        return "/";
+        return AppRoutes.ordersPage;
       case BottomBarEnum.Payment:
-        return "/";
+        return "/payment";
       case BottomBarEnum.Profile:
-        return "/";
+        return "/profile";
       default:
         return "/";
     }
@@ -78,6 +84,8 @@ class PackerHomeContainerScreenState extends State<PackerHomeContainerScreen> {
     switch (currentRoute) {
       case AppRoutes.packerHomePage:
         return PackerHomePage.builder(context);
+      case AppRoutes.ordersPage:
+        return OrderListScreen.builder(context);
       default:
         return DefaultWidget();
     }

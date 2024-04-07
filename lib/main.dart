@@ -12,14 +12,12 @@ import 'core/utils/server_date_time.dart';
 import 'core/utils/toast_helper.dart';
 import 'domain/local_storage/local_storage.dart';
 import 'domain/providers/app_state_provider.dart';
+import 'domain/providers/create_order_provider.dart';
 import 'domain/providers/user_provider.dart';
 import 'presentation/app_navigation_screen/provider/app_navigation_provider.dart';
 import 'presentation/packer_additems_three_bottomsheet/provider/packer_additems_three_provider.dart';
 import 'presentation/packer_additems_two_page/provider/packer_additems_two_provider.dart';
-import 'presentation/packer_details_between_cities_page/provider/packer_details_between_cities_provider.dart';
 import 'presentation/packer_details_date_time_screen/provider/packer_details_date_time_provider.dart';
-import 'presentation/packer_details_within_city_page/provider/packer_details_within_city_provider.dart';
-import 'presentation/packer_details_within_city_tab_container_screen/provider/packer_details_within_city_tab_container_provider.dart';
 import 'presentation/packer_home_container_screen/provider/packer_home_container_provider.dart';
 import 'presentation/packer_home_page/provider/packer_home_provider.dart';
 import 'presentation/wellcome_screen/provider/wellcome_provider.dart';
@@ -64,24 +62,14 @@ class Multiprovider extends StatelessWidget {
         ChangeNotifierProvider<PackerHomeContainerProvider>(
           create: (_) => PackerHomeContainerProvider(),
         ),
-        ChangeNotifierProvider<PackerDetailsWithinCityTabContainerProvider>(
-          create: (_) => PackerDetailsWithinCityTabContainerProvider(),
-        ),
-        ChangeNotifierProvider<PackerDetailsWithinCityProvider>(
-          create: (_) => PackerDetailsWithinCityProvider(),
-        ),
-        ChangeNotifierProvider<PackerDetailsBetweenCitiesProvider>(
-          create: (_) => PackerDetailsBetweenCitiesProvider(),
-        ),
-        ChangeNotifierProvider<PackerDetailsDateTimeProvider>(
-          create: (_) => PackerDetailsDateTimeProvider(),
-        ),
         ChangeNotifierProvider<PackerAdditemsTwoProvider>(
           create: (_) => PackerAdditemsTwoProvider(),
         ),
         ChangeNotifierProvider<PackerAdditemsThreeProvider>(
           create: (_) => PackerAdditemsThreeProvider(),
         ),
+        ChangeNotifierProvider<CreateOrderProvider>(
+            create: (BuildContext context) => CreateOrderProvider()),
       ],
       child: MyApp(),
     );

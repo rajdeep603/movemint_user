@@ -4,7 +4,7 @@ import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
-import '../packer_details_within_city_tab_container_screen/packer_details_within_city_tab_container_screen.dart';
+import '../packer_location_set_screen/packer_location_set_screen.dart';
 import 'provider/packer_home_provider.dart';
 
 // ignore_for_file: must_be_immutable
@@ -16,6 +16,7 @@ class PackerHomePage extends StatefulWidget {
 
   @override
   PackerHomePageState createState() => PackerHomePageState();
+
   static Widget builder(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => PackerHomeProvider(),
@@ -179,11 +180,7 @@ class PackerHomePageState extends State<PackerHomePage> {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          PackerDetailsWithinCityTabContainerScreen()));
+              NavigatorService.pushNamed(AppRoutes.packerLocationSetScreen);
             },
             child: Container(
               padding: EdgeInsets.symmetric(

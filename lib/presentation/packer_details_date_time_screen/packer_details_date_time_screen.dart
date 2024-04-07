@@ -1,4 +1,5 @@
 import '../../core/app_export.dart';
+import '../../domain/providers/create_order_provider.dart';
 import '../../widgets/app_bar/appbar_leading_image.dart';
 import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
@@ -16,15 +17,15 @@ import 'package:flutter/material.dart';
 import 'provider/packer_details_date_time_provider.dart';
 
 class PackerDetailsDateTimeScreen extends StatefulWidget {
-  const PackerDetailsDateTimeScreen({Key? key}) : super(key: key);
+  const PackerDetailsDateTimeScreen({super.key});
 
   @override
   PackerDetailsDateTimeScreenState createState() =>
       PackerDetailsDateTimeScreenState();
 
   static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => PackerDetailsDateTimeProvider(),
+    return ChangeNotifierProvider<PackerDetailsDateTimeProvider>(
+        create: (context) => PackerDetailsDateTimeProvider(context),
         child: PackerDetailsDateTimeScreen());
   }
 }
@@ -43,8 +44,11 @@ class PackerDetailsDateTimeScreenState
     // });
   }
 
+  late PackerDetailsDateTimeProvider provider;
+
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<PackerDetailsDateTimeProvider>(context);
     // PackerDetailsDateTimeProvider packerDetailsDateTimeProvider =
     //     Provider.of<PackerDetailsDateTimeProvider>(context, listen: true);
     return SafeArea(
@@ -185,7 +189,7 @@ class PackerDetailsDateTimeScreenState
                                     SizedBox(height: 33.v),
                                     _buildDatePicker(context),
                                     SizedBox(height: 15.v),
-                                    _buildFrame(context),
+                                    _buildDateListWidget(context),
                                     SizedBox(height: 26.v),
                                     Align(
                                         alignment: Alignment.centerLeft,
@@ -193,7 +197,7 @@ class PackerDetailsDateTimeScreenState
                                             style:
                                                 CustomTextStyles.titleSmall_1)),
                                     SizedBox(height: 13.v),
-                                    _buildFrame1(context),
+                                    _buildTmingsWidget(context),
                                     SizedBox(height: 203.v),
                                     _buildToast(context)
                                   ]))))
@@ -206,6 +210,9 @@ class PackerDetailsDateTimeScreenState
     return CustomAppBar(
         leadingWidth: 44.h,
         leading: AppbarLeadingImage(
+          onTap: (){
+            NavigatorService.goBack();
+          },
             imagePath: ImageConstant.imgLeftButtonOnerrorcontainer,
             margin: EdgeInsets.only(left: 24.h, top: 37.v, bottom: 29.v)),
         centerTitle: true,
@@ -215,6 +222,9 @@ class PackerDetailsDateTimeScreenState
 
   /// Section Widget
   Widget _buildDatePicker(BuildContext context) {
+    final TextEditingController dateController = TextEditingController();
+    dateController.text =
+        context.read<CreateOrderProvider>().selectedDate.format(DateTimeUtils.dMonYFormat);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       RichText(
           text: TextSpan(children: [
@@ -226,57 +236,48 @@ class PackerDetailsDateTimeScreenState
           ]),
           textAlign: TextAlign.left),
       SizedBox(height: 6.v),
-      Selector<PackerDetailsDateTimeProvider, TextEditingController?>(
-          selector: (context, provider) => provider.dateController,
-          builder: (context, dateController, child) {
-            return Container(
-              decoration: BoxDecoration(
-                color: appTheme.whiteA700,
-                borderRadius: BorderRadius.circular(
-                  10.h,
-                ),
-                border: Border.all(
-                  color: Colors.transparent,
-                  width: 1.h,
-                ),
-              ),
-              child: CustomTextFormField(
-                  controller: dateController,
-                  hintText: "lbl_24_02_2024".tr,
-                  textInputAction: TextInputAction.done,
-                  suffix: Container(
-                      margin: EdgeInsets.fromLTRB(30.h, 12.v, 16.h, 12.v),
-                      child: CustomImageView(
-                          imagePath: ImageConstant.imgUilcalender,
-                          height: 24.adaptSize,
-                          width: 24.adaptSize)),
-                  suffixConstraints: BoxConstraints(maxHeight: 48.v)),
-            );
-          })
+      Container(
+        decoration: BoxDecoration(
+          color: appTheme.whiteA700,
+          borderRadius: BorderRadius.circular(10.h),
+          border: Border.all(color: Colors.transparent, width: 1.h),
+        ),
+        child: CustomTextFormField(
+            controller: dateController,
+            hintText: 'Please select date',
+            textInputAction: TextInputAction.done,
+            readOnly: true,
+            suffix: CustomImageView(
+                onTap: () => provider.onDatePickedEvent(context),
+                imagePath: ImageConstant.imgUilcalender,
+                height: 24.adaptSize,
+                width: 24.adaptSize),
+            suffixConstraints: BoxConstraints(maxHeight: 48.v)),
+      )
     ]);
   }
 
   /// Section Widget
-  Widget _buildFrame(BuildContext context) {
+  Widget _buildDateListWidget(BuildContext context) {
     return Consumer<PackerDetailsDateTimeProvider>(
         builder: (context, provider, child) {
       return Wrap(
           runSpacing: 10.v,
           spacing: 10.h,
           children: List<Widget>.generate(
-              provider.packerDetailsDateTimeModelObj.frameItemList.length,
+              provider.dateTimeList.length,
               (index) {
-            FrameItemModel model =
-                provider.packerDetailsDateTimeModelObj.frameItemList[index];
-            return FrameItemWidget(model, onSelectedChipView1: (value) {
-              provider.onSelectedChipView1(index, value);
+            final  DateTimeListModel model =
+                provider.dateTimeList[index];
+            return FrameItemWidget(model, onSelectedChipView1: (bool value) {
+              provider.onDateSelected(index, value,context);
             });
           }));
     });
   }
 
   /// Section Widget
-  Widget _buildFrame1(BuildContext context) {
+  Widget _buildTmingsWidget(BuildContext context) {
     return Consumer<PackerDetailsDateTimeProvider>(
         builder: (context, provider, child) {
       return Wrap(
@@ -288,7 +289,7 @@ class PackerDetailsDateTimeScreenState
             Frame2ItemModel model =
                 provider.packerDetailsDateTimeModelObj.frame2ItemList[index];
             return Frame2ItemWidget(model, onSelectedChipView2: (value) {
-              provider.onSelectedChipView2(index, value);
+              provider.onTimeSelected(index, value);
             });
           }));
     });
@@ -351,15 +352,7 @@ class PackerDetailsDateTimeScreenState
                   decoration: AppDecoration.outlineGray3001,
                   child: CustomElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    // PackerAdditemsThreeBottomsheet
-                                    PackerAdditemsTwoTabContainerScreen
-                                        // PackerAdditemsTwoPage
-                                        // PackerDetailsDateTimeScreen
-                                        ()));
+                     NavigatorService.pushNamed(AppRoutes.packerAdditemsScreen);
                       },
                       // text: "detail next",
                       text: "lbl_next".tr,

@@ -1,32 +1,31 @@
+import 'package:flutter/material.dart';
+
 import '../../core/app_export.dart';
+import '../../core/utils/toast_helper.dart';
+import '../../domain/providers/create_order_provider.dart';
 import '../../widgets/app_bar/appbar_leading_image.dart';
 import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
+import '../../widgets/custom_elevated_button.dart';
 import '../packer_details_between_cities_page/packer_details_between_cities_page.dart';
 import '../packer_details_within_city_page/packer_details_within_city_page.dart';
-import 'models/packer_details_within_city_tab_container_model.dart';
-import 'package:flutter/material.dart';
-import 'provider/packer_details_within_city_tab_container_provider.dart';
+import 'provider/packer_location_set_provider.dart';
 
-class PackerDetailsWithinCityTabContainerScreen extends StatefulWidget {
-  const PackerDetailsWithinCityTabContainerScreen({Key? key})
-      : super(
-          key: key,
-        );
+class PackerLocationSetScreen extends StatefulWidget {
+  const PackerLocationSetScreen({super.key});
 
-  @override
-  PackerDetailsWithinCityTabContainerScreenState createState() =>
-      PackerDetailsWithinCityTabContainerScreenState();
   static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => PackerDetailsWithinCityTabContainerProvider(),
-      child: PackerDetailsWithinCityTabContainerScreen(),
+    return ChangeNotifierProvider<PackerLocationSetProvider>(
+      create: (BuildContext context) => PackerLocationSetProvider(context),
+      child: const PackerLocationSetScreen(),
     );
   }
+
+  @override
+  PackerLocationSetScreenState createState() => PackerLocationSetScreenState();
 }
 
-class PackerDetailsWithinCityTabContainerScreenState
-    extends State<PackerDetailsWithinCityTabContainerScreen>
+class PackerLocationSetScreenState extends State<PackerLocationSetScreen>
     with TickerProviderStateMixin {
   late TabController tabviewController;
 
@@ -37,7 +36,16 @@ class PackerDetailsWithinCityTabContainerScreenState
   }
 
   @override
+  void dispose() {
+    tabviewController.dispose();
+    super.dispose();
+  }
+
+  late PackerLocationSetProvider provider;
+
+  @override
   Widget build(BuildContext context) {
+    provider = Provider.of<PackerLocationSetProvider>(context);
     return SafeArea(
       child: Scaffold(
         appBar: _buildAppBar(context),
@@ -46,25 +54,26 @@ class PackerDetailsWithinCityTabContainerScreenState
           child: SingleChildScrollView(
             padding: EdgeInsets.only(top: 38.v),
             child: SizedBox(
-              // color: Colors.red,
               height: 800.v,
               width: double.maxFinite,
               child: Stack(
                 alignment: Alignment.bottomCenter,
-                children: [
+                children: <Widget>[
                   _buildFrame(context),
                   Container(
                     margin: EdgeInsets.only(top: 127.v),
-                    // color: Colors.deepOrangeAccent,
                     height: 638.v,
                     child: TabBarView(
                       controller: tabviewController,
-                      children: [
-                        PackerDetailsWithinCityPage.builder(context),
-                        PackerDetailsBetweenCitiesPage.builder(context),
+                      children: <Widget>[
+                        PackerDetailsWithinCityPage.builder(context, provider),
+                        PackerDetailsBetweenCitiesPage.builder(
+                            context, provider),
                       ],
                     ),
                   ),
+                  SizedBox(height: 10.v),
+                  _buildNextButton(context),
                 ],
               ),
             ),
@@ -75,21 +84,78 @@ class PackerDetailsWithinCityTabContainerScreenState
   }
 
   /// Section Widget
+  Widget _buildNextButton(BuildContext context) {
+    return SizedBox(
+      height: 110.v,
+      width: double.maxFinite,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: <Widget>[
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: 107.v,
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                color: appTheme.whiteA700,
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 22.h),
+              decoration: AppDecoration.outlineGray3001,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(height: 25.v),
+                  CustomElevatedButton(
+                    text: "lbl_next".tr,
+                    onPressed: () {
+                      final CreateOrderProvider createProvider =
+                          context.read<CreateOrderProvider>();
+                      if (tabviewController.index == 0 &&
+                          createProvider.searchCityController.text.isEmpty) {
+                        ToastHelper.showToast('Please enter city');
+                        return;
+                      }
+                      if (createProvider.dropLocationController.text.isEmpty) {
+                        ToastHelper.showToast('Please enter drop location');
+                        return;
+                      }
+                      if (createProvider
+                          .pickUpLocationController.text.isEmpty) {
+                        ToastHelper.showToast('Please enter drop location');
+                        return;
+                      }
+                      NavigatorService.pushNamed(
+                          AppRoutes.packerDetailsDateTimeScreen);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Section Widget
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 44.h,
       leading: AppbarLeadingImage(
+        onTap: () {
+          context.read<CreateOrderProvider>().disposeValues();
+          NavigatorService.goBack();
+        },
         imagePath: ImageConstant.imgLeftButton,
-        margin: EdgeInsets.only(
-          left: 24.h,
-          top: 37.v,
-          bottom: 29.v,
-        ),
+        margin: EdgeInsets.only(left: 24.h, top: 37.v, bottom: 29.v),
       ),
       centerTitle: true,
-      title: AppbarTitle(
-        text: "lbl_details".tr,
-      ),
+      title: AppbarTitle(text: 'lbl_details'.tr),
       styleType: Style.bgFill,
     );
   }
@@ -102,13 +168,13 @@ class PackerDetailsWithinCityTabContainerScreenState
         padding: EdgeInsets.symmetric(horizontal: 20.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             SizedBox(
               height: 85.v,
               width: 350.h,
               child: Stack(
                 alignment: Alignment.center,
-                children: [
+                children: <Widget>[
                   Align(
                     alignment: Alignment.topLeft,
                     child: Container(
@@ -118,7 +184,7 @@ class PackerDetailsWithinCityTabContainerScreenState
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
+                        children: <Widget>[
                           CustomImageView(
                             imagePath: ImageConstant.imgClock,
                             height: 24.adaptSize,
@@ -126,7 +192,7 @@ class PackerDetailsWithinCityTabContainerScreenState
                           ),
                           SizedBox(height: 11.v),
                           Text(
-                            "lbl_details".tr,
+                            'lbl_details'.tr,
                             style: CustomTextStyles.labelLargePrimaryContainer,
                           ),
                         ],
@@ -145,7 +211,7 @@ class PackerDetailsWithinCityTabContainerScreenState
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
+                        children: <Widget>[
                           CustomImageView(
                             imagePath: ImageConstant.imgContrastGray300,
                             height: 24.adaptSize,
@@ -153,7 +219,7 @@ class PackerDetailsWithinCityTabContainerScreenState
                           ),
                           SizedBox(height: 12.v),
                           Text(
-                            "lbl_add_items".tr,
+                            'lbl_add_items'.tr,
                             style: CustomTextStyles.labelLargeGray300,
                           ),
                         ],
@@ -169,7 +235,7 @@ class PackerDetailsWithinCityTabContainerScreenState
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
+                        children: <Widget>[
                           CustomImageView(
                             imagePath: ImageConstant.imgContrastGray300,
                             height: 24.adaptSize,
@@ -177,7 +243,7 @@ class PackerDetailsWithinCityTabContainerScreenState
                           ),
                           SizedBox(height: 13.v),
                           Text(
-                            "lbl_summary".tr,
+                            'lbl_summary'.tr,
                             style: CustomTextStyles.labelLargeGray300,
                           ),
                         ],
@@ -216,13 +282,10 @@ class PackerDetailsWithinCityTabContainerScreenState
             SizedBox(height: 27.v),
             Container(
               height: 48.v,
-              width: 390.h,
+              // width: 390.h,
               decoration: BoxDecoration(
-                color: appTheme.gray10001,
-                borderRadius: BorderRadius.circular(
-                  16.h,
-                ),
-              ),
+                  color: appTheme.gray10001,
+                  borderRadius: BorderRadius.circular(10.h)),
               child: TabBar(
                 controller: tabviewController,
                 labelPadding: EdgeInsets.zero,
@@ -238,24 +301,19 @@ class PackerDetailsWithinCityTabContainerScreenState
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w500,
                 ),
-                indicatorPadding: EdgeInsets.all(
-                  4.0.h,
-                ),
                 indicator: BoxDecoration(
                   color: appTheme.purple900,
-                  borderRadius: BorderRadius.circular(
-                    12.h,
-                  ),
+                  borderRadius: BorderRadius.circular(12.h),
                 ),
-                tabs: [
+                tabs: <Widget>[
                   Tab(
-                    child: Text(
-                      "lbl_within_city".tr,
+                    child: Center(
+                      child: Text('lbl_within_city'.tr),
                     ),
                   ),
                   Tab(
-                    child: Text(
-                      "lbl_between_cities".tr,
+                    child: Center(
+                      child: Text('lbl_between_cities'.tr),
                     ),
                   ),
                 ],

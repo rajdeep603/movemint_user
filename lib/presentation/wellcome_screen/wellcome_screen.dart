@@ -1,3 +1,4 @@
+import '../../domain/local_storage/local_storage.dart';
 import 'models/wellcome_model.dart';
 import 'package:flutter/material.dart';
 import 'package:movemint_user/core/app_export.dart';
@@ -20,9 +21,14 @@ class WellcomeScreenState extends State<WellcomeScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 3000), () {
-      NavigatorService.popAndPushNamed(
-        AppRoutes.onboardingScreenOneScreen,
-      );
+      Logger.log("LocalStorage.getMobileNo() == null ||${LocalStorage.getMobileNo() == null }");
+      Logger.log("LocalStorage.getToken() == null ||${LocalStorage.getToken() == null }");
+      if (LocalStorage.getMobileNo() == null ||
+          LocalStorage.getToken() == null) {
+        NavigatorService.popAndPushNamed(AppRoutes.onboardingScreenOneScreen);
+        return;
+      }
+      NavigatorService.popAndPushNamed(AppRoutes.dashboard);
     });
   }
 

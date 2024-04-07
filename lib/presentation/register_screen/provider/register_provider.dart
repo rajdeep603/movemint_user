@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
 import '../../../core/utils/toast_helper.dart';
+import '../../../domain/local_storage/local_storage.dart';
 import '../../../domain/models/sign_in_model/sign_in_request_model.dart';
 import '../../../domain/models/sign_in_model/sign_in_response_model.dart';
 import '../../../domain/models/sign_up_model.dart';
@@ -78,11 +79,12 @@ class RegisterProvider extends ChangeNotifier {
         ToastHelper.showToast(customResponse.error);
         return;
       }
-      //TODO: save in local storage
       final SignInResponseModel signInResponseModel =
           SignInResponseModel.fromMap(customResponse.response?.data);
       _screenContext.read<UserProvider>().userModel = signInResponseModel;
-      NavigatorService.pushNamedAndRemoveUntil(AppRoutes.packerHomePage);
+      LocalStorage.saveMobileNo(routeModel.mobileNo);
+      LocalStorage.saveToken(signInResponseModel.data?.userToken ?? '');
+      NavigatorService.pushNamedAndRemoveUntil(AppRoutes.dashboard);
     } on Exception catch (e) {
       ToastHelper.somethingWentWrong();
       Logger.logError(e);

@@ -8,9 +8,10 @@ import '../presentation/onboarding_screen_one_screen/onboarding_screen_one_scree
 import '../presentation/onboarding_screen_two_screen/onboarding_screen_two_screen.dart';
 import '../presentation/otp_verification_screen/otp_verification_screen.dart';
 import '../presentation/packer_additems_two_tab_container_screen/packer_additems_two_tab_container_screen.dart';
-import '../presentation/packer_details_within_city_tab_container_screen/packer_details_within_city_tab_container_screen.dart';
+import '../presentation/packer_details_date_time_screen/packer_details_date_time_screen.dart';
 import '../presentation/packer_home_container_screen/packer_home_container_screen.dart';
 import '../presentation/packer_home_page/packer_home_page.dart';
+import '../presentation/packer_location_set_screen/packer_location_set_screen.dart';
 import '../presentation/register_screen/register_screen.dart';
 import '../presentation/wellcome_screen/wellcome_screen.dart';
 import '../widgets/no_internet_screen.dart';
@@ -36,16 +37,16 @@ class AppRoutes {
   static const String onboardingScreenOneScreen =
       '/onboarding_screen_one_screen';
 
-  static const String packerHomeContainerScreen =
-      '/packer_home_container_screen';
+  static const String dashboard = '/dashboard';
 
   static const String packerHomePage = '/packer_home_page';
+
+  static const String ordersPage = '/orders_page';
 
   static const String packerDetailsWithinCityPage =
       '/packer_details_within_city_page';
 
-  static const String packerDetailsWithinCityTabContainerScreen =
-      '/packer_details_within_city_tab_container_screen';
+  static const String packerLocationSetScreen = '/packer_location_set_screen';
 
   static const String packerDetailsBetweenCitiesPage =
       '/packer_details_between_cities_page';
@@ -54,7 +55,7 @@ class AppRoutes {
 
   static const String packerAdditemsTwoPage = '/packer_additems_two_page';
 
-  static const String packerAdditemsTwoTabContainerScreen =
+  static const String packerAdditemsScreen =
       '/packer_additems_two_tab_container_screen';
 
   static const String packerDetailsDateTimeScreen =
@@ -72,7 +73,7 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> get routes => <String, WidgetBuilder>{
         initialRoute: Logger.mode == LogMode.debug
-            ? LoginScreen.builder
+            ? WellcomeScreen.builder
             : WellcomeScreen.builder,
         noInternetScreen: NoInternetScreen.builder,
         serverErrorScreen: ServerErrorScreen.builder,
@@ -83,12 +84,11 @@ class AppRoutes {
         otpVerificationScreen: OtpVerificationScreen.builder,
         registerScreen: RegisterScreen.builder,
         packerHomePage: PackerHomePage.builder,
-        packerHomeContainerScreen: PackerHomeContainerScreen.builder,
-        packerDetailsWithinCityTabContainerScreen:
-            PackerDetailsWithinCityTabContainerScreen.builder,
-        packerAdditemsTwoTabContainerScreen:
-            PackerAdditemsTwoTabContainerScreen.builder,
-        // packerDetailsDateTimeScreen: PackerDetailsDateTimeScreen.builder,
+        dashboard: DashBoard.builder,
+        packerLocationSetScreen: PackerLocationSetScreen.builder,
+        packerAdditemsScreen:
+            PackerAdditemsScreen.builder,
+        packerDetailsDateTimeScreen: PackerDetailsDateTimeScreen.builder,
         appNavigationScreen: AppNavigationScreen.builder,
       };
 }
