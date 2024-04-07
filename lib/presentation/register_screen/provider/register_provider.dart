@@ -33,6 +33,14 @@ class RegisterProvider extends ChangeNotifier {
 
   Future<void> onSubmitButtonClicked() async {
     if (formKey.currentState?.validate() ?? false) {
+      if(firstNameController.text.isEmpty || lastNameController.text.trim().isEmpty || emailController.text.trim().isEmpty || passwordController.text.trim().isEmpty || confirmPasswordController.text.trim().isEmpty){
+        ToastHelper.showToast("All fields are required");
+        return;
+      }
+      if(passwordController.text.trim() != confirmPasswordController.text.trim()){
+        ToastHelper.showToast("Password does not match");
+        return;
+      }
       _registerUser();
     }
   }

@@ -43,13 +43,15 @@ class ProductDetailModel {
   ProductDetailModel({
     required this.name,
     required this.items,
+    this.doesItemsHaveQty=false,
   });
 
   String name;
   List<ItemModel> items;
+  bool doesItemsHaveQty;
 
   factory ProductDetailModel.fromMap(Map<String, dynamic> json) => ProductDetailModel(
-        name: json['name'],
+        name: json['name']??'',
         items: json['items'] == null
             ? <ItemModel>[]
             : List<ItemModel>.from(json['items']!.map((x) => ItemModel.fromMap(x))),

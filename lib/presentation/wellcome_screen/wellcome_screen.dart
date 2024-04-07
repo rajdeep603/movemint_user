@@ -21,8 +21,8 @@ class WellcomeScreenState extends State<WellcomeScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 3000), () {
-      Logger.log("LocalStorage.getMobileNo() == null ||${LocalStorage.getMobileNo() == null }");
-      Logger.log("LocalStorage.getToken() == null ||${LocalStorage.getToken() == null }");
+      Logger.log('LocalStorage.getMobileNo() == null ||${LocalStorage.getMobileNo() == null }');
+      Logger.log('LocalStorage.getToken() == null ||${LocalStorage.getToken() == null }');
       if (LocalStorage.getMobileNo() == null ||
           LocalStorage.getToken() == null) {
         NavigatorService.popAndPushNamed(AppRoutes.onboardingScreenOneScreen);
