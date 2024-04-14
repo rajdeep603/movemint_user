@@ -15,6 +15,14 @@ class AppDecoration {
   static BoxDecoration get fillPrimary => BoxDecoration(
         color: theme.colorScheme.primary,
       );
+  static BoxDecoration get outlineGray500 => BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: appTheme.gray500,
+            width: 1.h,
+          ),
+        ),
+      );
   static BoxDecoration get fillPurple => BoxDecoration(
         color: appTheme.purple900,
       );
@@ -23,6 +31,14 @@ class AppDecoration {
       );
   static BoxDecoration get fillGray5001 => BoxDecoration(
         color: appTheme.gray5001,
+      );
+  static BoxDecoration get outlineGray30001 => BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: appTheme.gray30001,
+            width: 1.h,
+          ),
+        ),
       );
   static BoxDecoration get fillOnErrorContainer => BoxDecoration(
         color: theme.colorScheme.onErrorContainer,
@@ -113,6 +129,9 @@ class BorderRadiusStyle {
   // Custom borders
   static BorderRadius get customBorderTL32 => BorderRadius.vertical(
         top: Radius.circular(32.h),
+      );
+  static BorderRadius get customBorderTL30 => BorderRadius.vertical(
+        top: Radius.circular(30.h),
       );
 
   // Rounded borders

@@ -75,4 +75,18 @@ class ApiServices {
       return CustomResponse();
     }
   }
+
+  Future<CustomResponse> cancelOrder(CreateOrderModel createOrderModel) async {
+    try {
+      final CustomResponse customResponse = await ApiCalling().callApi(
+          apiTypes: ApiTypes.post,
+          url: AppUrls.cancelOrder,
+          token: _getToken(),
+          data: createOrderModel.toMap());
+      return customResponse;
+    } on Exception catch (e) {
+      Logger.logError(e);
+      return CustomResponse();
+    }
+  }
 }

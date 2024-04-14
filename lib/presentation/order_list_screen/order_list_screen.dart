@@ -6,6 +6,7 @@ import '../../widgets/app_bar/appbar_leading_image.dart';
 import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_icon.dart';
+import '../new_order_tracking_profile_screens/packer_summary_one_container_screen/packer_summary_one_container_screen.dart';
 import 'order_list_provder.dart';
 
 class OrderListScreen extends StatefulWidget {
@@ -61,11 +62,33 @@ class _OrderListScreenState extends State<OrderListScreen> {
                                     ),
                                     SizedBox(width: 20.h),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text('# ${order.id} ',
-                                            style: CustomTextStyles
-                                                .titleSmallMedium),
+                                        Row(
+                                          children: [
+                                            Text('# ${order.id} ',
+                                                style: CustomTextStyles
+                                                    .titleSmallMedium),
+                                            Container(
+                                                decoration: BoxDecoration(
+                                                    color: order.status == null
+                                                        ? Colors.transparent
+                                                        : Colors.red,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(3),
+                                                  child: Text(
+                                                    order.status ?? "",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
                                         Text(
                                             order.datetime?.format(
                                                     DateTimeUtils.dMonFormat) ??
@@ -74,8 +97,15 @@ class _OrderListScreenState extends State<OrderListScreen> {
                                                 .titleSmallMedium),
                                       ],
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     CustomIcon(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const PackerSummaryOneContainerScreen()));
+                                      },
                                       Icons.keyboard_arrow_right,
                                     )
                                   ],

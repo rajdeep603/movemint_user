@@ -6,4 +6,5 @@ class AppUrls {
   static const String signUp = '$baseUrl/auth/api/auth/signup';
   static const String getOrders = '$baseUrl/user/api/getOrderList';
   static const String createOrder = '$baseUrl/user/api/createOrder';
+  static const String cancelOrder = '$baseUrl/user/api/cancelOrder';
 }
