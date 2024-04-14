@@ -42,27 +42,39 @@ class PackerDetailsWithinCityPage extends StatelessWidget {
                   SizedBox(height: 20.v),
                   _buildDropLocationWidget(context),
                   SizedBox(height: 31.v),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "msg_services_we_offer".tr,
-                          style: theme.textTheme.titleMedium,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        height: 40,
+                        child: Text(
+                          "Service We Offer",
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
-                        SizedBox(height: 81.v),
-                        CustomIconButton(
-                          height: 40.adaptSize,
-                          width: 40.adaptSize,
-                          padding: EdgeInsets.all(12.h),
-                          alignment: Alignment.centerRight,
-                          child: CustomImageView(
-                            imagePath: ImageConstant.imgPlay,
-                          ),
+                      ),
+                      // SizedBox(height: 81.v),
+                      Container(
+                        height: 200.adaptSize,
+                        width: 400.adaptSize,
+                        child: Image.asset(
+                          "assets/images/Video_Deliveryboy.png",
+                          fit: BoxFit.fill,
                         ),
-                      ],
-                    ),
+                      )
+                      // CustomIconButton(
+                      //   height: 40.adaptSize,
+                      //   width: 40.adaptSize,
+                      //   padding: EdgeInsets.all(12.h),
+                      //   alignment: Alignment.centerRight,
+                      //   child: CustomImageView(
+                      //     imagePath: ImageConstant.imgPlay,
+                      //   ),
+                      // ),
+                    ],
                   ),
                   SizedBox(height: 10.v),
                   _buildProcess(context),
@@ -95,34 +107,34 @@ class PackerDetailsWithinCityPage extends StatelessWidget {
               children: [
                 Flexible(
                   child: PopupMenuButton<String>(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(context
-                            .watch<CreateOrderProvider>()
-                            .searchCityController
-                            .text
-                            .isEmpty
-                            ? 'Select City'
-                            : context
-                            .read<CreateOrderProvider>()
-                            .searchCityController
-                            .text),
-                        CustomIcon(Icons.arrow_drop_down)
-                      ],
-                    ),
-                      onSelected: (String? value) => provider.onDropDownChange(
-                          context, value ?? ''),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(context
+                                  .watch<CreateOrderProvider>()
+                                  .searchCityController
+                                  .text
+                                  .isEmpty
+                              ? 'Select City'
+                              : context
+                                  .read<CreateOrderProvider>()
+                                  .searchCityController
+                                  .text),
+                          CustomIcon(Icons.arrow_drop_down)
+                        ],
+                      ),
+                      onSelected: (String? value) =>
+                          provider.onDropDownChange(context, value ?? ''),
                       itemBuilder: (BuildContext context) => [
                             "Hyderbad",
                             "Bengaluru"
                           ]
                               .map((String item) => PopupMenuItem<String>(
                                   value: item,
-                                  child: Text(
-                                      item,
+                                  child: Text(item,
                                       style: theme.textTheme.titleMedium
-                                          ?.copyWith(color: appTheme.black900))))
+                                          ?.copyWith(
+                                              color: appTheme.black900))))
                               .toList()),
                 ),
               ],
@@ -341,11 +353,17 @@ class PackerDetailsWithinCityPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          "lbl_how_it_worlks".tr,
-          style: theme.textTheme.titleMedium,
+        Container(
+          height: 30,
+          child: Text(
+            "How it works",
+            style: TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+                fontSize: 14),
+          ),
         ),
-        SizedBox(height: 22.v),
+        SizedBox(height: 10.v),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

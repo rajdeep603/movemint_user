@@ -36,25 +36,39 @@ class PackerDetailsBetweenCitiesPage extends StatelessWidget {
               SizedBox(height: 12.v),
               _buildCheckbox(context),
               SizedBox(height: 33.v),
-              Padding(
-                padding: EdgeInsets.only(left: 20.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text("msg_services_we_offer".tr,
-                        style: theme.textTheme.titleMedium),
-                    SizedBox(height: 81.v),
-                    CustomIconButton(
-                      height: 40.adaptSize,
-                      width: 40.adaptSize,
-                      padding: EdgeInsets.all(12.h),
-                      alignment: Alignment.centerRight,
-                      child: CustomImageView(
-                        imagePath: ImageConstant.imgPlay,
-                      ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: 40,
+                    child: Text(
+                      "Service We Offer",
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
                     ),
-                  ],
-                ),
+                  ),
+                  // SizedBox(height: 81.v),
+                  Container(
+                    height: 200.adaptSize,
+                    width: 400.adaptSize,
+                    child: Image.asset(
+                      "assets/images/Video_Deliveryboy.png",
+                      fit: BoxFit.fill,
+                    ),
+                  )
+                  // CustomIconButton(
+                  //   height: 40.adaptSize,
+                  //   width: 40.adaptSize,
+                  //   padding: EdgeInsets.all(12.h),
+                  //   alignment: Alignment.centerRight,
+                  //   child: CustomImageView(
+                  //     imagePath: ImageConstant.imgPlay,
+                  //   ),
+                  // ),
+                ],
               ),
               SizedBox(height: 10.v),
               _buildProcess(context),
@@ -79,7 +93,8 @@ class PackerDetailsBetweenCitiesPage extends StatelessWidget {
           ),
           // padding: EdgeInsets.symmetric(horizontal: 20),
           child: GooglePlaceAutoCompleteTextField(
-            textEditingController:  context.read<CreateOrderProvider>().pickUpLocationController,
+            textEditingController:
+                context.read<CreateOrderProvider>().pickUpLocationController,
             googleAPIKey: "AIzaSyBdGUa2fdwWq0iyEFsmqbdDjpQ8hqbtjtY",
             inputDecoration: const InputDecoration(
               hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
@@ -95,9 +110,14 @@ class PackerDetailsBetweenCitiesPage extends StatelessWidget {
             },
 
             itemClick: (Prediction prediction) {
-              context.read<CreateOrderProvider>().pickUpLocationController.text =
-                  prediction.description ?? "";
-              context.read<CreateOrderProvider>().pickUpLocationController.selection =
+              context
+                  .read<CreateOrderProvider>()
+                  .pickUpLocationController
+                  .text = prediction.description ?? "";
+              context
+                      .read<CreateOrderProvider>()
+                      .pickUpLocationController
+                      .selection =
                   TextSelection.fromPosition(TextPosition(
                       offset: prediction.description?.length ?? 0));
             },
@@ -148,7 +168,8 @@ class PackerDetailsBetweenCitiesPage extends StatelessWidget {
           ),
           // padding: EdgeInsets.symmetric(horizontal: 20),
           child: GooglePlaceAutoCompleteTextField(
-            textEditingController: context.read<CreateOrderProvider>().dropLocationController,
+            textEditingController:
+                context.read<CreateOrderProvider>().dropLocationController,
             googleAPIKey: "AIzaSyBdGUa2fdwWq0iyEFsmqbdDjpQ8hqbtjtY",
             inputDecoration: const InputDecoration(
               hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
@@ -166,7 +187,10 @@ class PackerDetailsBetweenCitiesPage extends StatelessWidget {
             itemClick: (Prediction prediction) {
               context.read<CreateOrderProvider>().dropLocationController.text =
                   prediction.description ?? "";
-              context.read<CreateOrderProvider>().dropLocationController.selection =
+              context
+                      .read<CreateOrderProvider>()
+                      .dropLocationController
+                      .selection =
                   TextSelection.fromPosition(TextPosition(
                       offset: prediction.description?.length ?? 0));
             },
@@ -226,11 +250,18 @@ class PackerDetailsBetweenCitiesPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            "lbl_how_it_worlks".tr,
-            style: theme.textTheme.titleMedium,
+          Container(
+            height: 30,
+            child: Text(
+              "How it works",
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14),
+            ),
           ),
-          SizedBox(height: 22.v),
+          SizedBox(height: 10.v),
+          // SizedBox(height: 22.v),
           Padding(
             padding: EdgeInsets.only(right: 79.h),
             child: Row(
