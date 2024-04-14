@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/app_export.dart';
 import '../../domain/models/get_orders_model.dart';
-import '../../domain/providers/order_list_provider.dart';
+import '../../domain/providers/order_list_repo_provider.dart';
 import '../../widgets/app_bar/appbar_leading_image.dart';
 import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
@@ -112,6 +112,9 @@ class _OrderListScreenState extends State<OrderListScreen> {
                                                             const EdgeInsets
                                                                 .all(3),
                                                         child: Text(
+                                                          order.status
+                                                              ?.toLowerCase() ==
+                                                              'cancel'?'Cancelled':
                                                           order.status ?? "",
                                                           style: TextStyle(
                                                               color:

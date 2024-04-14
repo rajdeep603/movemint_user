@@ -7,13 +7,10 @@ import '../../domain/services/api_services.dart';
 import '../../domain/services/common_api_call.dart';
 
 class GetOrdersListRepoProvider extends ChangeNotifier {
-  // GetOrdersListRepoProvider() {
-  //   Logger.log('GetOrdersListRepoProvider');
-  //   getOrdersData();
-  // }
+  GetOrdersListRepoProvider(this.screenContext);
 
   bool isLoading = false;
-
+  BuildContext screenContext;
   GetOrdersModel? getOrderModel;
 
   Future<void> getOrdersData() async {
@@ -33,6 +30,15 @@ class GetOrdersListRepoProvider extends ChangeNotifier {
     } finally {
       isLoading = false;
       notifyListeners();
+    }
+  }
+
+  @override
+  void notifyListeners() {
+    if (hasListeners) {
+      if (screenContext.mounted) {
+        super.notifyListeners();
+      }
     }
   }
 }
