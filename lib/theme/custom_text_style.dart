@@ -53,6 +53,23 @@ class CustomTextStyles {
         color: appTheme.gray800,
         fontWeight: FontWeight.w400,
       );
+  static get titleSmallGray900 => theme.textTheme.titleSmall!.copyWith(
+        color: appTheme.gray900,
+        fontWeight: FontWeight.w800,
+      );
+
+  static get labelLargeGreenA700 => theme.textTheme.labelLarge!.copyWith(
+        color: appTheme.greenA700,
+        fontSize: 12.fSize,
+        fontWeight: FontWeight.w600,
+      );
+
+  static get titleMediumPoppinsGray900 =>
+      theme.textTheme.titleMedium!.poppins.copyWith(
+        color: appTheme.gray900,
+        fontSize: 16.fSize,
+        fontWeight: FontWeight.w600,
+      );
 
   static TextStyle get titleMediumff47286f => theme.textTheme.titleMedium!.copyWith(
         color: Color(0XFF47286F),
@@ -71,6 +88,10 @@ class CustomTextStyles {
   static TextStyle get titleSmallBlack900Medium => theme.textTheme.titleSmall!.copyWith(
         color: appTheme.black900,
         fontWeight: FontWeight.w500,
+      );
+  static get labelLargeTeal60012 => theme.textTheme.labelLarge!.copyWith(
+        color: appTheme.teal600,
+        fontSize: 12.fSize,
       );
 
   static TextStyle get bodyMediumGray500 => theme.textTheme.bodyMedium!.copyWith(
@@ -236,6 +257,60 @@ class CustomTextStyles {
         color: appTheme.greenA70001,
         fontWeight: FontWeight.w500,
       );
+  static get bodyMediumGray900 => theme.textTheme.bodyMedium!.copyWith(
+        color: appTheme.gray900,
+        fontSize: 14.fSize,
+      );
+
+  static get bodySmallGray900 => theme.textTheme.bodySmall!.copyWith(
+        color: appTheme.gray900,
+        fontWeight: FontWeight.w300,
+      );
+  static get bodySmallGray900_1 => theme.textTheme.bodySmall!.copyWith(
+        color: appTheme.gray900,
+      );
+// Label text style
+
+  static get labelLargeGray900SemiBold => theme.textTheme.labelLarge!.copyWith(
+        color: appTheme.gray900,
+        fontSize: 12.fSize,
+        fontWeight: FontWeight.w600,
+      );
+
+  static get labelLargeTeal600_1 => theme.textTheme.labelLarge!.copyWith(
+        color: appTheme.teal600,
+      );
+// Title text style
+
+  static get titleMediumRaleway =>
+      theme.textTheme.titleMedium!.raleway.copyWith(
+        fontSize: 16.fSize,
+        fontWeight: FontWeight.w800,
+      );
+
+  static get titleSmallBold => theme.textTheme.titleSmall!.copyWith(
+        fontWeight: FontWeight.w700,
+      );
+
+  static get titleSmallGray900SemiBold => theme.textTheme.titleSmall!.copyWith(
+        color: appTheme.gray900,
+        fontWeight: FontWeight.w600,
+      );
+  static get titleSmallGray900_1 => theme.textTheme.titleSmall!.copyWith(
+        color: appTheme.gray900,
+      );
+  static get titleSmallRedA400 => theme.textTheme.titleSmall!.copyWith(
+        color: appTheme.redA400,
+        fontWeight: FontWeight.w600,
+      );
+  static get titleSmallSemiBold => theme.textTheme.titleSmall!.copyWith(
+        fontWeight: FontWeight.w600,
+      );
+  static get titleSmallWhiteA700 => theme.textTheme.titleSmall!.copyWith(
+        color: appTheme.whiteA700,
+        fontSize: 15.fSize,
+        fontWeight: FontWeight.w600,
+      );
 }
 
 extension on TextStyle {
@@ -260,6 +335,12 @@ extension on TextStyle {
   TextStyle get sFProDisplay {
     return copyWith(
       fontFamily: 'SF Pro Display',
+    );
+  }
+
+  TextStyle get poppins {
+    return copyWith(
+      fontFamily: 'Poppins',
     );
   }
 }

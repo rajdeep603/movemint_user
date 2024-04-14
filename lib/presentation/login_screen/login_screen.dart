@@ -7,6 +7,7 @@ import '../otp_verification_screen/otp_verification_screen.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 import 'package:flutter/material.dart';
 import 'package:movemint_user/core/app_export.dart';
+import '../packer_home_container_screen/packer_home_container_screen.dart';
 import 'provider/login_provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,8 +25,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
-
-
   @override
   void initState() {
     super.initState();
@@ -42,7 +41,7 @@ class LoginScreenState extends State<LoginScreen> {
         extendBody: true,
         // resizeToAvoidBottomInset: false,
         body: Form(
-          key:provider.formKey,
+          key: provider.formKey,
           child: SizedBox(
             width: double.maxFinite,
             child: Column(
@@ -180,6 +179,10 @@ class LoginScreenState extends State<LoginScreen> {
           CustomElevatedButton(
             isLoading: provider.isLoading,
             onPressed: () => provider.onGetOTPClickEvent(),
+            // onPressed: () {
+            //   Navigator.push(context,
+            //       MaterialPageRoute(builder: (context) => DashBoard()));
+            // },
             text: "lbl_get_otp".tr,
           ),
           SizedBox(height: 200.v),

@@ -3,6 +3,8 @@ import 'package:nested/nested.dart';
 import '../../core/app_export.dart';
 import '../../domain/providers/create_order_provider.dart';
 import '../../widgets/custom_bottom_bar.dart';
+import '../new_order_tracking_profile_screens/edit_profile_one_screen/edit_profile_one_screen.dart';
+import '../new_order_tracking_profile_screens/edit_profile_screen/edit_profile_screen.dart';
 import '../order_list_screen/order_list_screen.dart';
 import '../packer_home_page/packer_home_page.dart';
 import '../packer_summary_one_screen/packer_summary_one_screen.dart';
@@ -68,9 +70,10 @@ class DashBoardState extends State<DashBoard> {
       case BottomBarEnum.Orders:
         return AppRoutes.ordersPage;
       case BottomBarEnum.Payment:
-        return "/payment";
+        return AppRoutes.editProfileScreen;
+
       case BottomBarEnum.Profile:
-        return "/profile";
+        return AppRoutes.editProfileOneScreen;
       default:
         return "/";
     }
@@ -86,6 +89,11 @@ class DashBoardState extends State<DashBoard> {
         return PackerHomePage.builder(context);
       case AppRoutes.ordersPage:
         return OrderListScreen.builder(context);
+      case AppRoutes.editProfileScreen:
+        return EditProfileScreen.builder(context);
+      case AppRoutes.editProfileOneScreen:
+        return EditProfileOneScreen.builder(context);
+
       default:
         return DefaultWidget();
     }

@@ -4,6 +4,7 @@ import '../core/utils/enums.dart';
 import '../core/utils/logger.dart';
 import '../presentation/app_navigation_screen/app_navigation_screen.dart';
 import '../presentation/login_screen/login_screen.dart';
+import '../presentation/new_order_tracking_profile_screens/packer_summary_one_one_screen/packer_summary_one_one_screen.dart';
 import '../presentation/onboarding_screen_one_screen/onboarding_screen_one_screen.dart';
 import '../presentation/onboarding_screen_three_screen/onboarding_screen_three_screen.dart';
 import '../presentation/onboarding_screen_two_screen/onboarding_screen_two_screen.dart';
@@ -68,6 +69,19 @@ class AppRoutes {
 
   static const String packerSummaryTwoScreen = '/packer_summary_two_screen';
 
+  //tracking and profile
+  static const String packerSummaryOneContainerScreen =
+      '/packer_summary_one_container_screen';
+
+  static const String packerSummaryOnePage = '/packer_summary_one_page';
+
+  static const String editProfileScreen = '/edit_profile_screen';
+
+  static const String packerSummaryOneOneScreen =
+      '/packer_summary_one_one_screen';
+
+  static const String editProfileOneScreen = '/edit_profile_one_screen';
+
   static const String appNavigationScreen = '/app_navigation_screen';
 
   static const String initialRoute = '/initialRoute';
@@ -86,6 +100,7 @@ class AppRoutes {
         otpVerificationScreen: OtpVerificationScreen.builder,
         registerScreen: RegisterScreen.builder,
         packerHomePage: PackerHomePage.builder,
+        packerSummaryOneOneScreen: PackerSummaryOneOneScreen.builder,
         dashboard: DashBoard.builder,
         packerLocationSetScreen: PackerLocationSetScreen.builder,
         packerAdditemsScreen: PackerAdditemsScreen.builder,

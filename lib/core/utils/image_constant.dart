@@ -127,4 +127,43 @@ class ImageConstant {
 
   static String imgImage193 = '$imagePath/img_image_193.png';
   static String imgMdiCoupon = '$imagePath/img_mdi_coupon.svg';
+  static String imgLock = '$imagePath/img_lock.svg';
+  static String imgUilEdit = '$imagePath/img_uil_edit.svg';
+
+  // Edit Profile One images
+
+  static String imgGrid = '$imagePath/img_grid.svg';
+
+  static String imgThumbsUp = '$imagePath/img_thumbs_up.svg';
+
+  static String imgArrowLeft = '$imagePath/img_arrow_left.svg';
+
+  static String imgNavProfileWhiteA700 =
+      '$imagePath/img_nav_profile_white_a700.svg';
+
+  // packer_summary_One One images
+  static String imgWhatsappImage20240227434x430 =
+      '$imagePath/img_whatsapp_image_2024_02_27_434x430.png';
+
+  static String imgGroup1171281262 = '$imagePath/img_group_1171281262.svg';
+
+  static String imgLightBulb = '$imagePath/img_light_bulb.svg';
+
+  static String imgLightBulbBlueGray200 =
+      '$imagePath/img_light_bulb_blue_gray_200.svg';
+
+  // packer_summary_One images
+
+  static String imgWhatsappImage20240227 =
+      '$imagePath/img_whatsapp_image_2024_02_27.png';
+
+  static String imgGroup5 = '$imagePath/img_group_5.svg';
+
+// Edit Profile images
+  static String imgImage194 = '$imagePath/img_image_194.png';
+
+  static String imgNavPaymentWhiteA700 =
+      '$imagePath/img_nav_payment_white_a700.svg';
+
+  static String imgCall = '$imagePath/img_call.svg';
 }

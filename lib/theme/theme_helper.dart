@@ -166,6 +166,7 @@ class PrimaryColors {
   Color get gray90001 => Color(0XFF1F2024);
   Color get gray90002 => Color(0XFF202020);
   Color get gray5003 => Color(0XFFF7F8FD);
+  Color get gray30001 => Color(0XFFDEDEDE);
 
   // Green
   Color get green900 => Color(0XFF0C6A11);
@@ -177,6 +178,7 @@ class PrimaryColors {
 
   // DeepPurple
   Color get deepPurple50 => Color(0XFFE8D6FF);
+  Color get deepPurple100 => Color(0XFFDAC3F6);
 
   // Orange
   Color get orange50 => Color(0XFFFFF4E4);
@@ -200,6 +202,8 @@ class PrimaryColors {
 
   // Teal
   Color get teal600 => Color(0XFF01A367);
+  // Red
+  Color get redA400 => Color(0XFFF0002E);
 }
 
 PrimaryColors get appTheme => ThemeHelper().themeColor();
