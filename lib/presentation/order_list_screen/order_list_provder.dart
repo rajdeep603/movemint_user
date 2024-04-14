@@ -5,8 +5,10 @@ import '../../core/utils/toast_helper.dart';
 import '../../domain/models/get_orders_model.dart';
 import '../../domain/services/api_services.dart';
 import '../../domain/services/common_api_call.dart';
+import '../packer_home_page/models/packer_home_model.dart';
 
 class OrderListProvider extends ChangeNotifier {
+  PackerHomeModel packerHomeModelObj = PackerHomeModel();
   OrderListProvider(this.screenContext) {
     getOrdersData();
   }
@@ -19,8 +21,7 @@ class OrderListProvider extends ChangeNotifier {
     try {
       isLoading = true;
       notifyListeners();
-      final CustomResponse customResponse =
-          await ApiServices().getOrders();
+      final CustomResponse customResponse = await ApiServices().getOrders();
       if (customResponse.response == null || customResponse.statusCode != 200) {
         getOrderModel = null;
         ToastHelper.showToast(customResponse.error);

@@ -168,6 +168,7 @@ class PackerLocationSetScreenState extends State<PackerLocationSetScreen>
         padding: EdgeInsets.symmetric(horizontal: 20.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizedBox(
               height: 85.v,
@@ -203,13 +204,12 @@ class PackerLocationSetScreenState extends State<PackerLocationSetScreen>
                     alignment: Alignment.center,
                     child: Container(
                       margin: EdgeInsets.only(
-                        left: 113.h,
-                        right: 121.h,
-                      ),
+                          left: 113.h, right: 121.h, bottom: 20),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadiusStyle.roundedBorder9,
                       ),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           CustomImageView(
@@ -229,7 +229,7 @@ class PackerLocationSetScreenState extends State<PackerLocationSetScreen>
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
-                      margin: EdgeInsets.only(left: 238.h),
+                      margin: EdgeInsets.only(left: 238.h, bottom: 20),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadiusStyle.roundedBorder9,
                       ),
@@ -253,9 +253,11 @@ class PackerLocationSetScreenState extends State<PackerLocationSetScreen>
                   Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 12.v),
+                      padding: EdgeInsets.only(
+                        top: 12.v,
+                      ),
                       child: SizedBox(
-                        width: 126.h,
+                        width: 158.h,
                         child: Divider(
                           color: appTheme.greenA700,
                           indent: 38.h,
@@ -266,9 +268,9 @@ class PackerLocationSetScreenState extends State<PackerLocationSetScreen>
                   Align(
                     alignment: Alignment.topRight,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 12.v),
+                      padding: EdgeInsets.only(top: 12.v, right: 2),
                       child: SizedBox(
-                        width: 131.h,
+                        width: 163.h,
                         child: Divider(
                           color: appTheme.gray500,
                           endIndent: 43.h,

@@ -56,46 +56,71 @@ class PackerSummaryOnePageState extends State<PackerSummaryOnePage> {
                   SizedBox(height: 20.v),
                   _buildRowcallpartner(context),
                   SizedBox(height: 30.v),
-                  Selector<PackerSummaryOneProvider, PackerSummaryOneModel?>(
-                    selector: (context, provider) =>
-                        provider.packerSummaryOneModelObj,
-                    builder: (context, packerSummaryOneModelObj, child) {
-                      return CustomDropDown(
-                        icon: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16.h),
-                          child: CustomImageView(
-                            imagePath: ImageConstant.imgArrowRight,
-                            height: 12.adaptSize,
-                            width: 12.adaptSize,
-                          ),
-                        ),
-                        hintText: "lbl_all_items".tr,
-                        items: packerSummaryOneModelObj?.dropdownItemList ?? [],
-                      );
-                    },
+                  CustomDropDown(
+                    icon: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16.h),
+                      child: CustomImageView(
+                        imagePath: ImageConstant.imgArrowRight,
+                        height: 12.adaptSize,
+                        width: 12.adaptSize,
+                      ),
+                    ),
+                    hintText: "lbl_all_items".tr,
+                    // items: packerSummaryOneModelObj?.dropdownItemList ?? [],
                   ),
+                  // Selector<PackerSummaryOneProvider, PackerSummaryOneModel?>(
+                  //   selector: (context, provider) =>
+                  //       provider.packerSummaryOneModelObj,
+                  //   builder: (context, packerSummaryOneModelObj, child) {
+                  //     return CustomDropDown(
+                  //       icon: Container(
+                  //         margin: EdgeInsets.symmetric(horizontal: 16.h),
+                  //         child: CustomImageView(
+                  //           imagePath: ImageConstant.imgArrowRight,
+                  //           height: 12.adaptSize,
+                  //           width: 12.adaptSize,
+                  //         ),
+                  //       ),
+                  //       hintText: "lbl_all_items".tr,
+                  //       items: packerSummaryOneModelObj?.dropdownItemList ?? [],
+                  //     );
+                  //   },
+                  // ),
                   SizedBox(height: 5.v),
                   _buildDropdownmenu(context),
                   SizedBox(height: 30.v),
-                  Selector<PackerSummaryOneProvider, PackerSummaryOneModel?>(
-                    selector: (context, provider) =>
-                        provider.packerSummaryOneModelObj,
-                    builder: (context, packerSummaryOneModelObj, child) {
-                      return CustomDropDown(
-                        icon: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16.h),
-                          child: CustomImageView(
-                            imagePath: ImageConstant.imgArrowRightPurple900,
-                            height: 12.adaptSize,
-                            width: 12.adaptSize,
-                          ),
-                        ),
-                        hintText: "lbl_bill_summary".tr,
-                        items:
-                            packerSummaryOneModelObj?.dropdownItemList1 ?? [],
-                      );
-                    },
+                  CustomDropDown(
+                    icon: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16.h),
+                      child: CustomImageView(
+                        imagePath: ImageConstant.imgArrowRightPurple900,
+                        height: 12.adaptSize,
+                        width: 12.adaptSize,
+                      ),
+                    ),
+                    hintText: "lbl_bill_summary".tr,
+                    // items:
+                    // packerSummaryOneModelObj?.dropdownItemList1 ?? [],
                   )
+                  // Selector<PackerSummaryOneProvider, PackerSummaryOneModel?>(
+                  //   selector: (context, provider) =>
+                  //       provider.packerSummaryOneModelObj,
+                  //   builder: (context, packerSummaryOneModelObj, child) {
+                  //     return CustomDropDown(
+                  //       icon: Container(
+                  //         margin: EdgeInsets.symmetric(horizontal: 16.h),
+                  //         child: CustomImageView(
+                  //           imagePath: ImageConstant.imgArrowRightPurple900,
+                  //           height: 12.adaptSize,
+                  //           width: 12.adaptSize,
+                  //         ),
+                  //       ),
+                  //       hintText: "lbl_bill_summary".tr,
+                  //       items:
+                  //           packerSummaryOneModelObj?.dropdownItemList1 ?? [],
+                  //     );
+                  //   },
+                  // )
                 ],
               ),
             ),
