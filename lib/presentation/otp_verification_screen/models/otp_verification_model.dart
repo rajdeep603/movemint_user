@@ -8,5 +8,5 @@ class OtpVerificationRouteModel {
 
   final Country selectedCountry;
   final String mobileNo;
-  final String verificationId;
+   String verificationId;
 }

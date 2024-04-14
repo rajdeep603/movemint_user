@@ -98,31 +98,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   ),
                 ),
                 SizedBox(height: 10.v),
-                Text(
-                  "lbl_00_30".tr,
-                  style: CustomTextStyles.bodyMediumGray70001,
-                ),
-                SizedBox(height: 15.v),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Opacity(
-                      opacity: 0.3,
-                      child: Text("msg_do_not_send_otp".tr,
-                          style: theme.textTheme.bodyMedium),
-                    ),
-                    Opacity(
-                      opacity: 0.3,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 4.h),
-                        child: Text(
-                          "lbl_send_otp".tr,
-                          style: CustomTextStyles.titleSmallGreenA70075,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                _buildResendButton(context),
                 SizedBox(height: 30.v),
                 _buildEighteen(context),
               ],
@@ -130,6 +106,39 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildResendButton(BuildContext context) {
+    return Selector<OtpVerificationProvider, int>(
+      shouldRebuild: (int previous, int next) {
+        if (previous == next) {
+          return false;
+        }
+        return true;
+      },
+      selector: (BuildContext context, OtpVerificationProvider provider) =>
+          provider.startTime,
+      builder: (BuildContext context, int startTime, Widget? child) {
+        if (startTime == 0) {
+          return Center(
+            child: InkWell(
+              onTap: () =>
+                  context.read<OtpVerificationProvider>().onReSendClickEvent(),
+              child: Text(
+                'Resend OTP ?',
+                style: CustomTextStyles.titleMediumBlack900.copyWith(
+                  color: appTheme.greenA70075,
+                ),
+              ),
+            ),
+          );
+        }
+        return Text(
+          '${startTime.toString().padLeft(2, '0')} sec',
+          style: CustomTextStyles.bodyMediumGray70001,
+        );
+      },
     );
   }
 
