@@ -8,7 +8,7 @@ import '../../../widgets/custom_bottom_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_icon_button.dart';
 import '../../../widgets/custom_outlined_button.dart';
-import '../order_details_screen/packer_summary_one_page.dart';
+import '../order_details_screen/package_order_detail_screen.dart';
 import 'models/packer_summary_one_one_model.dart';
 import 'provider/packer_summary_one_one_provider.dart';
 
@@ -454,7 +454,7 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
   ) {
     switch (currentRoute) {
       case AppRoutes.packerSummaryOnePage:
-        return PackerSummaryOnePage.builder(context);
+        return PackageOrderDetailScreen.builder(context);
       default:
         return DefaultWidget();
     }

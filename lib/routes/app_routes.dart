@@ -4,6 +4,8 @@ import '../core/utils/enums.dart';
 import '../core/utils/logger.dart';
 import '../presentation/app_navigation_screen/app_navigation_screen.dart';
 import '../presentation/login_screen/login_screen.dart';
+import '../presentation/new_order_tracking_profile_screens/order_details_screen/package_order_detail_screen.dart';
+import '../presentation/new_order_tracking_profile_screens/packer_summary_one_container_screen/packer_summary_one_container_screen.dart';
 import '../presentation/new_order_tracking_profile_screens/packer_summary_one_one_screen/packer_summary_one_one_screen.dart';
 import '../presentation/onboarding_screen_one_screen/onboarding_screen_one_screen.dart';
 import '../presentation/onboarding_screen_three_screen/onboarding_screen_three_screen.dart';
@@ -84,6 +86,8 @@ class AppRoutes {
 
   static const String appNavigationScreen = '/app_navigation_screen';
 
+  static const String packageOrderDetailScreen = '/package_order_detail_screen';
+
   static const String initialRoute = '/initialRoute';
 
   static Map<String, WidgetBuilder> get routes => <String, WidgetBuilder>{
@@ -106,5 +110,6 @@ class AppRoutes {
         packerAdditemsScreen: PackerAdditemsScreen.builder,
         packerDetailsDateTimeScreen: PackerDetailsDateTimeScreen.builder,
         appNavigationScreen: AppNavigationScreen.builder,
+    packageOrderDetailScreen: PackageOrderDetailScreen.builder,
       };
 }

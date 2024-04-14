@@ -2,6 +2,7 @@ import 'package:nested/nested.dart';
 
 import '../../core/app_export.dart';
 import '../../domain/providers/create_order_provider.dart';
+import '../../domain/providers/order_list_provider.dart';
 import '../../widgets/custom_bottom_bar.dart';
 import '../new_order_tracking_profile_screens/edit_profile_one_screen/edit_profile_one_screen.dart';
 import '../new_order_tracking_profile_screens/edit_profile_screen/edit_profile_screen.dart';
@@ -19,9 +20,11 @@ class DashBoard extends StatefulWidget {
   DashBoardState createState() => DashBoardState();
 
   static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (BuildContext context) => PackerHomeContainerProvider(),
-        child: DashBoard());
+    return ChangeNotifierProvider<GetOrdersListRepoProvider>(
+        create: (BuildContext context) => GetOrdersListRepoProvider(),
+        child: ChangeNotifierProvider<PackerHomeContainerProvider>(
+            create: (BuildContext context) => PackerHomeContainerProvider(),
+            child: const DashBoard()));
   }
 }
 
@@ -32,6 +35,7 @@ class DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     super.initState();
+    context.read<GetOrdersListRepoProvider>().getOrdersData();
     // Future.delayed(const Duration(milliseconds: 3000), () {
     //   NavigatorService.popAndPushNamed(
     //     AppRoutes.packerDetailsWithinCityTabContainerScreen,

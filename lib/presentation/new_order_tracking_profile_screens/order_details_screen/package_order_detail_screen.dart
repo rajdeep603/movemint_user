@@ -12,33 +12,39 @@ import '../../../widgets/custom_icon_button.dart';
 import '../../../widgets/custom_outlined_button.dart';
 import '../../../widgets/custom_text_form_field.dart';
 import '../packer_summary_one_container_screen/packer_summary_one_container_screen.dart';
+import 'models/package_order_detail_route_model.dart';
 import 'models/packer_summary_one_model.dart';
-import 'provider/packer_summary_one_provider.dart'; // ignore_for_file: must_be_immutable
+import 'provider/package_order_detail_provider.dart';
 
-class PackerSummaryOnePage extends StatefulWidget {
-  const PackerSummaryOnePage({Key? key})
-      : super(
-          key: key,
-        );
+class PackageOrderDetailScreen extends StatefulWidget {
+  const PackageOrderDetailScreen({super.key});
 
   @override
-  PackerSummaryOnePageState createState() => PackerSummaryOnePageState();
+  PackageOrderDetailScreenState createState() =>
+      PackageOrderDetailScreenState();
+
   static Widget builder(BuildContext context) {
+    final PackageOrderDetailRouteModel routeModel = ModalRoute.of(context)!
+        .settings
+        .arguments! as PackageOrderDetailRouteModel;
     return ChangeNotifierProvider(
-      create: (context) => PackerSummaryOneProvider(),
-      child: PackerSummaryOnePage(),
+      create: (context) => PackageOrderDetailProvider(routeModel),
+      child: PackageOrderDetailScreen(),
     );
   }
 }
 
-class PackerSummaryOnePageState extends State<PackerSummaryOnePage> {
+class PackageOrderDetailScreenState extends State<PackageOrderDetailScreen> {
   @override
   void initState() {
     super.initState();
   }
 
+  late PackageOrderDetailProvider provider;
+
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of(context);
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -56,7 +62,7 @@ class PackerSummaryOnePageState extends State<PackerSummaryOnePage> {
                   SizedBox(height: 20.v),
                   _buildRowcallpartner(context),
                   SizedBox(height: 30.v),
-                  Selector<PackerSummaryOneProvider, PackerSummaryOneModel?>(
+                  Selector<PackageOrderDetailProvider, PackerSummaryOneModel?>(
                     selector: (context, provider) =>
                         provider.packerSummaryOneModelObj,
                     builder: (context, packerSummaryOneModelObj, child) {
@@ -77,7 +83,7 @@ class PackerSummaryOnePageState extends State<PackerSummaryOnePage> {
                   SizedBox(height: 5.v),
                   _buildDropdownmenu(context),
                   SizedBox(height: 30.v),
-                  Selector<PackerSummaryOneProvider, PackerSummaryOneModel?>(
+                  Selector<PackageOrderDetailProvider, PackerSummaryOneModel?>(
                     selector: (context, provider) =>
                         provider.packerSummaryOneModelObj,
                     builder: (context, packerSummaryOneModelObj, child) {
@@ -111,11 +117,10 @@ class PackerSummaryOnePageState extends State<PackerSummaryOnePage> {
       leadingWidth: 44.h,
       leading: AppbarLeadingImage(
         imagePath: ImageConstant.imgLeftButton,
-        margin: EdgeInsets.only(
-          left: 24.h,
-          top: 37.v,
-          bottom: 29.v,
-        ),
+        onTap: () {
+          NavigatorService.goBack();
+        },
+        margin: EdgeInsets.only(left: 24.h, top: 37.v, bottom: 29.v),
       ),
       centerTitle: true,
       title: AppbarTitle(
@@ -142,6 +147,7 @@ class PackerSummaryOnePageState extends State<PackerSummaryOnePage> {
                 "lbl_order_14258".tr,
                 style: CustomTextStyles.titleSmallGray900SemiBold,
               ),
+              if(provider.routeModel.orderStatus.toLowerCase()=='confirm')
               GestureDetector(
                 onTap: () {
                   _showCancelOrderAlertDialog(context);
@@ -343,7 +349,7 @@ class PackerSummaryOnePageState extends State<PackerSummaryOnePage> {
             ),
           ),
           SizedBox(height: 20.v),
-          Selector<PackerSummaryOneProvider, TextEditingController?>(
+          Selector<PackageOrderDetailProvider, TextEditingController?>(
             selector: (context, provider) => provider.timeController,
             builder: (context, timeController, child) {
               return Container(
@@ -537,7 +543,7 @@ class PackerSummaryOnePageState extends State<PackerSummaryOnePage> {
     );
   }
 
-  Future<void> _showCancelOrderAlertDialog(context) async {
+  Future<void> _showCancelOrderAlertDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -577,6 +583,7 @@ class PackerSummaryOnePageState extends State<PackerSummaryOnePage> {
                   child: Center(
                     child: GestureDetector(
                       onTap: () {
+                        NavigatorService.goBack();
                         // Navigator.push(
                         //     context,
                         //     MaterialPageRoute(
@@ -601,13 +608,7 @@ class PackerSummaryOnePageState extends State<PackerSummaryOnePage> {
                       borderRadius: BorderRadiusDirectional.circular(5)),
                   child: Center(
                     child: GestureDetector(
-                      onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => NewLeaveScreen()));
-                        // Navigator.of(context).pop();
-                      },
+                      onTap: () => provider.cancelOrder(),
                       child: const Text(
                         'Yes',
                         style: TextStyle(color: Colors.white, fontSize: 16),
