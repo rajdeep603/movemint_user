@@ -1,4 +1,6 @@
 import '../../core/app_export.dart';
+import '../../domain/models/create_order_request_model.dart';
+import '../../domain/providers/create_order_provider.dart';
 import '../../widgets/app_bar/appbar_leading_image.dart';
 import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
@@ -15,8 +17,8 @@ class PackerAdditemsScreen extends StatefulWidget {
   PackerAdditemsScreenState createState() => PackerAdditemsScreenState();
 
   static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider<PackerAdditemsProvider>(
-      create: (context) => PackerAdditemsProvider(),
+    return ChangeNotifierProvider<PackerAddItemsProvider>(
+      create: (context) => PackerAddItemsProvider(context),
       child: PackerAdditemsScreen(),
     );
   }
@@ -32,174 +34,198 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
     tabviewController = TabController(length: 4, vsync: this);
   }
 
-  late PackerAdditemsProvider provider;
+  late PackerAddItemsProvider provider;
 
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<PackerAdditemsProvider>(context);
-    return SafeArea(
-      child: Scaffold(
-        appBar: _buildAppBar(context),
-        body: SizedBox(
-          width: SizeUtils.width,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(top: 38.v),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 60.v,
-                  width: 350.h,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          // height: 300,
-                          // margin: EdgeInsets.only(right: 254.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadiusStyle.roundedBorder10,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                height: 24.adaptSize,
-                                width: 24.adaptSize,
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    CustomImageView(
-                                      imagePath: ImageConstant.imgPlay,
-                                      height: 24.adaptSize,
-                                      width: 24.adaptSize,
-                                      alignment: Alignment.center,
-                                    ),
-                                    CustomImageView(
-                                      imagePath: ImageConstant.imgCheckmark,
-                                      height: 7.v,
-                                      width: 10.h,
-                                      alignment: Alignment.center,
-                                    ),
-                                  ],
+    provider = Provider.of<PackerAddItemsProvider>(context);
+    return PopScope(
+      onPopInvoked: (bool? value) {
+          context.read<CreateOrderProvider>().disposeValues();
+      },
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: _buildAppBar(context),
+          body: SizedBox(
+            width: SizeUtils.width,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(top: 38.v),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 60.v,
+                    width: 350.h,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            // height: 300,
+                            // margin: EdgeInsets.only(right: 254.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadiusStyle.roundedBorder10,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  height: 24.adaptSize,
+                                  width: 24.adaptSize,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      CustomImageView(
+                                        imagePath: ImageConstant.imgPlay,
+                                        height: 24.adaptSize,
+                                        width: 24.adaptSize,
+                                        alignment: Alignment.center,
+                                      ),
+                                      CustomImageView(
+                                        imagePath: ImageConstant.imgCheckmark,
+                                        height: 7.v,
+                                        width: 10.h,
+                                        alignment: Alignment.center,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 11.v),
-                              Text(
-                                'lbl_details'.tr,
-                                style:
-                                    CustomTextStyles.labelLargePrimaryContainer,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            left: 113.h,
-                            right: 121.h,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadiusStyle.roundedBorder10,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomImageView(
-                                imagePath: ImageConstant.imgPlay,
-                                height: 24.adaptSize,
-                                width: 24.adaptSize,
-                              ),
-                              SizedBox(height: 12.v),
-                              Text(
-                                'lbl_add_items'.tr,
-                                style:
-                                    CustomTextStyles.labelLargePrimaryContainer,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          height: 300,
-                          margin: EdgeInsets.only(left: 238.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadiusStyle.roundedBorder10,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomImageView(
-                                imagePath: ImageConstant.imgContrast,
-                                height: 24.adaptSize,
-                                width: 24.adaptSize,
-                              ),
-                              SizedBox(height: 13.v),
-                              Text(
-                                'lbl_summary'.tr,
-                                style: CustomTextStyles.labelLargeGray300,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 12.v),
-                          child: SizedBox(
-                            width: 126.h,
-                            child: Divider(
-                              indent: 38.h,
+                                SizedBox(height: 11.v),
+                                Text(
+                                  'lbl_details'.tr,
+                                  style: CustomTextStyles
+                                      .labelLargePrimaryContainer,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 12.v),
-                          child: SizedBox(
-                            width: 131.h,
-                            child: Divider(
-                              color: appTheme.gray500,
-                              endIndent: 43.h,
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              left: 113.h,
+                              right: 121.h,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadiusStyle.roundedBorder10,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomImageView(
+                                  imagePath: ImageConstant.imgPlay,
+                                  height: 24.adaptSize,
+                                  width: 24.adaptSize,
+                                ),
+                                SizedBox(height: 12.v),
+                                Text(
+                                  'lbl_add_items'.tr,
+                                  style: CustomTextStyles
+                                      .labelLargePrimaryContainer,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            height: 300,
+                            margin: EdgeInsets.only(left: 238.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadiusStyle.roundedBorder10,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomImageView(
+                                  imagePath: ImageConstant.imgContrast,
+                                  height: 24.adaptSize,
+                                  width: 24.adaptSize,
+                                ),
+                                SizedBox(height: 13.v),
+                                Text(
+                                  'lbl_summary'.tr,
+                                  style: CustomTextStyles.labelLargeGray300,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 12.v),
+                            child: SizedBox(
+                              width: 126.h,
+                              child: Divider(
+                                indent: 38.h,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 12.v),
+                            child: SizedBox(
+                              width: 131.h,
+                              child: Divider(
+                                color: appTheme.gray500,
+                                endIndent: 43.h,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(height: 27.v),
-                _buildTabview(context),
-                SizedBox(
-                  height: 638.v,
-                  child: TabBarView(
-                    controller: tabviewController,
-                    children: [
-                      PackerAdditemsOnePage.builder(context),
-                      PackerAdditemsOnePage.builder(context),
-                      PackerAdditemsOnePage.builder(context),
-                      PackerAdditemsOnePage.builder(context),
-                    ],
+                  SizedBox(height: 27.v),
+                  _buildTabview(context),
+                  SizedBox(
+                    height: 638.v,
+                    child: TabBarView(
+                      controller: tabviewController,
+                      children: [
+                        PackerAdditemsOnePage.builder(context),
+                        Center(child: Text('No Data Available')),
+                        Center(child: Text('No Data Available')),
+                        Center(child: Text('No Data Available')),
+                        // PackerAdditemsOnePage.builder(context),
+                        // PackerAdditemsOnePage.builder(context),
+                        // PackerAdditemsOnePage.builder(context),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
+          bottomNavigationBar: _buildActionBottom2(context),
         ),
-        bottomNavigationBar: _buildActionBottom2(context),
       ),
     );
   }
 
+  int calculateTotalQty(List<ProductDetailModel> list) {
+    int totalQty = 0;
+
+    for (var product in list) {
+      if (product.doesItemsHaveQty) {
+        for (var item in product.items) {
+          totalQty += item.qty;
+        }
+      }
+    }
+
+    return totalQty;
+  }
+
   /// Section Widget
   Widget _buildActionBottom2(BuildContext context) {
+    CreateOrderProvider createOrderProvider = Provider.of(context);
     return Container(
       decoration: AppDecoration.outlineGray300,
       padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 20.v),
@@ -214,7 +240,8 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
                   style: CustomTextStyles.titleMediumInterff71727a,
                 ),
                 TextSpan(
-                  text: "lbl_0".tr,
+                  text: calculateTotalQty(createOrderProvider.productDetail)
+                      .toString(),
                   style: CustomTextStyles.titleMediumInterff000000,
                 ),
               ],

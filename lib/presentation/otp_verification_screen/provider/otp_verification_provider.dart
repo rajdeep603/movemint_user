@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,9 @@ import '../../register_screen/models/register_screen_route_model.dart';
 import '../models/otp_verification_model.dart';
 
 class OtpVerificationProvider extends ChangeNotifier {
-  OtpVerificationProvider(this.routeModel, this._screenContext);
+  OtpVerificationProvider(this.routeModel, this._screenContext) {
+    _startTimer();
+  }
 
   OtpVerificationRouteModel routeModel;
 
@@ -21,7 +25,50 @@ class OtpVerificationProvider extends ChangeNotifier {
 
   bool isLoading = false;
 
+  Timer? timer;
+
+  int startTime = 60;
+
   TextEditingController otpController = TextEditingController();
+
+  void _startTimer() {
+    startTime = 60;
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (startTime == 0) {
+        timer.cancel();
+        return;
+      }
+      startTime--;
+      notifyListeners();
+    });
+  }
+
+  Future<void> onReSendClickEvent() async {
+    _startTimer();
+    try {
+      isLoading = true;
+      notifyListeners();
+      await FirebaseAuth.instance.verifyPhoneNumber(
+          verificationCompleted: (PhoneAuthCredential credential) {
+            isLoading = false;
+            notifyListeners();
+          },
+          verificationFailed: (FirebaseAuthException ex) {
+            isLoading = false;
+            notifyListeners();
+          },
+          codeSent: (String verificationId, int? resendToken) {
+            isLoading = false;
+            notifyListeners();
+            routeModel.verificationId = verificationId;
+          },
+          codeAutoRetrievalTimeout: (String verificationId) {},
+          phoneNumber:
+              '+${routeModel.selectedCountry.phoneCode} ${routeModel.mobileNo}');
+    } on Exception catch (e) {
+      Logger.logError(e);
+    }
+  }
 
   Future<void> onVerifyClickEvent() async {
     isLoading = true;

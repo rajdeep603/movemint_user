@@ -6,6 +6,7 @@ import '../presentation/app_navigation_screen/app_navigation_screen.dart';
 import '../presentation/login_screen/login_screen.dart';
 import '../presentation/new_order_tracking_profile_screens/packer_summary_one_one_screen/packer_summary_one_one_screen.dart';
 import '../presentation/onboarding_screen_one_screen/onboarding_screen_one_screen.dart';
+import '../presentation/onboarding_screen_three_screen/onboarding_screen_three_screen.dart';
 import '../presentation/onboarding_screen_two_screen/onboarding_screen_two_screen.dart';
 import '../presentation/otp_verification_screen/otp_verification_screen.dart';
 import '../presentation/packer_additems_two_tab_container_screen/packer_additems_two_tab_container_screen.dart';
@@ -94,6 +95,7 @@ class AppRoutes {
         wellcomeScreen: WellcomeScreen.builder,
         onboardingScreenOneScreen: OnboardingScreenOneScreen.builder,
         onboardingScreenTwoScreen: OnboardingScreenTwoScreen.builder,
+        onboardingScreenThreeScreen: OnboardingScreenThreeScreen.builder,
         loginScreen: LoginScreen.builder,
         otpVerificationScreen: OtpVerificationScreen.builder,
         registerScreen: RegisterScreen.builder,

@@ -22,20 +22,18 @@ class CreateOrderProvider extends ChangeNotifier {
 
   Future<bool> createOrder() async {
     try {
-      final data = [
-        ProductDetailModel(
-          items: [ItemModel(name: 'chair', qty: 4)],
-          name: "Living Room",
-        )
-      ];
-
+      List<ProductDetailModel> productList =
+          List<ProductDetailModel>.from(productDetail);
+      productList.removeWhere((element) => element.doesItemsHaveQty == false);
+      productList.forEach((element) {
+        element.items.removeWhere((element) => element.qty == 0);
+      });
       final CreateOrderModel createOrderModel = CreateOrderModel(
           datetime: selectedDate,
           from: pickUpLocationController.text,
           to: dropLocationController.text,
           city: searchCityController.text,
-          // productDetail: productDetail,
-          productDetail: data,
+          productDetail: productDetail,
           totalPrice: '100');
       final CustomResponse customResponse =
           await ApiServices().createOrder(createOrderModel);
@@ -53,14 +51,14 @@ class CreateOrderProvider extends ChangeNotifier {
     }
   }
 
-void disposeValues(){
-  selectedDate = DateTime.now();
-  pickUpLocationController.clear();
-  dropLocationController.clear();
-  searchCityController.clear();
-  totalPrice = '';
-  productDetail = <ProductDetailModel>[];
-}
+  void disposeValues() {
+    selectedDate = DateTime.now();
+    pickUpLocationController.clear();
+    dropLocationController.clear();
+    searchCityController.clear();
+    totalPrice = '';
+    productDetail = <ProductDetailModel>[];
+  }
 
   @override
   void notifyListeners() {

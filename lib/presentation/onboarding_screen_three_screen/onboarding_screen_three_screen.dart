@@ -122,10 +122,7 @@ class OnboardingScreenThreeScreenState
           SizedBox(height: 48.v),
           CustomElevatedButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => LoginScreen()));
+              NavigatorService.pushNamed(AppRoutes.loginScreen);
             },
             text: "lbl_next".tr,
           ),
