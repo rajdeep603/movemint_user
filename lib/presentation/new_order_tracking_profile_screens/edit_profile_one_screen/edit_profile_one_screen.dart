@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/app_export.dart';
+import '../../../domain/local_storage/local_storage.dart';
 import '../../../widgets/app_bar/appbar_leading_image.dart';
 import '../../../widgets/app_bar/appbar_title.dart';
 import '../../../widgets/app_bar/custom_app_bar.dart';
 import '../../../widgets/custom_bottom_bar.dart';
 import '../../../widgets/custom_icon_button.dart';
 import '../../../widgets/custom_outlined_button.dart';
-import '../order_details_screen/packer_summary_one_page.dart';
+import '../order_details_screen/package_order_detail_screen.dart';
 import 'models/edit_profile_one_model.dart';
 import 'provider/edit_profile_one_provider.dart';
 
@@ -19,6 +20,7 @@ class EditProfileOneScreen extends StatefulWidget {
 
   @override
   EditProfileOneScreenState createState() => EditProfileOneScreenState();
+
   static Widget builder(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => EditProfileOneProvider(),
@@ -216,24 +218,30 @@ class EditProfileOneScreenState extends State<EditProfileOneScreen> {
 
   /// Section Widget
   Widget _buildField(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          Icons.login,
-          color: Colors.green,
-          size: 20,
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: 10.h,
-            top: 3.v,
+    return GestureDetector(
+      onTap: () async {
+        await LocalStorage.clearAllBoxes();
+        NavigatorService.pushNamedAndRemoveUntil(AppRoutes.loginScreen);
+      },
+      child: Row(
+        children: [
+          Icon(
+            Icons.login,
+            color: Colors.green,
+            size: 20,
           ),
-          child: Text(
-            "lbl_logout".tr,
-            style: theme.textTheme.titleSmall,
-          ),
-        )
-      ],
+          Padding(
+            padding: EdgeInsets.only(
+              left: 10.h,
+              top: 3.v,
+            ),
+            child: Text(
+              "lbl_logout".tr,
+              style: theme.textTheme.titleSmall,
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -270,7 +278,7 @@ class EditProfileOneScreenState extends State<EditProfileOneScreen> {
   ) {
     switch (currentRoute) {
       case AppRoutes.packerSummaryOnePage:
-        return PackerSummaryOnePage.builder(context);
+        return PackageOrderDetailScreen.builder(context);
       default:
         return DefaultWidget();
     }

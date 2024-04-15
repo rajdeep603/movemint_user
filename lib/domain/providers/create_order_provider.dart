@@ -32,7 +32,7 @@ class CreateOrderProvider extends ChangeNotifier {
           datetime: selectedDate,
           from: pickUpLocationController.text,
           to: dropLocationController.text,
-          city: searchCityController.text,
+          city: searchCityController.text.isEmpty?'NA': searchCityController.text,
           productDetail: productDetail,
           totalPrice: '100');
       final CustomResponse customResponse =

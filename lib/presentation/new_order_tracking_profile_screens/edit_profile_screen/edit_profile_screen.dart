@@ -6,7 +6,7 @@ import '../../../widgets/app_bar/appbar_title.dart';
 import '../../../widgets/app_bar/custom_app_bar.dart';
 import '../../../widgets/custom_bottom_bar.dart';
 import '../../../widgets/custom_outlined_button.dart';
-import '../order_details_screen/packer_summary_one_page.dart';
+import '../order_details_screen/package_order_detail_screen.dart';
 import 'models/edit_profile_model.dart';
 import 'provider/edit_profile_provider.dart';
 
@@ -272,7 +272,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
   ) {
     switch (currentRoute) {
       case AppRoutes.packerSummaryOnePage:
-        return PackerSummaryOnePage.builder(context);
+        return PackageOrderDetailScreen.builder(context);
       default:
         return DefaultWidget();
     }

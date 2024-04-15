@@ -5,37 +5,36 @@ import '../../core/utils/toast_helper.dart';
 import '../../domain/models/get_orders_model.dart';
 import '../../domain/services/api_services.dart';
 import '../../domain/services/common_api_call.dart';
-import '../packer_home_page/models/packer_home_model.dart';
 
-class OrderListProvider extends ChangeNotifier {
-  PackerHomeModel packerHomeModelObj = PackerHomeModel();
-  OrderListProvider(this.screenContext) {
-    getOrdersData();
+class OrderListScreenProvider extends ChangeNotifier {
+  OrderListScreenProvider(this.screenContext) {
+    // getOrdersData();
   }
 
-  bool isLoading = false;
+  // bool isLoading = false;
   BuildContext screenContext;
-  GetOrdersModel? getOrderModel;
+  // GetOrdersModel? getOrderModel;
 
-  Future<void> getOrdersData() async {
-    try {
-      isLoading = true;
-      notifyListeners();
-      final CustomResponse customResponse = await ApiServices().getOrders();
-      if (customResponse.response == null || customResponse.statusCode != 200) {
-        getOrderModel = null;
-        ToastHelper.showToast(customResponse.error);
-        return;
-      }
-      getOrderModel = GetOrdersModel.fromMap(customResponse.response?.data);
-    } on Exception catch (e) {
-      ToastHelper.somethingWentWrong();
-      Logger.logError(e);
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
-  }
+  // Future<void> getOrdersData() async {
+  //   try {
+  //     isLoading = true;
+  //     notifyListeners();
+  //     final CustomResponse customResponse =
+  //         await ApiServices().getOrders();
+  //     if (customResponse.response == null || customResponse.statusCode != 200) {
+  //       getOrderModel = null;
+  //       ToastHelper.showToast(customResponse.error);
+  //       return;
+  //     }
+  //     getOrderModel = GetOrdersModel.fromMap(customResponse.response?.data);
+  //   } on Exception catch (e) {
+  //     ToastHelper.somethingWentWrong();
+  //     Logger.logError(e);
+  //   } finally {
+  //     isLoading = false;
+  //     notifyListeners();
+  //   }
+  // }
 
   @override
   void notifyListeners() {
