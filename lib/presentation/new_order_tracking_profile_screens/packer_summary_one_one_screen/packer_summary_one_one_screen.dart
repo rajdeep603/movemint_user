@@ -60,7 +60,7 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
             ),
           ),
         ),
-        // bottomNavigationBar: _buildBottombar(context),
+        bottomNavigationBar: _buildBottombar(context),
       ),
     );
   }
@@ -90,27 +90,33 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
     return Align(
       alignment: Alignment.topCenter,
       child: SizedBox(
-        height: 434.v,
+        height: 220.v,
         width: double.maxFinite,
         child: Stack(
           alignment: Alignment.topRight,
           children: [
-            CustomImageView(
-              imagePath: ImageConstant.imgWhatsappImage20240227434x430,
-              height: 434.v,
+            Container(
+              height: 600.v,
               width: 430.h,
-              alignment: Alignment.center,
+              child: Image.network(
+                  "https://1.bp.blogspot.com/-T-EiGEHM1rE/XXheM0zqA2I/AAAAAAAACKo/uNn0t2VesUYE6QtOxXm4qoaiJLKWhu21QCLcBGAsYHQ/s1600/Screen%2BShot%2B2019-09-11%2Bat%2B12.37.26%2BPM.png"),
             ),
-            CustomImageView(
-              imagePath: ImageConstant.imgGroup1171281262,
-              height: 178.v,
-              width: 196.h,
-              alignment: Alignment.topRight,
-              margin: EdgeInsets.only(
-                top: 41.v,
-                right: 99.h,
-              ),
-            )
+            // CustomImageView(
+            //   imagePath: ImageConstant.imgWhatsappImage20240227434x430,
+            //   height: 434.v,
+            //   width: 430.h,
+            //   alignment: Alignment.center,
+            // ),
+            // CustomImageView(
+            //   imagePath: ImageConstant.imgGroup1171281262,
+            //   height: 178.v,
+            //   width: 196.h,
+            //   alignment: Alignment.topRight,
+            //   margin: EdgeInsets.only(
+            //     top: 41.v,
+            //     right: 99.h,
+            //   ),
+            // )
           ],
         ),
       ),
@@ -182,22 +188,10 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
                 left: 17.h,
                 right: 90.h,
               ),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 13,
-                    backgroundColor: Colors.black26,
-                    child: CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Colors.white,
-                    ),
-                  ),
-                  _buildRowcheckmark(
-                    context,
-                    itempickup: "msg_partner_assigned".tr,
-                    loremipsumTwo: "msg_lorem_ipsum_dolor".tr,
-                  ),
-                ],
+              child: _buildRowcheckmark(
+                context,
+                itempickup: "msg_partner_assigned".tr,
+                loremipsumTwo: "msg_lorem_ipsum_dolor".tr,
               ),
             ),
             SizedBox(height: 6.v),
@@ -237,20 +231,12 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          radius: 13,
-                          backgroundColor: Colors.black26,
-                          child: CircleAvatar(
-                            radius: 10,
-                            backgroundColor: Colors.white,
-                          ),
+                        CustomImageView(
+                          imagePath: ImageConstant.imgStepSymbol,
+                          height: 32.adaptSize,
+                          width: 32.adaptSize,
+                          margin: EdgeInsets.only(bottom: 2.v),
                         ),
-                        // CustomImageView(
-                        //   imagePath: ImageConstant.imgStepSymbol,
-                        //   height: 32.adaptSize,
-                        //   width: 32.adaptSize,
-                        //   margin: EdgeInsets.only(bottom: 2.v),
-                        // ),
                         Padding(
                           padding: EdgeInsets.only(left: 10.h),
                           child: Column(
@@ -295,14 +281,13 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 10.v),
                     child: CustomIconButton(
-                        height: 40.adaptSize,
-                        width: 40.adaptSize,
-                        decoration: IconButtonStyleHelper.fillDeepPurple,
-                        child: Icon(
-                          Icons.person,
-                          size: 22,
-                          color: Colors.purple,
-                        )),
+                      height: 40.adaptSize,
+                      width: 40.adaptSize,
+                      decoration: IconButtonStyleHelper.fillDeepPurple,
+                      child: CustomImageView(
+                        imagePath: ImageConstant.imgLock,
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
@@ -325,52 +310,19 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
                     ),
                   ),
                   Spacer(),
-                  InkWell(
-                    onTap: () {
-                      // print("309 working ${50.h}");
-                    },
-                    child: Container(
-                      height: 30,
-                      width: 80.h,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.green, width: 1.5)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.call_outlined,
-                            color: Colors.green,
-                            size: 15,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            "Call",
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
+                  CustomOutlinedButton(
+                    width: 120.h,
+                    text: "lbl_call".tr,
+                    margin: EdgeInsets.only(top: 10.v),
+                    leftIcon: Container(
+                        margin: EdgeInsets.only(right: 8.h),
+                        child: Icon(
+                          Icons.call_outlined,
+                          color: Colors.green,
+                          size: 20,
+                        )),
+                    buttonTextStyle: CustomTextStyles.titleSmallSemiBold,
                   )
-                  // CustomOutlinedButton(
-                  //   width: 110.h,
-                  //   text: "lbl_call".tr,
-                  //   margin: EdgeInsets.only(top: 10.v),
-                  //   leftIcon: Container(
-                  //     margin: EdgeInsets.only(right: 8.h),
-                  //     child: CustomImageView(
-                  //       imagePath: ImageConstant.imgCall,
-                  //       height: 19.v,
-                  //       width: 15.h,
-                  //     ),
-                  //   ),
-                  //   buttonTextStyle: CustomTextStyles.titleSmallSemiBold,
-                  // )
                 ],
               ),
             )
@@ -380,15 +332,15 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
     );
   }
 
-  // /// Section Widget
-  // Widget _buildBottombar(BuildContext context) {
-  //   return CustomBottomBar(
-  //     onChanged: (BottomBarEnum type) {
-  //       Navigator.pushNamed(
-  //           navigatorKey.currentContext!, getCurrentRoute(type));
-  //     },
-  //   );
-  // }
+  /// Section Widget
+  Widget _buildBottombar(BuildContext context) {
+    return CustomBottomBar(
+      onChanged: (BottomBarEnum type) {
+        Navigator.pushNamed(
+            navigatorKey.currentContext!, getCurrentRoute(type));
+      },
+    );
+  }
 
   /// Common widget
   Widget _buildRowcheckmark(

@@ -69,123 +69,131 @@ class PackerDetailsDateTimeScreenState
                                       EdgeInsets.symmetric(horizontal: 20.h),
                                   child: Column(children: [
                                     SizedBox(
-                                        height: 60.v,
-                                        width: 350.h,
-                                        child: Stack(
+                                      height: 85.v,
+                                      width: 350.h,
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: <Widget>[
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Container(
+                                              margin:
+                                                  EdgeInsets.only(right: 254.h),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadiusStyle
+                                                    .roundedBorder9,
+                                              ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  CustomImageView(
+                                                    imagePath:
+                                                        ImageConstant.imgClock,
+                                                    height: 24.adaptSize,
+                                                    width: 24.adaptSize,
+                                                  ),
+                                                  SizedBox(height: 11.v),
+                                                  Text(
+                                                    'lbl_details'.tr,
+                                                    style: CustomTextStyles
+                                                        .labelLargePrimaryContainer,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
                                             alignment: Alignment.center,
-                                            children: [
-                                              Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          right: 254.h),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadiusStyle
-                                                                  .roundedBorder10),
-                                                      child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            CustomImageView(
-                                                                imagePath:
-                                                                    ImageConstant
-                                                                        .imgPlay,
-                                                                height: 24
-                                                                    .adaptSize,
-                                                                width: 24
-                                                                    .adaptSize),
-                                                            SizedBox(
-                                                                height: 11.v),
-                                                            Text(
-                                                                "lbl_details"
-                                                                    .tr,
-                                                                style: CustomTextStyles
-                                                                    .labelLargePrimaryContainer)
-                                                          ]))),
-                                              Align(
-                                                  alignment: Alignment.center,
-                                                  child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 113.h,
-                                                          right: 121.h),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadiusStyle
-                                                                  .roundedBorder10),
-                                                      child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            CustomImageView(
-                                                                imagePath:
-                                                                    ImageConstant
-                                                                        .imgContrast,
-                                                                height: 24
-                                                                    .adaptSize,
-                                                                width: 24
-                                                                    .adaptSize),
-                                                            SizedBox(
-                                                                height: 12.v),
-                                                            Text(
-                                                                "lbl_add_items"
-                                                                    .tr,
-                                                                style: CustomTextStyles
-                                                                    .labelLargeGray300)
-                                                          ]))),
-                                              Align(
-                                                  alignment:
-                                                      Alignment.centerRight,
-                                                  child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 238.h),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadiusStyle
-                                                                  .roundedBorder10),
-                                                      child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            CustomImageView(
-                                                                imagePath:
-                                                                    ImageConstant
-                                                                        .imgContrast,
-                                                                height: 24
-                                                                    .adaptSize,
-                                                                width: 24
-                                                                    .adaptSize),
-                                                            SizedBox(
-                                                                height: 13.v),
-                                                            Text(
-                                                                "lbl_summary"
-                                                                    .tr,
-                                                                style: CustomTextStyles
-                                                                    .labelLargeGray300)
-                                                          ]))),
-                                              Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: 12.v),
-                                                      child: SizedBox(
-                                                          width: 126.h,
-                                                          child: Divider(
-                                                              indent: 38.h)))),
-                                              Align(
-                                                  alignment: Alignment.topRight,
-                                                  child: Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: 12.v),
-                                                      child: SizedBox(
-                                                          width: 131.h,
-                                                          child: Divider(
-                                                              color: appTheme
-                                                                  .gray500,
-                                                              endIndent:
-                                                                  43.h))))
-                                            ])),
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 113.h,
+                                                  right: 121.h,
+                                                  bottom: 20),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadiusStyle
+                                                    .roundedBorder9,
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  CustomImageView(
+                                                    imagePath: ImageConstant
+                                                        .imgContrastGray300,
+                                                    height: 24.adaptSize,
+                                                    width: 24.adaptSize,
+                                                  ),
+                                                  SizedBox(height: 12.v),
+                                                  Text(
+                                                    'lbl_add_items'.tr,
+                                                    style: CustomTextStyles
+                                                        .labelLargeGray300,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 238.h, bottom: 20),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadiusStyle
+                                                    .roundedBorder9,
+                                              ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  CustomImageView(
+                                                    imagePath: ImageConstant
+                                                        .imgContrastGray300,
+                                                    height: 24.adaptSize,
+                                                    width: 24.adaptSize,
+                                                  ),
+                                                  SizedBox(height: 13.v),
+                                                  Text(
+                                                    'lbl_summary'.tr,
+                                                    style: CustomTextStyles
+                                                        .labelLargeGray300,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                top: 12.v,
+                                              ),
+                                              child: SizedBox(
+                                                width: 158.h,
+                                                child: Divider(
+                                                  color: appTheme.greenA700,
+                                                  indent: 38.h,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.topRight,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 12.v, right: 2),
+                                              child: SizedBox(
+                                                width: 163.h,
+                                                child: Divider(
+                                                  color: appTheme.gray500,
+                                                  endIndent: 43.h,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                     SizedBox(height: 33.v),
                                     _buildDatePicker(context),
                                     SizedBox(height: 15.v),
@@ -210,9 +218,9 @@ class PackerDetailsDateTimeScreenState
     return CustomAppBar(
         leadingWidth: 44.h,
         leading: AppbarLeadingImage(
-          onTap: (){
-            NavigatorService.goBack();
-          },
+            onTap: () {
+              NavigatorService.goBack();
+            },
             imagePath: ImageConstant.imgLeftButtonOnerrorcontainer,
             margin: EdgeInsets.only(left: 24.h, top: 37.v, bottom: 29.v)),
         centerTitle: true,
@@ -223,8 +231,10 @@ class PackerDetailsDateTimeScreenState
   /// Section Widget
   Widget _buildDatePicker(BuildContext context) {
     final TextEditingController dateController = TextEditingController();
-    dateController.text =
-        context.read<CreateOrderProvider>().selectedDate.format(DateTimeUtils.dMonYFormat);
+    dateController.text = context
+        .read<CreateOrderProvider>()
+        .selectedDate
+        .format(DateTimeUtils.dMonYFormat);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       RichText(
           text: TextSpan(children: [
@@ -264,13 +274,11 @@ class PackerDetailsDateTimeScreenState
       return Wrap(
           runSpacing: 10.v,
           spacing: 10.h,
-          children: List<Widget>.generate(
-              provider.dateTimeList.length,
-              (index) {
-            final  DateTimeListModel model =
-                provider.dateTimeList[index];
+          children:
+              List<Widget>.generate(provider.dateTimeList.length, (index) {
+            final DateTimeListModel model = provider.dateTimeList[index];
             return FrameItemWidget(model, onSelectedChipView1: (bool value) {
-              provider.onDateSelected(index, value,context);
+              provider.onDateSelected(index, value, context);
             });
           }));
     });
@@ -352,7 +360,8 @@ class PackerDetailsDateTimeScreenState
                   decoration: AppDecoration.outlineGray3001,
                   child: CustomElevatedButton(
                       onPressed: () {
-                     NavigatorService.pushNamed(AppRoutes.packerAdditemsScreen);
+                        NavigatorService.pushNamed(
+                            AppRoutes.packerAdditemsScreen);
                       },
                       // text: "detail next",
                       text: "lbl_next".tr,
