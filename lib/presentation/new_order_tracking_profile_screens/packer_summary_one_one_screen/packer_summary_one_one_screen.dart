@@ -60,7 +60,7 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: _buildBottombar(context),
+        // bottomNavigationBar: _buildBottombar(context),
       ),
     );
   }
@@ -97,8 +97,10 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
           children: [
             Container(
               height: 600.v,
-              width: 430.h,
+              width: 450.h,
+              color: Colors.red,
               child: Image.network(
+                  fit: BoxFit.fitWidth,
                   "https://1.bp.blogspot.com/-T-EiGEHM1rE/XXheM0zqA2I/AAAAAAAACKo/uNn0t2VesUYE6QtOxXm4qoaiJLKWhu21QCLcBGAsYHQ/s1600/Screen%2BShot%2B2019-09-11%2Bat%2B12.37.26%2BPM.png"),
             ),
             // CustomImageView(
@@ -311,6 +313,10 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
                   ),
                   Spacer(),
                   CustomOutlinedButton(
+                    onPressed: () {
+                      NavigatorService.pushNamed(
+                          AppRoutes.paymentSuccessScreen);
+                    },
                     width: 120.h,
                     text: "lbl_call".tr,
                     margin: EdgeInsets.only(top: 10.v),

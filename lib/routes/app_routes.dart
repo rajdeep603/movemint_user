@@ -16,6 +16,7 @@ import '../presentation/packer_details_date_time_screen/packer_details_date_time
 import '../presentation/packer_home_container_screen/packer_home_container_screen.dart';
 import '../presentation/packer_home_page/packer_home_page.dart';
 import '../presentation/packer_location_set_screen/packer_location_set_screen.dart';
+import '../presentation/payment_successful_screen/payment_successful_screen.dart';
 import '../presentation/register_screen/register_screen.dart';
 import '../presentation/wellcome_screen/wellcome_screen.dart';
 import '../widgets/no_internet_screen.dart';
@@ -79,6 +80,8 @@ class AppRoutes {
 
   static const String editProfileScreen = '/edit_profile_screen';
 
+  static const String paymentSuccessScreen = '/payment_success';
+
   static const String packerSummaryOneOneScreen =
       '/packer_summary_one_one_screen';
 
@@ -110,6 +113,7 @@ class AppRoutes {
         packerAdditemsScreen: PackerAdditemsScreen.builder,
         packerDetailsDateTimeScreen: PackerDetailsDateTimeScreen.builder,
         appNavigationScreen: AppNavigationScreen.builder,
-    packageOrderDetailScreen: PackageOrderDetailScreen.builder,
+        packageOrderDetailScreen: PackageOrderDetailScreen.builder,
+        paymentSuccessScreen: PaymentSuccessFulScreen.builder,
       };
 }
