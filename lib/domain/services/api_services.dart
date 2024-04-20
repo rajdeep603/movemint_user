@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import '../../core/constants/url_constants.dart';
 import '../../core/utils/enums.dart';
 import '../../core/utils/logger.dart';
@@ -11,6 +15,34 @@ class ApiServices {
   String? _getToken() {
     return LocalStorage.getToken() ??
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTA0MDVmNDMxODQ5NzdjMzVkMzM4MCIsImlhdCI6MTcxMjQ5ODIzMSwiZXhwIjoxNzEyNTg0NjMxfQ.jE1QVN7Zq1qj_vH0wcpQy1IJnN-J9-PqWVGV6ZQMmKg';
+  }
+
+  final String _razorPayKey = dotenv.get('RAZOR_KEY');
+  final String _razorPaySecret = dotenv.get('RAZOR_SECRET');
+
+  Future<CustomResponse> razorPayApi(num amount, String receiptId) async {
+    final String auth =
+        'Basic ${base64Encode(utf8.encode('$_razorPayKey:$_razorPaySecret'))}';
+    final Map<String, String> headers = <String, String>{
+      'content-type': 'application/json',
+      'Authorization': auth
+    };
+    try {
+      final CustomResponse customResponse = await ApiCalling().callApi(
+        apiTypes: ApiTypes.post,
+        url: 'https://api.razorpay.com/v1/orders',
+        data: <String, Object>{
+          'amount': amount * 100,
+          'currency': 'INR',
+          'receipt': receiptId,
+        },
+        optionalHeader: headers,
+      );
+      return customResponse;
+    } on Exception catch (e) {
+      Logger.log(e);
+      return CustomResponse();
+    }
   }
 
   Future<CustomResponse> signIn(SignInRequestModel signInModel) async {

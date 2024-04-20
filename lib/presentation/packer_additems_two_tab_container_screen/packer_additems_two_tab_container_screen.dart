@@ -250,9 +250,9 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
           ),
           CustomElevatedButton(
             isLoading: provider.isLoading,
-            onPressed: () => provider.onNextClickEvent(context),
+            onPressed: () => provider.onPayEvent(),
             width: 224.h,
-            text: "Submit",
+            text: 'Submit',
           ),
         ],
       ),

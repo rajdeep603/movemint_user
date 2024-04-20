@@ -22,11 +22,11 @@ class CreateOrderProvider extends ChangeNotifier {
 
   Future<bool> createOrder() async {
     try {
-      List<ProductDetailModel> productList =
+      final List<ProductDetailModel> productList =
           List<ProductDetailModel>.from(productDetail);
-      productList.removeWhere((element) => element.doesItemsHaveQty == false);
-      productList.forEach((element) {
-        element.items.removeWhere((element) => element.qty == 0);
+      productList.removeWhere((ProductDetailModel element) => element.doesItemsHaveQty == false);
+      productList.forEach((ProductDetailModel element) {
+        element.items.removeWhere((ItemModel element) => element.qty == 0);
       });
       final CreateOrderModel createOrderModel = CreateOrderModel(
           datetime: selectedDate,
