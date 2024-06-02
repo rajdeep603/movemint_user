@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:movemint_user/widgets/custom_phone_number.dart';
-import 'package:country_pickers/country.dart';
-import 'package:country_pickers/country_pickers.dart';
 import 'package:movemint_user/widgets/custom_elevated_button.dart';
 import '../otp_verification_screen/otp_verification_screen.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
@@ -162,15 +160,16 @@ class LoginScreenState extends State<LoginScreen> {
               left: 11.h,
               right: 2.h,
             ),
-            child: Consumer<LoginProvider>(
+            child:
+            Consumer<LoginProvider>(
               builder: (BuildContext context, LoginProvider provider,
                   Widget? child) {
                 return CustomPhoneNumber(
-                  country: provider.selectedCountry,
+                  // country: provider.selectedCountry,
                   controller: provider.phoneNumberController,
-                  onTap: (Country value) {
-                    provider.changeCountry(value);
-                  },
+                  // onTap: (Country value) {
+                  //   provider.changeCountry(value);
+                  // },
                 );
               },
             ),

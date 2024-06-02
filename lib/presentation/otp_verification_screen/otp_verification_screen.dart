@@ -73,7 +73,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 ),
                 SizedBox(height: 20.v),
                 Text(
-                  '+${provider.routeModel.selectedCountry.phoneCode} - ${provider.routeModel.mobileNo}',
+                  '+91 - ${provider.routeModel.mobileNo}',
                   style: CustomTextStyles.titleMediumBlack900,
                 ),
                 SizedBox(height: 18.v),

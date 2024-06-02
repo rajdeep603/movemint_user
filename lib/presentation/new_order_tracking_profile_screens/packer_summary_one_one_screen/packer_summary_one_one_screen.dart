@@ -8,6 +8,7 @@ import '../../../widgets/custom_bottom_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_icon_button.dart';
 import '../../../widgets/custom_outlined_button.dart';
+import '../../map_order_tracking/map_order_tracking_screen.dart';
 import '../order_details_screen/package_order_detail_screen.dart';
 import 'models/packer_summary_one_one_model.dart';
 import 'provider/packer_summary_one_one_provider.dart';
@@ -87,42 +88,7 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
 
   /// Section Widget
   Widget _buildStack(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: SizedBox(
-        height: 220.v,
-        width: double.maxFinite,
-        child: Stack(
-          alignment: Alignment.topRight,
-          children: [
-            Container(
-              height: 600.v,
-              width: 450.h,
-              color: Colors.red,
-              child: Image.network(
-                  fit: BoxFit.fitWidth,
-                  "https://1.bp.blogspot.com/-T-EiGEHM1rE/XXheM0zqA2I/AAAAAAAACKo/uNn0t2VesUYE6QtOxXm4qoaiJLKWhu21QCLcBGAsYHQ/s1600/Screen%2BShot%2B2019-09-11%2Bat%2B12.37.26%2BPM.png"),
-            ),
-            // CustomImageView(
-            //   imagePath: ImageConstant.imgWhatsappImage20240227434x430,
-            //   height: 434.v,
-            //   width: 430.h,
-            //   alignment: Alignment.center,
-            // ),
-            // CustomImageView(
-            //   imagePath: ImageConstant.imgGroup1171281262,
-            //   height: 178.v,
-            //   width: 196.h,
-            //   alignment: Alignment.topRight,
-            //   margin: EdgeInsets.only(
-            //     top: 41.v,
-            //     right: 99.h,
-            //   ),
-            // )
-          ],
-        ),
-      ),
-    );
+    return MapOrderTrackingScreen.builder(context);
   }
 
   /// Section Widget

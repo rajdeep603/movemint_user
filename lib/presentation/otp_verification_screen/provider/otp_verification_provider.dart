@@ -63,8 +63,7 @@ class OtpVerificationProvider extends ChangeNotifier {
             routeModel.verificationId = verificationId;
           },
           codeAutoRetrievalTimeout: (String verificationId) {},
-          phoneNumber:
-              '+${routeModel.selectedCountry.phoneCode} ${routeModel.mobileNo}');
+          phoneNumber: '+91 ${routeModel.mobileNo}');
     } on Exception catch (e) {
       Logger.logError(e);
     }
@@ -74,17 +73,18 @@ class OtpVerificationProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      final PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: routeModel.verificationId,
-          smsCode: otpController.text.trim());
-      final UserCredential value =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      if (value.user?.uid == null) {
-        ToastHelper.somethingWentWrong();
-        return;
-      }
+      // final PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      //     verificationId: routeModel.verificationId,
+      //     smsCode: otpController.text.trim());
+      // final UserCredential value =
+      //     await FirebaseAuth.instance.signInWithCredential(credential);
+      // if (value.user?.uid == null) {
+      //   ToastHelper.somethingWentWrong();
+      //   return;
+      // }
       await _checkMobileNoExitsAndNavigate();
     } on Exception catch (e) {
+      ToastHelper.showToast(e.toString());
       Logger.logError(e);
     } finally {
       isLoading = false;
@@ -99,7 +99,7 @@ class OtpVerificationProvider extends ChangeNotifier {
       if (customResponse.statusCode == 404) {
         final RegisterScreenRouteModel registerScreenRouteModel =
             RegisterScreenRouteModel(
-                selectedCountry: routeModel.selectedCountry,
+                // selectedCountry: routeModel.selectedCountry,
                 mobileNo: routeModel.mobileNo,
                 verificationId: routeModel.verificationId);
         NavigatorService.pushNamedAndRemoveUntil(AppRoutes.registerScreen,

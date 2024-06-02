@@ -1,5 +1,3 @@
-import 'package:country_pickers/country.dart';
-import 'package:country_pickers/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +10,7 @@ class LoginProvider extends ChangeNotifier {
 
   bool isLoading = false;
 
-  Country selectedCountry = CountryPickerUtils.getCountryByPhoneCode('91');
+  // Country selectedCountry = CountryPickerUtils.getCountryByPhoneCode('91');
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Future<void> onGetOTPClickEvent() async {
@@ -24,30 +22,38 @@ class LoginProvider extends ChangeNotifier {
       try {
         isLoading = true;
         notifyListeners();
-        await FirebaseAuth.instance.verifyPhoneNumber(
-            verificationCompleted: (PhoneAuthCredential credential) {
-              isLoading = false;
-              notifyListeners();
-            },
-            verificationFailed: (FirebaseAuthException ex) {
-              isLoading = false;
-              notifyListeners();
-            },
-            codeSent: (String verificationId, int? resendToken) {
-              isLoading = false;
-              notifyListeners();
               final OtpVerificationRouteModel routeModel =
                   OtpVerificationRouteModel(
-                selectedCountry: selectedCountry,
+                // selectedCountry: selectedCountry,
                 mobileNo: phoneNumberController.text.trim(),
-                verificationId: verificationId,
+                verificationId: '000000',
               );
               NavigatorService.pushNamed(AppRoutes.otpVerificationScreen,
                   arguments: routeModel);
-            },
-            codeAutoRetrievalTimeout: (String verificationId) {},
-            phoneNumber:
-                '+${selectedCountry.phoneCode} ${phoneNumberController.text.trim()}');
+        // await FirebaseAuth.instance.verifyPhoneNumber(
+        //     verificationCompleted: (PhoneAuthCredential credential) {
+        //       isLoading = false;
+        //       notifyListeners();
+        //     },
+        //     verificationFailed: (FirebaseAuthException ex) {
+        //       isLoading = false;
+        //       notifyListeners();
+        //     },
+        //     codeSent: (String verificationId, int? resendToken) {
+        //       isLoading = false;
+        //       notifyListeners();
+        //       final OtpVerificationRouteModel routeModel =
+        //           OtpVerificationRouteModel(
+        //         // selectedCountry: selectedCountry,
+        //         mobileNo: phoneNumberController.text.trim(),
+        //         verificationId: verificationId,
+        //       );
+        //       NavigatorService.pushNamed(AppRoutes.otpVerificationScreen,
+        //           arguments: routeModel);
+        //     },
+        //     codeAutoRetrievalTimeout: (String verificationId) {},
+        //     phoneNumber:
+        //         '+91 ${phoneNumberController.text.trim()}');
       } on Exception catch (e) {
         Logger.logError(e);
       }
@@ -60,8 +66,8 @@ class LoginProvider extends ChangeNotifier {
     phoneNumberController.dispose();
   }
 
-  void changeCountry(Country value) {
-    selectedCountry = value;
-    notifyListeners();
-  }
+  // void changeCountry(Country value) {
+  //   selectedCountry = value;
+  //   notifyListeners();
+  // }
 }

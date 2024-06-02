@@ -11,7 +11,8 @@ import '../../domain/models/firebase_models/order_tracking_fcm_model.dart';
 import '../../domain/services/firestore_services.dart';
 import '../../domain/services/location_services.dart';
 
-class OrderTrackingProvider extends ChangeNotifier {
+class MapOrderTrackingProvider extends ChangeNotifier {
+  MapOrderTrackingProvider(this.orderId);
   StreamSubscription<OrderTrackingFcmModel?>? _subscription;
   final Completer<GoogleMapController> controller =
       Completer<GoogleMapController>();
@@ -38,12 +39,12 @@ class OrderTrackingProvider extends ChangeNotifier {
         displayError = 'Please enable location permission';
         return;
       }
-      displayError=null;
+      displayError = null;
       if (destinationLatitude == null || destinationLongitude == null) {
         displayError = 'Address not available';
         return;
       }
-      displayError=null;
+      displayError = null;
       destinationLocation = LatLng(destinationLatitude, destinationLongitude);
       _createOrderStream();
     } on Exception catch (e) {
@@ -78,7 +79,7 @@ class OrderTrackingProvider extends ChangeNotifier {
         notifyListeners();
       } else {
         driverLocation = LatLng(model.latitude!, model.longitude!);
-        displayError=null;
+        displayError = null;
         getPolyPoints();
         // setCustomMarkerIcon();
       }
@@ -105,27 +106,27 @@ class OrderTrackingProvider extends ChangeNotifier {
     }
   }
 
-  // void setCustomMarkerIcon() {
-  //   BitmapDescriptor.fromAssetImage(
-  //           ImageConfiguration.empty, 'assets/Pin_source.png')
-  //       .then(
-  //     (BitmapDescriptor icon) {
-  //       sourceIcon = icon;
-  //     },
-  //   );
-  //   BitmapDescriptor.fromAssetImage(
-  //           ImageConfiguration.empty, 'assets/Pin_destination.png')
-  //       .then(
-  //     (BitmapDescriptor icon) {
-  //       destinationIcon = icon;
-  //     },
-  //   );
-  //   BitmapDescriptor.fromAssetImage(
-  //           ImageConfiguration.empty, 'assets/Badge.png')
-  //       .then(
-  //     (BitmapDescriptor icon) {
-  //       currentLocationIcon = icon;
-  //     },
-  //   );
-  // }
+// void setCustomMarkerIcon() {
+//   BitmapDescriptor.fromAssetImage(
+//           ImageConfiguration.empty, 'assets/Pin_source.png')
+//       .then(
+//     (BitmapDescriptor icon) {
+//       sourceIcon = icon;
+//     },
+//   );
+//   BitmapDescriptor.fromAssetImage(
+//           ImageConfiguration.empty, 'assets/Pin_destination.png')
+//       .then(
+//     (BitmapDescriptor icon) {
+//       destinationIcon = icon;
+//     },
+//   );
+//   BitmapDescriptor.fromAssetImage(
+//           ImageConfiguration.empty, 'assets/Badge.png')
+//       .then(
+//     (BitmapDescriptor icon) {
+//       currentLocationIcon = icon;
+//     },
+//   );
+// }
 }
