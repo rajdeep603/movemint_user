@@ -13,6 +13,7 @@ import '../../domain/services/location_services.dart';
 
 class MapOrderTrackingProvider extends ChangeNotifier {
   MapOrderTrackingProvider(this.orderId);
+
   StreamSubscription<OrderTrackingFcmModel?>? _subscription;
   final Completer<GoogleMapController> controller =
       Completer<GoogleMapController>();
@@ -46,6 +47,7 @@ class MapOrderTrackingProvider extends ChangeNotifier {
       }
       displayError = null;
       destinationLocation = LatLng(destinationLatitude, destinationLongitude);
+      displayError = 'Tracking...';
       _createOrderStream();
     } on Exception catch (e) {
       Logger.log(e);
@@ -66,7 +68,7 @@ class MapOrderTrackingProvider extends ChangeNotifier {
     return true;
   }
 
-  void _createOrderStream() {
+  Future<void> _createOrderStream() async {
     if (orderId == null) {
       displayError = 'Order Not available';
       return;
@@ -74,14 +76,14 @@ class MapOrderTrackingProvider extends ChangeNotifier {
     _subscription = FireStoreServices()
         .getOrderTrackingStream(orderId!)
         ?.listen((OrderTrackingFcmModel? model) {
-      if (model == null) {
+      Logger.log('model:${model?.toMap()}');
+      if (model == null || model.longitude == null || model.latitude == null) {
         displayError = 'Order Not available';
         notifyListeners();
       } else {
         driverLocation = LatLng(model.latitude!, model.longitude!);
         displayError = null;
         getPolyPoints();
-        // setCustomMarkerIcon();
       }
     });
   }

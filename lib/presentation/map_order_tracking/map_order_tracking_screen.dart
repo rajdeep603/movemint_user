@@ -44,9 +44,9 @@ class MapOrderTrackingScreenState extends State<MapOrderTrackingScreen> {
 
   Widget _googleMapWidget() {
     return provider.isLoading
-        ? Center(child: const CustomCircularLoading())
+        ? const Center(child: CustomCircularLoading())
         : (provider.displayError != null)
-            ? Center(child: Text(provider.displayError!))
+            ? Center(child: Text(provider.displayError!,style: CustomTextStyles.titleMediumBlack900,))
             : GoogleMap(
                 initialCameraPosition: CameraPosition(
                   target: LatLng(provider.destinationLocation!.latitude,
