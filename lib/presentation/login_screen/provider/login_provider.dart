@@ -22,38 +22,38 @@ class LoginProvider extends ChangeNotifier {
       try {
         isLoading = true;
         notifyListeners();
+              // final OtpVerificationRouteModel routeModel =
+              //     OtpVerificationRouteModel(
+              //   // selectedCountry: selectedCountry,
+              //   mobileNo: phoneNumberController.text.trim(),
+              //   verificationId: '000000',
+              // );
+              // NavigatorService.pushNamed(AppRoutes.otpVerificationScreen,
+              //     arguments: routeModel);
+        await FirebaseAuth.instance.verifyPhoneNumber(
+            verificationCompleted: (PhoneAuthCredential credential) {
+              isLoading = false;
+              notifyListeners();
+            },
+            verificationFailed: (FirebaseAuthException ex) {
+              isLoading = false;
+              notifyListeners();
+            },
+            codeSent: (String verificationId, int? resendToken) {
+              isLoading = false;
+              notifyListeners();
               final OtpVerificationRouteModel routeModel =
                   OtpVerificationRouteModel(
                 // selectedCountry: selectedCountry,
                 mobileNo: phoneNumberController.text.trim(),
-                verificationId: '000000',
+                verificationId: verificationId,
               );
               NavigatorService.pushNamed(AppRoutes.otpVerificationScreen,
                   arguments: routeModel);
-        // await FirebaseAuth.instance.verifyPhoneNumber(
-        //     verificationCompleted: (PhoneAuthCredential credential) {
-        //       isLoading = false;
-        //       notifyListeners();
-        //     },
-        //     verificationFailed: (FirebaseAuthException ex) {
-        //       isLoading = false;
-        //       notifyListeners();
-        //     },
-        //     codeSent: (String verificationId, int? resendToken) {
-        //       isLoading = false;
-        //       notifyListeners();
-        //       final OtpVerificationRouteModel routeModel =
-        //           OtpVerificationRouteModel(
-        //         // selectedCountry: selectedCountry,
-        //         mobileNo: phoneNumberController.text.trim(),
-        //         verificationId: verificationId,
-        //       );
-        //       NavigatorService.pushNamed(AppRoutes.otpVerificationScreen,
-        //           arguments: routeModel);
-        //     },
-        //     codeAutoRetrievalTimeout: (String verificationId) {},
-        //     phoneNumber:
-        //         '+91 ${phoneNumberController.text.trim()}');
+            },
+            codeAutoRetrievalTimeout: (String verificationId) {},
+            phoneNumber:
+                '+91 ${phoneNumberController.text.trim()}');
       } on Exception catch (e) {
         Logger.logError(e);
       }

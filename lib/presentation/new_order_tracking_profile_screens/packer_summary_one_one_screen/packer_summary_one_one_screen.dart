@@ -55,7 +55,7 @@ class PackerSummaryOneOneScreenState extends State<PackerSummaryOneOneScreen> {
                 alignment: Alignment.bottomCenter,
                 children: [
                   _buildStack(context),
-                  _buildColumncheckmark(context)
+                  // _buildColumncheckmark(context)
                 ],
               ),
             ),

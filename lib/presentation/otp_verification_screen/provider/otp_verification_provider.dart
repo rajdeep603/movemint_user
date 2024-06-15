@@ -73,15 +73,15 @@ class OtpVerificationProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      // final PhoneAuthCredential credential = PhoneAuthProvider.credential(
-      //     verificationId: routeModel.verificationId,
-      //     smsCode: otpController.text.trim());
-      // final UserCredential value =
-      //     await FirebaseAuth.instance.signInWithCredential(credential);
-      // if (value.user?.uid == null) {
-      //   ToastHelper.somethingWentWrong();
-      //   return;
-      // }
+      final PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: routeModel.verificationId,
+          smsCode: otpController.text.trim());
+      final UserCredential value =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      if (value.user?.uid == null) {
+        ToastHelper.somethingWentWrong();
+        return;
+      }
       await _checkMobileNoExitsAndNavigate();
     } on Exception catch (e) {
       ToastHelper.showToast(e.toString());
