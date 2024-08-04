@@ -1,5 +1,6 @@
 import '../../core/app_export.dart';
 import '../../domain/models/create_order_request_model.dart';
+import '../../domain/models/get_item_data_response_model.dart';
 import '../../domain/providers/create_order_provider.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_icon.dart';
@@ -54,232 +55,342 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
   Widget _listWidget() {
     return Expanded(
         child: ListView.builder(
-            itemCount:createOrderProvider.productDetail.length,
+            itemCount: provider.itemData.data?.length ?? 0,
+            // itemCount:createOrderProvider.productDetail.length,
             itemBuilder: (BuildContext context, int index) {
-              final ProductDetailModel data =createOrderProvider.productDetail[index];
-              return _buildHorizontalCard(data);
+              final data = provider.itemData.data![index];
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.v),
+                padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.v),
+                decoration: AppDecoration.fillGray5001.copyWith(
+                  borderRadius: BorderRadiusStyle.roundedBorder10,
+                ),
+                child: Container(
+                  height: 200,
+                  child: ListView.builder(
+                    itemCount: data.items?.length ?? 0,
+                    // scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int innerIndex) {
+                      final productData = data.items![innerIndex];
+
+                      return ExpansionTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 1.v),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(productData.subcategoryName.toString(),
+                                      style:
+                                          CustomTextStyles.titleMediumBlack900),
+                                  SizedBox(height: 3.v),
+                                  Text('${data.items!.length} Items',
+                                      style: theme.textTheme.bodySmall),
+                                  SizedBox(height: 3.v),
+                                  Container(
+                                    height:
+                                        MediaQuery.of(context).size.height / 6,
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.6,
+                                    // color: Colors.red,
+                                    child: ListView.builder(
+                                        itemCount:
+                                            productData.items?.length ?? 0,
+                                        // scrollDirection: Axis.horizontal,
+                                        itemBuilder: (BuildContext context,
+                                            int itemIndex) {
+                                          final itemData =
+                                              productData.items![itemIndex];
+                                          // itemData.qty = 1;
+                                          // final ItemModel item = data.items[index];
+                                          return ListTile(
+                                            title: Text(
+                                                itemData.name.toString(),
+                                                style: CustomTextStyles
+                                                    .titleMediumBlack900),
+                                            trailing: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                InkWell(
+                                                  onTap: () {
+                                                    if (itemData.qty != 0) {
+                                                      itemData.qty =
+                                                          itemData.qty! - 1;
+                                                      if (data.items!.any(
+                                                          (DatumItem element) =>
+                                                              element
+                                                                  .items![
+                                                                      itemIndex]
+                                                                  .qty !=
+                                                              0)) {
+                                                        data.doesItemsHaveQty =
+                                                            true;
+                                                      } else {
+                                                        data.doesItemsHaveQty =
+                                                            false;
+                                                      }
+                                                      productData.items
+                                                          ?.forEach((e) {
+                                                        int qty = e.qty ?? 0;
+                                                        double price =
+                                                            double.tryParse(
+                                                                    e.pricePerKm ??
+                                                                        '0') ??
+                                                                0.0;
+                                                        print('qty :$qty');
+                                                        print('price :$price');
+                                                        provider.totalItmes =
+                                                            provider.totalItmes -
+                                                                1;
+                                                        provider.totalPrice =
+                                                            provider.totalPrice -
+                                                                price;
+                                                      });
+                                                      createOrderProvider
+                                                          .notifyListeners();
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: appTheme
+                                                              .whiteA700,
+                                                          shape:
+                                                              BoxShape.circle),
+                                                      child: CustomIcon(
+                                                        size: 30,
+                                                        Icons.remove,
+                                                        color: itemData.qty == 0
+                                                            ? appTheme.gray400
+                                                            : appTheme.green400,
+                                                      )),
+                                                ),
+                                                SizedBox(width: 10.h),
+                                                Text(
+                                                  itemData.qty.toString(),
+                                                  // item.qty.toString(),
+                                                  style: CustomTextStyles
+                                                      .titleMediumBlack900,
+                                                ),
+                                                SizedBox(width: 10.h),
+                                                InkWell(
+                                                  onTap: () {
+                                                    itemData.qty =
+                                                        itemData.qty! + 1;
+                                                    data.doesItemsHaveQty =
+                                                        true;
+                                                    productData.items
+                                                        ?.forEach((e) {
+                                                      int qty = e.qty ?? 0;
+                                                      double price =
+                                                          double.tryParse(
+                                                                  e.pricePerKm ??
+                                                                      '0') ??
+                                                              0.0;
+                                                      print('qty :$qty');
+                                                      print('price :$price');
+                                                      provider.totalItmes =
+                                                          provider.totalItmes +
+                                                              1;
+                                                      provider.totalPrice =
+                                                          provider.totalPrice +
+                                                              price;
+                                                    });
+                                                    createOrderProvider
+                                                        .notifyListeners();
+                                                  },
+                                                  child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: appTheme
+                                                              .whiteA700,
+                                                          shape:
+                                                              BoxShape.circle),
+                                                      child: CustomIcon(
+                                                        size: 30,
+                                                        Icons.add,
+                                                        color:
+                                                            appTheme.green400,
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                          //   Row(
+                                          //   children: [
+                                          //     Text("${itemIndex + 1}. "),
+                                          //     Text(itemData.name.toString())
+                                          //   ],
+                                          // );
+                                        }),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  // children: List.generate(data.items.length, (int index) {
+                  //   final ItemModel item = data.items[index];
+                  //   return ListTile(
+                  //     title: Text(item.name, style: CustomTextStyles.titleMediumBlack900),
+                  //     trailing: Row(
+                  //       mainAxisSize: MainAxisSize.min,
+                  //       children: <Widget>[
+                  //         InkWell(
+                  //           onTap: () {
+                  //             if (item.qty != 0) {
+                  //               item.qty = item.qty - 1;
+                  //               if (data.items
+                  //                   .any((ItemModel element) => element.qty != 0)) {
+                  //                 data.doesItemsHaveQty = true;
+                  //               } else {
+                  //                 data.doesItemsHaveQty = false;
+                  //               }
+                  //               createOrderProvider.notifyListeners();
+                  //             }
+                  //           },
+                  //           child: Container(
+                  //               decoration: BoxDecoration(
+                  //                   color: appTheme.whiteA700, shape: BoxShape.circle),
+                  //               child: CustomIcon(
+                  //                 Icons.remove,
+                  //                 color: item.qty == 0
+                  //                     ? appTheme.gray400
+                  //                     : appTheme.green400,
+                  //               )),
+                  //         ),
+                  //         SizedBox(width: 10.h),
+                  //         Text(
+                  //           item.qty.toString(),
+                  //           style: CustomTextStyles.titleMediumBlack900,
+                  //         ),
+                  //         SizedBox(width: 10.h),
+                  //         InkWell(
+                  //           onTap: () {
+                  //             item.qty = item.qty + 1;
+                  //             data.doesItemsHaveQty = true;
+                  //             createOrderProvider.notifyListeners();
+                  //           },
+                  //           child: Container(
+                  //               decoration: BoxDecoration(
+                  //                   color: appTheme.whiteA700, shape: BoxShape.circle),
+                  //               child: CustomIcon(
+                  //                 Icons.add,
+                  //                 color: appTheme.green400,
+                  //               )),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   );
+                  // }),
+                ),
+              )
+                  // _buildHorizontalCard(data)
+                  ;
             }));
   }
 
-  /// Section Widget
-  Widget _buildHorizontalCard(ProductDetailModel data) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.v),
-      padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.v),
-      decoration: AppDecoration.fillGray5001.copyWith(
-        borderRadius: BorderRadiusStyle.roundedBorder10,
-      ),
-      child: ExpansionTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 1.v),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(data.name, style: CustomTextStyles.titleMediumBlack900),
-                  SizedBox(height: 3.v),
-                  Text('${data.items.length} Items',
-                      style: theme.textTheme.bodySmall),
-                ],
-              ),
-            ),
-          ],
-        ),
-        children: List.generate(data.items.length, (int index) {
-          final ItemModel item = data.items[index];
-          return ListTile(
-            title: Text(item.name, style: CustomTextStyles.titleMediumBlack900),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    if (item.qty != 0) {
-                      item.qty = item.qty - 1;
-                      if (data.items
-                          .any((ItemModel element) => element.qty != 0)) {
-                        data.doesItemsHaveQty = true;
-                      } else {
-                        data.doesItemsHaveQty = false;
-                      }
-                      createOrderProvider.notifyListeners();
-                    }
-                  },
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: appTheme.whiteA700, shape: BoxShape.circle),
-                      child: CustomIcon(
-                        Icons.remove,
-                        color: item.qty == 0
-                            ? appTheme.gray400
-                            : appTheme.green400,
-                      )),
-                ),
-                SizedBox(width: 10.h),
-                Text(
-                  item.qty.toString(),
-                  style: CustomTextStyles.titleMediumBlack900,
-                ),
-                SizedBox(width: 10.h),
-                InkWell(
-                  onTap: () {
-                    item.qty = item.qty + 1;
-                    data.doesItemsHaveQty = true;
-                    createOrderProvider.notifyListeners();
-                  },
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: appTheme.whiteA700, shape: BoxShape.circle),
-                      child: CustomIcon(
-                        Icons.add,
-                        color: appTheme.green400,
-                      )),
-                ),
-              ],
-            ),
-          );
-        }),
-      ),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildHorizontalCard1(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 22.h),
-      padding: EdgeInsets.symmetric(
-        horizontal: 16.h,
-        vertical: 9.v,
-      ),
-      decoration: AppDecoration.fillGray5001.copyWith(
-        borderRadius: BorderRadiusStyle.roundedBorder10,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 1.v),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "lbl_bedroom_room".tr,
-                  style: theme.textTheme.titleSmall,
-                ),
-                SizedBox(height: 3.v),
-                Text(
-                  "lbl_5_items".tr,
-                  style: theme.textTheme.bodySmall,
-                ),
-              ],
-            ),
-          ),
-          CustomImageView(
-            imagePath: ImageConstant.imgArrowRightPurple900,
-            height: 12.adaptSize,
-            width: 12.adaptSize,
-            margin: EdgeInsets.symmetric(vertical: 12.v),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildHorizontalCard2(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 22.h),
-      padding: EdgeInsets.symmetric(
-        horizontal: 16.h,
-        vertical: 9.v,
-      ),
-      decoration: AppDecoration.fillGray5001.copyWith(
-        borderRadius: BorderRadiusStyle.roundedBorder10,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 1.v),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "lbl_kitchen".tr,
-                  style: theme.textTheme.titleSmall,
-                ),
-                SizedBox(height: 3.v),
-                Text(
-                  "lbl_5_items".tr,
-                  style: theme.textTheme.bodySmall,
-                ),
-              ],
-            ),
-          ),
-          CustomImageView(
-            imagePath: ImageConstant.imgArrowRightPurple900,
-            height: 12.adaptSize,
-            width: 12.adaptSize,
-            margin: EdgeInsets.symmetric(vertical: 12.v),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildActionBottom2(BuildContext context) {
-    return Container(
-      decoration: AppDecoration.fillOnErrorContainer,
-      child: Column(
-        children: [
-          SizedBox(height: 32.v),
-          Container(
-            width: double.maxFinite,
-            decoration: AppDecoration.outlineGray300,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: 41.v,
-                    bottom: 16.v,
-                  ),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "lbl_total_items".tr,
-                          style: CustomTextStyles.titleMediumInterff71727a,
-                        ),
-                        TextSpan(
-                          text: "lbl_0".tr,
-                          style: CustomTextStyles.titleMediumInterff000000,
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                CustomElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SummaryOne()));
-                  },
-                  width: 224.h,
-                  text: "test_next",
-                  // text: "lbl_next".tr,
-                  margin: EdgeInsets.only(top: 25.v),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+// /// Section Widget
+// Widget _buildHorizontalCard(GetItemDataResponseModel data) {
+//   return Container(
+//     margin: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.v),
+//     padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.v),
+//     decoration: AppDecoration.fillGray5001.copyWith(
+//       borderRadius: BorderRadiusStyle.roundedBorder10,
+//     ),
+//     child: ExpansionTile(
+//       title: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           Padding(
+//             padding: EdgeInsets.only(bottom: 1.v),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(data.data!.first.categoryName.toString(),
+//                     style: CustomTextStyles.titleMediumBlack900),
+//                 SizedBox(height: 3.v),
+//                 Text(
+//                     '${data.data!.first.items!.first.subcategoryName!.length} Items',
+//                     style: theme.textTheme.bodySmall),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//       // children: List.generate(data.items.length, (int index) {
+//       //   final ItemModel item = data.items[index];
+//       //   return ListTile(
+//       //     title: Text(item.name, style: CustomTextStyles.titleMediumBlack900),
+//       //     trailing: Row(
+//       //       mainAxisSize: MainAxisSize.min,
+//       //       children: <Widget>[
+//       //         InkWell(
+//       //           onTap: () {
+//       //             if (item.qty != 0) {
+//       //               item.qty = item.qty - 1;
+//       //               if (data.items
+//       //                   .any((ItemModel element) => element.qty != 0)) {
+//       //                 data.doesItemsHaveQty = true;
+//       //               } else {
+//       //                 data.doesItemsHaveQty = false;
+//       //               }
+//       //               createOrderProvider.notifyListeners();
+//       //             }
+//       //           },
+//       //           child: Container(
+//       //               decoration: BoxDecoration(
+//       //                   color: appTheme.whiteA700, shape: BoxShape.circle),
+//       //               child: CustomIcon(
+//       //                 Icons.remove,
+//       //                 color: item.qty == 0
+//       //                     ? appTheme.gray400
+//       //                     : appTheme.green400,
+//       //               )),
+//       //         ),
+//       //         SizedBox(width: 10.h),
+//       //         Text(
+//       //           item.qty.toString(),
+//       //           style: CustomTextStyles.titleMediumBlack900,
+//       //         ),
+//       //         SizedBox(width: 10.h),
+//       //         InkWell(
+//       //           onTap: () {
+//       //             item.qty = item.qty + 1;
+//       //             data.doesItemsHaveQty = true;
+//       //             createOrderProvider.notifyListeners();
+//       //           },
+//       //           child: Container(
+//       //               decoration: BoxDecoration(
+//       //                   color: appTheme.whiteA700, shape: BoxShape.circle),
+//       //               child: CustomIcon(
+//       //                 Icons.add,
+//       //                 color: appTheme.green400,
+//       //               )),
+//       //         ),
+//       //       ],
+//       //     ),
+//       //   );
+//       // }),
+//     ),
+//   );
+// }
 }
+
+// List a =[];
+// List b =[];
+// List c=[a,b];
+//
+// int items=0;
+// double price=0;
+//   void abc(){
+//     c.forEach((element){
+//       element.a.for
+//        items=itmes+   c.item;
+//       price = price+ (c.price*c.itmes)
+//
+//     });
+//   }

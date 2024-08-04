@@ -5,16 +5,63 @@ import '../../../core/app_export.dart';
 import '../../../core/utils/enums.dart';
 import '../../../core/utils/toast_helper.dart';
 import '../../../domain/models/create_order_request_model.dart';
+import '../../../domain/models/get_item_data_response_model.dart';
 import '../../../domain/models/razorypay_model/create_order_razor_pay_response_model.dart';
 import '../../../domain/providers/create_order_provider.dart';
 import '../../../domain/services/common_api_call.dart';
 import '../../../domain/services/razorpay_services.dart';
 import '../models/packer_additems_two_tab_container_model.dart';
 
+final dummyData = {
+  "success": true,
+  "message": "successful",
+  "data": [
+    {
+      "category_name": "Household",
+      "category_id": "66974cc75d10219433af3ca3",
+      "items": [
+        {
+          "subcategory_name": "Living Room",
+          "subcategory_id": "66974d2e5d10219433af3ca5",
+          "items": [
+            {
+              "_id": "66974c475d10219433af3ca1",
+              "name": "table",
+              "price_per_km": "200",
+              "qty": 0
+            }
+          ]
+        },
+      ]
+    },
+    {
+      "category_name": "Others",
+      "category_id": "669bb5013ae7b4d51b1f4338",
+      "items": [
+        {
+          "subcategory_name": "Bed Room",
+          "subcategory_id": "669ea093d299141c2358267f",
+          "items": [
+            {
+              "_id": "669fe6d880a8ced6d4407e67",
+              "name": "sofa",
+              "price_per_km": "25",
+              "qty": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
 class PackerAddItemsProvider extends ChangeNotifier {
   PackerAddItemsProvider(this.screenContext) {
     screenContext.read<CreateOrderProvider>().productDetail = List.from(list);
     _initializeRazorPay();
+
+    itemData = GetItemDataResponseModel.fromMap(dummyData);
+    print('GetItemDataResponseModel ${itemData.data?.length}');
   }
 
   BuildContext screenContext;
@@ -24,6 +71,14 @@ class PackerAddItemsProvider extends ChangeNotifier {
 
   late RazorpayService razorpayService;
   CreateOrderRazorPayResponseModel? createOrderRazorPayResponseModel;
+  GetItemDataResponseModel? getItemDataResponseModel;
+
+  late GetItemDataResponseModel itemData;
+
+  int totalItmes = 0;
+  double totalPrice = 0;
+
+  // List<int> totalItemsQuantity = []
 
   Future<void> onNextClickEvent(BuildContext context) async {
     // if (screenContext.read<CreateOrderProvider>().productDetail.any((ProductDetailModel element) => element.doesItemsHaveQty)) {

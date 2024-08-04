@@ -12,7 +12,6 @@ import '../order_list_screen/order_list_provder.dart';
 import '../packer_location_set_screen/packer_location_set_screen.dart';
 import 'provider/packer_home_provider.dart';
 
-
 // ignore_for_file: must_be_immutable
 class PackerHomePage extends StatefulWidget {
   const PackerHomePage({Key? key})
@@ -370,7 +369,7 @@ class PackerHomePageState extends State<PackerHomePage> {
   /// Section Widget
   Widget _buildHistoryCard(BuildContext context) {
     return Consumer<GetOrdersListRepoProvider>(builder: (BuildContext context,
-    GetOrdersListRepoProvider orderListProvider, Widget? child) {
+        GetOrdersListRepoProvider orderListProvider, Widget? child) {
       return Column(
         children: [
           Container(
@@ -385,210 +384,210 @@ class PackerHomePageState extends State<PackerHomePage> {
             child: orderListProvider.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : orderListProvider.getOrderModel == null
-                ? Text(
-              'No Order Found',
-              style: CustomTextStyles.labelLargeMedium,
-            )
-                : ListView.builder(
-                itemCount: 1,
-                itemBuilder: (BuildContext context, int index) {
-                  final Order order =
-                  orderListProvider.getOrderModel!.orders[index];
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 10.v),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.v, horizontal: 15.h),
-                      color: appTheme.gray50,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 172.v),
-                            child: CustomIconButton(
-                              height: 46.adaptSize,
-                              width: 46.adaptSize,
-                              padding: EdgeInsets.all(9.h),
-                              decoration:
-                              IconButtonStyleHelper.fillGreen,
-                              child: CustomImageView(
-                                imagePath: ImageConstant.imgUser,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 18.h,
-                                top: 3.v,
-                              ),
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                    ? Text(
+                        'No Order Found',
+                        style: CustomTextStyles.labelLargeMedium,
+                      )
+                    : ListView.builder(
+                        itemCount:
+                            orderListProvider.getOrderModel!.orders?.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final Order order =
+                              orderListProvider.getOrderModel!.orders![index];
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 10.v),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.v, horizontal: 15.h),
+                              color: appTheme.gray50,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(
-                                    width: 316.h,
-                                    child: Row(
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              '# ${order.id} ',
-                                              style: CustomTextStyles
-                                                  .titleSmallMedium,
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                left: 9.h,
-                                                bottom: 2.v,
-                                              ),
-                                              child: Text(
-                                                order.datetime?.format(
-                                                    DateTimeUtils
-                                                        .dMonFormat) ??
-                                                    'NA',
-                                                style: CustomTextStyles
-                                                    .bodyLargeOnPrimaryContainer,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        // Container(
-                                        //   height: 4.adaptSize,
-                                        //   width: 4.adaptSize,
-                                        //   margin: EdgeInsets.only(
-                                        //     left: 9.h,
-                                        //     top: 9.v,
-                                        //     bottom: 9.v,
-                                        //   ),
-                                        //   decoration: BoxDecoration(
-                                        //     color: appTheme.blueGray100,
-                                        //     borderRadius: BorderRadius.circular(
-                                        //       2.h,
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        Spacer(),
-                                        CustomImageView(
-                                          imagePath: ImageConstant
-                                              .imgNotification,
-                                          height: 23.adaptSize,
-                                          width: 23.adaptSize,
-                                        ),
-                                      ],
+                                  Padding(
+                                    padding: EdgeInsets.only(bottom: 172.v),
+                                    child: CustomIconButton(
+                                      height: 46.adaptSize,
+                                      width: 46.adaptSize,
+                                      padding: EdgeInsets.all(9.h),
+                                      decoration:
+                                          IconButtonStyleHelper.fillGreen,
+                                      child: CustomImageView(
+                                        imagePath: ImageConstant.imgUser,
+                                      ),
                                     ),
                                   ),
-                                  SizedBox(height: 22.v),
-                                  Padding(
-                                    padding:
-                                    EdgeInsets.only(right: 33.h),
-                                    child: Row(
-                                      children: [
-                                        CustomImageView(
-                                          imagePath:
-                                          ImageConstant.imgVector,
-                                          height: 101.v,
-                                          width: 5.h,
-                                          margin: EdgeInsets.only(
-                                            top: 7.v,
-                                            bottom: 8.v,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 14.h),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        left: 18.h,
+                                        top: 3.v,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 316.h,
+                                            child: Row(
                                               children: [
-                                                Text(
-                                                  "lbl_from".tr,
-                                                  style: CustomTextStyles
-                                                      .bodyLargeOnPrimaryContainer,
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      '# ${order.id} ',
+                                                      style: CustomTextStyles
+                                                          .titleSmallMedium,
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                        left: 9.h,
+                                                        bottom: 2.v,
+                                                      ),
+                                                      child: Text(
+                                                        order.datetime?.format(
+                                                                DateTimeUtils
+                                                                    .dMonFormat) ??
+                                                            'NA',
+                                                        style: CustomTextStyles
+                                                            .bodyLargeOnPrimaryContainer,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                SizedBox(height: 9.v),
-                                                Text(
-                                                  order.from.toString(),
-                                                  style: CustomTextStyles
-                                                      .bodyLargeBluegray400,
-                                                ),
-                                                SizedBox(height: 19.v),
-                                                Text(
-                                                  "lbl_to".tr,
-                                                  style: CustomTextStyles
-                                                      .bodyLargeOnPrimaryContainer,
-                                                ),
-                                                SizedBox(height: 9.v),
-                                                Text(
-                                                  order.to.toString(),
-                                                  style: CustomTextStyles
-                                                      .bodyLargeBluegray400,
+                                                // Container(
+                                                //   height: 4.adaptSize,
+                                                //   width: 4.adaptSize,
+                                                //   margin: EdgeInsets.only(
+                                                //     left: 9.h,
+                                                //     top: 9.v,
+                                                //     bottom: 9.v,
+                                                //   ),
+                                                //   decoration: BoxDecoration(
+                                                //     color: appTheme.blueGray100,
+                                                //     borderRadius: BorderRadius.circular(
+                                                //       2.h,
+                                                //     ),
+                                                //   ),
+                                                // ),
+                                                Spacer(),
+                                                CustomImageView(
+                                                  imagePath: ImageConstant
+                                                      .imgNotification,
+                                                  height: 23.adaptSize,
+                                                  width: 23.adaptSize,
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(height: 23.v),
-                                  Row(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          top: 1.v,
-                                          bottom: 8.v,
-                                        ),
-                                        child: Text(
-                                          "msg_delivery_status".tr,
-                                          style: CustomTextStyles
-                                              .bodyMediumBluegray400,
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 83.h,
-                                        margin:
-                                        EdgeInsets.only(left: 18.h),
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 11.h,
-                                          vertical: 2.v,
-                                        ),
-                                        decoration: AppDecoration
-                                            .fillGreen
-                                            .copyWith(
-                                          borderRadius:
-                                          BorderRadiusStyle
-                                              .roundedBorder9,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            order.status ?? "NA",
-                                            style: CustomTextStyles
-                                                .bodySmallPrimary,
+                                          SizedBox(height: 22.v),
+                                          Padding(
+                                            padding:
+                                                EdgeInsets.only(right: 33.h),
+                                            child: Row(
+                                              children: [
+                                                CustomImageView(
+                                                  imagePath:
+                                                      ImageConstant.imgVector,
+                                                  height: 101.v,
+                                                  width: 5.h,
+                                                  margin: EdgeInsets.only(
+                                                    top: 7.v,
+                                                    bottom: 8.v,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 14.h),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "lbl_from".tr,
+                                                          style: CustomTextStyles
+                                                              .bodyLargeOnPrimaryContainer,
+                                                        ),
+                                                        SizedBox(height: 9.v),
+                                                        Text(
+                                                          order.from.toString(),
+                                                          style: CustomTextStyles
+                                                              .bodyLargeBluegray400,
+                                                        ),
+                                                        SizedBox(height: 19.v),
+                                                        Text(
+                                                          "lbl_to".tr,
+                                                          style: CustomTextStyles
+                                                              .bodyLargeOnPrimaryContainer,
+                                                        ),
+                                                        SizedBox(height: 9.v),
+                                                        Text(
+                                                          order.to.toString(),
+                                                          style: CustomTextStyles
+                                                              .bodyLargeBluegray400,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
+                                          SizedBox(height: 23.v),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  top: 1.v,
+                                                  bottom: 8.v,
+                                                ),
+                                                child: Text(
+                                                  "msg_delivery_status".tr,
+                                                  style: CustomTextStyles
+                                                      .bodyMediumBluegray400,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 83.h,
+                                                margin:
+                                                    EdgeInsets.only(left: 18.h),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 11.h,
+                                                  vertical: 2.v,
+                                                ),
+                                                decoration: AppDecoration
+                                                    .fillGreen
+                                                    .copyWith(
+                                                  borderRadius:
+                                                      BorderRadiusStyle
+                                                          .roundedBorder9,
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    order.status ?? "NA",
+                                                    style: CustomTextStyles
+                                                        .bodySmallPrimary,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
+                          );
+                        }),
           ),
         ],
       );
     });
-
   }
 }

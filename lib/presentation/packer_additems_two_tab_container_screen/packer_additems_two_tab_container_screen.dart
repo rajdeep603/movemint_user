@@ -31,17 +31,23 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
   @override
   void initState() {
     super.initState();
-    tabviewController = TabController(length: 4, vsync: this);
+    PackerAddItemsProvider provider = PackerAddItemsProvider(context);
+    tabviewController =
+        TabController(length: provider.itemData.data?.length ?? 0, vsync: this);
   }
 
   late PackerAddItemsProvider provider;
+  late CreateOrderProvider createOrderProvider;
 
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<PackerAddItemsProvider>(context);
+    createOrderProvider = Provider.of<CreateOrderProvider>(context);
+    print("44 working ${provider.itemData.data?.length}");
+    print("45 working ${provider.getItemDataResponseModel?.data?.length}");
     return PopScope(
       onPopInvoked: (bool? value) {
-          context.read<CreateOrderProvider>().disposeValues();
+        context.read<CreateOrderProvider>().disposeValues();
       },
       child: SafeArea(
         child: Scaffold(
@@ -191,8 +197,8 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
                       children: [
                         PackerAdditemsOnePage.builder(context),
                         Center(child: Text('No Data Available')),
-                        Center(child: Text('No Data Available')),
-                        Center(child: Text('No Data Available')),
+                        // Center(child: Text('No Data Available')),
+                        // Center(child: Text('No Data Available')),
                         // PackerAdditemsOnePage.builder(context),
                         // PackerAdditemsOnePage.builder(context),
                         // PackerAdditemsOnePage.builder(context),
@@ -232,25 +238,55 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          RichText(
-            text: TextSpan(
+          Container(
+            height: 45,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextSpan(
-                  text: "lbl_total_items".tr,
-                  style: CustomTextStyles.titleMediumInterff71727a,
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "lbl_total_items".tr,
+                        style: CustomTextStyles.titleMediumInterff71727a,
+                      ),
+                      TextSpan(
+                        text: provider.totalItmes.toString(),
+                        // calculateTotalQty(createOrderProvider.productDetail)
+                        //     .toString(),
+                        style: CustomTextStyles.titleMediumInterff000000,
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.left,
                 ),
-                TextSpan(
-                  text: calculateTotalQty(createOrderProvider.productDetail)
-                      .toString(),
-                  style: CustomTextStyles.titleMediumInterff000000,
+                SizedBox(
+                  height: 5,
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "Total Price: ".tr,
+                        style: CustomTextStyles.titleMediumInterff71727a,
+                      ),
+                      TextSpan(
+                        text: provider.totalPrice.toString(),
+                        // calculateTotalQty(createOrderProvider.productDetail)
+                        //     .toString(),
+                        style: CustomTextStyles.titleMediumInterff000000,
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.left,
                 ),
               ],
             ),
-            textAlign: TextAlign.left,
           ),
           CustomElevatedButton(
-            isLoading: provider.isLoading,
-            onPressed: () => provider.onPayEvent(),
+            isLoading: createOrderProvider.isLoading,
+            // onPressed: () => provider.onPayEvent(),
+            onPressed: () => createOrderProvider.createOrder(),
             width: 224.h,
             text: 'Submit',
           ),
@@ -284,6 +320,7 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
 
   /// Section Widget
   Widget _buildTabview(BuildContext context) {
+    print("working 292");
     return Container(
       height: 48.v,
       // width: 390.h,
@@ -293,7 +330,10 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
       ),
       child: Padding(
         padding: const EdgeInsets.all(5),
-        child: TabBar(
+        child:
+            // Text("Data")
+
+            TabBar(
           controller: tabviewController,
           labelPadding: EdgeInsets.zero,
           // labelColor: theme.colorScheme.onErrorContainer,
@@ -318,37 +358,48 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
               12.h,
             ),
           ),
-          tabs: [
-            Tab(
+          tabs: provider.itemData.data!.map((dummyData) {
+            return Tab(
               child: Center(
                 child: Text(
-                  'lbl_household'.tr,
-                  // style: TextStyle(color: Colors.white),
+                  "${dummyData.categoryName ?? ""}".tr,
                 ),
               ),
-            ),
-            Tab(
-              child: Center(
-                child: Text(
-                  'lbl_commercial'.tr,
-                ),
-              ),
-            ),
-            Tab(
-              child: Center(
-                child: Text(
-                  'lbl_electronics'.tr,
-                ),
-              ),
-            ),
-            Tab(
-              child: Center(
-                child: Text(
-                  'lbl_other'.tr,
-                ),
-              ),
-            ),
-          ],
+            );
+          }).toList(),
+          // tabs: [
+          //   // Tab(
+          //   //   child: Center(
+          //   //     child: Text(
+          //   //       "data".tr,
+          //   //       // dummyData.categoryName ?? "",
+          //   //     ),
+          //   //   ),
+          //   // ),
+          //   // Tab(
+          //   //   child: Center(
+          //   //     child: Text(
+          //   //       'lbl_commercial'.tr,
+          //   //     ),
+          //   //   ),
+          //   // ),
+          //
+          //   ListView.builder(
+          //       itemCount: provider.itemData.data?.length ?? 0,
+          //       scrollDirection: Axis.horizontal,
+          //       itemBuilder: (BuildContext context, int index) {
+          //         final dummyData = provider.itemData.data![index];
+          //
+          //         return Tab(
+          //           child: Center(
+          //             child: Text(
+          //               "${dummyData.categoryName ?? ""}".tr,
+          //               style: TextStyle(color: Colors.white),
+          //             ),
+          //           ),
+          //         );
+          //       }),
+          // ],
         ),
       ),
     );

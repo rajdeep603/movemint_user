@@ -54,10 +54,10 @@ class _OrderListScreenState extends State<OrderListScreen> {
                           )
                         : ListView.builder(
                             itemCount:
-                                orderListProvider.getOrderModel!.orders.length,
+                                orderListProvider.getOrderModel!.orders?.length,
                             itemBuilder: (BuildContext context, int index) {
                               final Order order = orderListProvider
-                                  .getOrderModel!.orders[index];
+                                  .getOrderModel!.orders![index];
                               Logger.log('order.orderId:${order.id}');
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 10.v),
@@ -112,10 +112,11 @@ class _OrderListScreenState extends State<OrderListScreen> {
                                                             const EdgeInsets
                                                                 .all(3),
                                                         child: Text(
-                                                          order.status
-                                                              ?.toLowerCase() ==
-                                                              'cancel'?'Cancelled':
-                                                          order.status ?? "",
+                                                          order.status?.toLowerCase() ==
+                                                                  'cancel'
+                                                              ? 'Cancelled'
+                                                              : order.status ??
+                                                                  "",
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white),

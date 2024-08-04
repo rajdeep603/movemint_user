@@ -1,5 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
-
 // For checking internet connectivity
 abstract class NetworkInfoI {
   Future<bool> isConnected();
@@ -28,9 +26,9 @@ class NetworkInfo implements NetworkInfoI {
   @override
   Future<bool> isConnected() async {
     final List<ConnectivityResult> result =
-    await connectivity.checkConnectivity();
+        await connectivity.checkConnectivity();
     if (result.any(
-            (ConnectivityResult element) => element != ConnectivityResult.none)) {
+        (ConnectivityResult element) => element != ConnectivityResult.none)) {
       return true;
     }
     return false;

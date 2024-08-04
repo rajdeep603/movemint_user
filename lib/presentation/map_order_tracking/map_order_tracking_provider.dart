@@ -34,6 +34,7 @@ class MapOrderTrackingProvider extends ChangeNotifier {
     required double? destinationLongitude,
   }) async {
     try {
+      print("working 37");
       isLoading = true;
       final bool permission = await isPermissionGiven();
       if (permission == false) {
@@ -77,6 +78,8 @@ class MapOrderTrackingProvider extends ChangeNotifier {
         .getOrderTrackingStream(orderId!)
         ?.listen((OrderTrackingFcmModel? model) {
       Logger.log('model:${model?.toMap()}');
+      print(
+          "82 checkModel: $model --- Check longitude : ${model?.longitude} --  Check latitide : ${model?.latitude}");
       if (model == null || model.longitude == null || model.latitude == null) {
         displayError = 'Order Not available';
         notifyListeners();

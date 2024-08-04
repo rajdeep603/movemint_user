@@ -15,7 +15,7 @@ import '../packer_location_set_screen/provider/packer_location_set_provider.dart
 import 'models/packer_details_within_city_model.dart';
 
 class PackerDetailsWithinCityPage extends StatelessWidget {
-  const PackerDetailsWithinCityPage({super.key, required this.provider});
+  PackerDetailsWithinCityPage({super.key, required this.provider});
 
   final PackerLocationSetProvider provider;
 
@@ -24,8 +24,10 @@ class PackerDetailsWithinCityPage extends StatelessWidget {
     return PackerDetailsWithinCityPage(provider: provider);
   }
 
+  late CreateOrderProvider createOrderProvider;
   @override
   Widget build(BuildContext context) {
+    createOrderProvider = Provider.of<CreateOrderProvider>(context);
     return SizedBox(
       width: SizeUtils.width,
       child: SingleChildScrollView(
@@ -229,6 +231,9 @@ class PackerDetailsWithinCityPage extends StatelessWidget {
             isLatLngRequired: true,
             getPlaceDetailWithLatLng: (Prediction prediction) {
               print("placeDetails" + prediction.lat.toString());
+              createOrderProvider.pickupLat = prediction.lat.toString();
+              createOrderProvider.pickupLng = prediction.lng.toString();
+              print("test 114 ${createOrderProvider.pickupLat}");
             },
 
             itemClick: (Prediction prediction) {
@@ -304,6 +309,9 @@ class PackerDetailsWithinCityPage extends StatelessWidget {
             isLatLngRequired: true,
             getPlaceDetailWithLatLng: (Prediction prediction) {
               print("placeDetails" + prediction.lat.toString());
+              createOrderProvider.dropLocationLat = prediction.lat.toString();
+              createOrderProvider.dropLocationLng = prediction.lng.toString();
+              print("test 314 ${createOrderProvider.dropLocationLat}");
             },
 
             itemClick: (Prediction prediction) {

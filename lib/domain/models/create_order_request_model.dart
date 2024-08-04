@@ -6,6 +6,10 @@ class CreateOrderModel {
     required this.city,
     required this.productDetail,
     required this.totalPrice,
+    required this.pickLat,
+    required this.pickLng,
+    required this.dropLat,
+    required this.dropLng,
   });
 
   DateTime? datetime;
@@ -14,6 +18,10 @@ class CreateOrderModel {
   String city;
   List<ProductDetailModel> productDetail;
   String totalPrice;
+  String pickLat;
+  String pickLng;
+  String dropLat;
+  String dropLng;
 
   factory CreateOrderModel.fromMap(Map<String, dynamic> json) =>
       CreateOrderModel(
@@ -24,8 +32,13 @@ class CreateOrderModel {
         city: json['city'] ?? '',
         productDetail: json['data'] == null
             ? <ProductDetailModel>[]
-            : List<ProductDetailModel>.from(json['data']!.map((x) => ProductDetailModel.fromMap(x))),
+            : List<ProductDetailModel>.from(
+                json['data']!.map((x) => ProductDetailModel.fromMap(x))),
         totalPrice: json['total_price'] ?? '',
+        pickLat: json['pick_lat'] ?? '',
+        pickLng: json['pick_lng'] ?? '',
+        dropLat: json['drop_lat'] ?? '',
+        dropLng: json['drop_lng'] ?? '',
       );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -34,8 +47,13 @@ class CreateOrderModel {
         'from': from,
         'to': to,
         'city': city,
-        'data': List<dynamic>.from(productDetail.map((ProductDetailModel x) => x.toMap())),
+        'data': List<dynamic>.from(
+            productDetail.map((ProductDetailModel x) => x.toMap())),
         'total_price': totalPrice,
+        'pick_lat': pickLat,
+        'pick_lng': pickLng,
+        'drop_lat': dropLat,
+        'drop_lng': dropLng
       };
 }
 
@@ -43,18 +61,20 @@ class ProductDetailModel {
   ProductDetailModel({
     required this.name,
     required this.items,
-    this.doesItemsHaveQty=false,
+    this.doesItemsHaveQty = false,
   });
 
   String name;
   List<ItemModel> items;
   bool doesItemsHaveQty;
 
-  factory ProductDetailModel.fromMap(Map<String, dynamic> json) => ProductDetailModel(
-        name: json['name']??'',
+  factory ProductDetailModel.fromMap(Map<String, dynamic> json) =>
+      ProductDetailModel(
+        name: json['name'] ?? '',
         items: json['items'] == null
             ? <ItemModel>[]
-            : List<ItemModel>.from(json['items']!.map((x) => ItemModel.fromMap(x))),
+            : List<ItemModel>.from(
+                json['items']!.map((x) => ItemModel.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
