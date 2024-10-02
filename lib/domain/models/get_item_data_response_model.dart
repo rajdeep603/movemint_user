@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final getItemDataResponseModel = getItemDataResponseModelFromMap(jsonString);
+
 import 'dart:convert';
 
 GetItemDataResponseModel getItemDataResponseModelFromMap(String str) =>
@@ -9,7 +13,7 @@ String getItemDataResponseModelToMap(GetItemDataResponseModel data) =>
 class GetItemDataResponseModel {
   bool? success;
   String? message;
-  List<ItemData>? data;
+  List<GetItemDataList>? data;
 
   GetItemDataResponseModel({
     this.success,
@@ -23,8 +27,8 @@ class GetItemDataResponseModel {
         message: json["message"],
         data: json["data"] == null
             ? []
-            : List<ItemData>.from(
-                json["data"]!.map((x) => ItemData.fromMap(x))),
+            : List<GetItemDataList>.from(
+                json["data"]!.map((x) => GetItemDataList.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
@@ -35,16 +39,16 @@ class GetItemDataResponseModel {
       };
 }
 
-class ItemData {
+class GetItemDataList {
   String? categoryName;
   String? categoryId;
   List<DatumItem>? items;
   bool? doesItemsHaveQty;
 
-  ItemData(
+  GetItemDataList(
       {this.categoryName, this.categoryId, this.items, this.doesItemsHaveQty});
 
-  factory ItemData.fromMap(Map<String, dynamic> json) => ItemData(
+  factory GetItemDataList.fromMap(Map<String, dynamic> json) => GetItemDataList(
         categoryName: json["category_name"],
         categoryId: json["category_id"],
         items: json["items"] == null
@@ -91,29 +95,6 @@ class DatumItem {
       };
 }
 
-// class ItemItem {
-//   String? id;
-//   String? name;
-//   String? pricePerKm;
-//
-//   ItemItem({
-//     this.id,
-//     this.name,
-//     this.pricePerKm,
-//   });
-//
-//   factory ItemItem.fromMap(Map<String, dynamic> json) => ItemItem(
-//         id: json["_id"],
-//         name: json["name"],
-//         pricePerKm: json["price_per_km"],
-//       );
-//
-//   Map<String, dynamic> toMap() => {
-//         "_id": id,
-//         "name": name,
-//         "price_per_km": pricePerKm,
-//       };
-// }
 class ItemItem {
   String? id;
   String? name;
@@ -131,7 +112,7 @@ class ItemItem {
         id: json["_id"],
         name: json["name"],
         pricePerKm: json["price_per_km"],
-        qty: json["qty"] != null ? int.tryParse(json["qty"].toString()) : null,
+        qty: json["qty"],
       );
 
   Map<String, dynamic> toMap() => {

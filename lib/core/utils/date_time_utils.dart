@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_file.dart';
+import 'package:intl/intl.dart';
 // import 'package:intl/date_symbol_data_local.dart';
 // import 'package:intl/intl.dart';
 
@@ -12,7 +14,7 @@ extension DateTimeExtension on DateTime {
     String? locale,
   ]) {
     if (locale != null && locale.isNotEmpty) {
-      initializeDateFormatting(locale);
+      initializeDateFormatting(locale, pattern);
     }
     return DateFormat(pattern, locale).format(this);
   }
@@ -22,7 +24,7 @@ extension DateTimeExtension on DateTime {
     String? locale,
   ]) {
     if (locale != null && locale.isNotEmpty) {
-      initializeDateFormatting(locale);
+      initializeDateFormatting(locale, pattern);
     }
     return DateTime.parse(DateFormat(pattern, locale).format(this));
   }
@@ -32,7 +34,7 @@ extension DateTimeExtension on DateTime {
       String? locale,
       TimeOfDay? time]) {
     if (locale != null && locale.isNotEmpty) {
-      initializeDateFormatting(locale);
+      initializeDateFormatting(locale, pattern);
     }
     final DateTime now = ServerDateTime().dateTime;
     final DateTime dateTime = DateTime(year, month, day, time?.hour ?? now.hour,

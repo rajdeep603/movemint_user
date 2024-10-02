@@ -8,60 +8,60 @@ import '../../../domain/models/create_order_request_model.dart';
 import '../../../domain/models/get_item_data_response_model.dart';
 import '../../../domain/models/razorypay_model/create_order_razor_pay_response_model.dart';
 import '../../../domain/providers/create_order_provider.dart';
+import '../../../domain/services/api_services.dart';
 import '../../../domain/services/common_api_call.dart';
 import '../../../domain/services/razorpay_services.dart';
 import '../models/packer_additems_two_tab_container_model.dart';
 
-final dummyData = {
-  "success": true,
-  "message": "successful",
-  "data": [
-    {
-      "category_name": "Household",
-      "category_id": "66974cc75d10219433af3ca3",
-      "items": [
-        {
-          "subcategory_name": "Living Room",
-          "subcategory_id": "66974d2e5d10219433af3ca5",
-          "items": [
-            {
-              "_id": "66974c475d10219433af3ca1",
-              "name": "table",
-              "price_per_km": "200",
-              "qty": 0
-            }
-          ]
-        },
-      ]
-    },
-    {
-      "category_name": "Others",
-      "category_id": "669bb5013ae7b4d51b1f4338",
-      "items": [
-        {
-          "subcategory_name": "Bed Room",
-          "subcategory_id": "669ea093d299141c2358267f",
-          "items": [
-            {
-              "_id": "669fe6d880a8ced6d4407e67",
-              "name": "sofa",
-              "price_per_km": "25",
-              "qty": 0
-            }
-          ]
-        }
-      ]
-    }
-  ]
-};
+// final dummyData = {
+//   "success": true,
+//   "message": "successful",
+//   "data": [
+//     {
+//       "category_name": "Household",
+//       "category_id": "66974cc75d10219433af3ca3",
+//       "items": [
+//         {
+//           "subcategory_name": "Living Room",
+//           "subcategory_id": "66974d2e5d10219433af3ca5",
+//           "items": [
+//             {
+//               "_id": "66974c475d10219433af3ca1",
+//               "name": "table",
+//               "price_per_km": "200",
+//               "qty": 0
+//             }
+//           ]
+//         },
+//       ]
+//     },
+//     {
+//       "category_name": "Others",
+//       "category_id": "669bb5013ae7b4d51b1f4338",
+//       "items": [
+//         {
+//           "subcategory_name": "Bed Room",
+//           "subcategory_id": "669ea093d299141c2358267f",
+//           "items": [
+//             {
+//               "_id": "669fe6d880a8ced6d4407e67",
+//               "name": "sofa",
+//               "price_per_km": "25",
+//               "qty": 0
+//             }
+//           ]
+//         }
+//       ]
+//     }
+//   ]
+// };
 
 class PackerAddItemsProvider extends ChangeNotifier {
-  PackerAddItemsProvider(this.screenContext) {
-    screenContext.read<CreateOrderProvider>().productDetail = List.from(list);
-    _initializeRazorPay();
+  ApiServices apiServices = ApiServices();
 
-    itemData = GetItemDataResponseModel.fromMap(dummyData);
-    print('GetItemDataResponseModel ${itemData.data?.length}');
+  PackerAddItemsProvider(this.screenContext) {
+    // screenContext.read<CreateOrderProvider>().productDetail = List.from(list);
+    _initializeRazorPay();
   }
 
   BuildContext screenContext;
@@ -72,11 +72,10 @@ class PackerAddItemsProvider extends ChangeNotifier {
   late RazorpayService razorpayService;
   CreateOrderRazorPayResponseModel? createOrderRazorPayResponseModel;
   GetItemDataResponseModel? getItemDataResponseModel;
-
-  late GetItemDataResponseModel itemData;
+  //
+  // late GetItemDataResponseModel itemData;
 
   int totalItmes = 0;
-  double totalPrice = 0;
 
   // List<int> totalItemsQuantity = []
 
@@ -101,6 +100,44 @@ class PackerAddItemsProvider extends ChangeNotifier {
     // } else {
     //   ToastHelper.showToast('No Items to order');
     // }
+  }
+
+  // Future<GetItemDataResponseModel?> getAllItems() async {
+  //   isLoading = true;
+  //   notifyListeners();
+  //   try {
+  //     GetItemDataResponseModel customResponse =
+  //         await ApiServices().getAllItems();
+  //     if (customResponse.data == null || customResponse.success != true) {
+  //       getItemDataResponseModel = null;
+  //       ToastHelper.showToast(customResponse.message ?? "");
+  //       return customResponse;
+  //     }
+  //     getItemDataResponseModel = GetItemDataResponseModel.fromMap(
+  //         customResponse.data as Map<String, dynamic>);
+  //   } on Exception catch (e) {
+  //     ToastHelper.somethingWentWrong();
+  //     Logger.logError(e);
+  //   } finally {
+  //     isLoading = false;
+  //     notifyListeners();
+  //   }
+  // }
+
+  Future<GetItemDataResponseModel> getAllItems() async {
+    isLoading = true;
+    getItemDataResponseModel = await apiServices.getAllItems();
+    if (getItemDataResponseModel?.success == true) {
+      ToastHelper.showToast(
+          getItemDataResponseModel?.message.toString() ?? "ok");
+      isLoading = false;
+      notifyListeners();
+    } else {
+      ToastHelper.somethingWentWrong();
+      // Logger.logError(e);
+    }
+
+    return getItemDataResponseModel!;
   }
 
   void _initializeRazorPay() {
@@ -160,8 +197,8 @@ class PackerAddItemsProvider extends ChangeNotifier {
       notifyListeners();
       Logger.log(
           'Payment Successful: ${response.paymentId}||${response.signature} ${response.orderId}||${response.data}');
-      final bool value =
-          await screenContext.read<CreateOrderProvider>().createOrder();
+      final bool value = false;
+      // await screenContext.read<CreateOrderProvider>().createOrder();
       if (value) {
         screenContext.read<CreateOrderProvider>().disposeValues();
         NavigatorService.pushNamedAndRemoveUntil(AppRoutes.dashboard);
@@ -204,22 +241,3 @@ class PackerAddItemsProvider extends ChangeNotifier {
     super.dispose();
   }
 }
-
-List<ProductDetailModel> list = <ProductDetailModel>[
-  ProductDetailModel(
-      name: 'Living room',
-      items: [
-        ItemModel(name: 'Chair', qty: 0),
-        ItemModel(name: 'Table', qty: 0),
-        ItemModel(name: 'Sofa', qty: 0),
-      ],
-      doesItemsHaveQty: false),
-  ProductDetailModel(
-      name: 'Bedroom Room',
-      items: [
-        ItemModel(name: 'Chair', qty: 0),
-        ItemModel(name: 'Table', qty: 0),
-        ItemModel(name: 'Sofa', qty: 0),
-      ],
-      doesItemsHaveQty: false),
-];

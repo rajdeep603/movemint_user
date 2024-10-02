@@ -31,6 +31,13 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
 
   @override
   void initState() {
+    PackerAddItemsProvider provider =
+        Provider.of<PackerAddItemsProvider>(context, listen: false);
+    CreateOrderProvider createOrderProvider =
+        Provider.of(context, listen: false);
+
+    provider.getAllItems();
+    provider.isLoading = false;
     super.initState();
   }
 
@@ -55,10 +62,10 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
   Widget _listWidget() {
     return Expanded(
         child: ListView.builder(
-            itemCount: provider.itemData.data?.length ?? 0,
+            itemCount: provider.getItemDataResponseModel?.data?.length ?? 0,
             // itemCount:createOrderProvider.productDetail.length,
             itemBuilder: (BuildContext context, int index) {
-              final data = provider.itemData.data![index];
+              final data = provider.getItemDataResponseModel?.data![index];
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.v),
                 padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.v),
@@ -68,10 +75,10 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
                 child: Container(
                   height: 200,
                   child: ListView.builder(
-                    itemCount: data.items?.length ?? 0,
+                    itemCount: data?.items?.length ?? 0,
                     // scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int innerIndex) {
-                      final productData = data.items![innerIndex];
+                      final productData = data?.items![innerIndex];
 
                       return ExpansionTile(
                         title: Row(
@@ -82,11 +89,13 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(productData.subcategoryName.toString(),
+                                  Text(
+                                      productData?.subcategoryName.toString() ??
+                                          "",
                                       style:
                                           CustomTextStyles.titleMediumBlack900),
                                   SizedBox(height: 3.v),
-                                  Text('${data.items!.length} Items',
+                                  Text('${data?.items!.length} Items',
                                       style: theme.textTheme.bodySmall),
                                   SizedBox(height: 3.v),
                                   Container(
@@ -97,17 +106,17 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
                                     // color: Colors.red,
                                     child: ListView.builder(
                                         itemCount:
-                                            productData.items?.length ?? 0,
+                                            productData?.items?.length ?? 0,
                                         // scrollDirection: Axis.horizontal,
                                         itemBuilder: (BuildContext context,
                                             int itemIndex) {
                                           final itemData =
-                                              productData.items![itemIndex];
-                                          // itemData.qty = 1;
+                                              productData?.items![itemIndex];
+                                          // itemData?.qty ?? 0;
                                           // final ItemModel item = data.items[index];
                                           return ListTile(
                                             title: Text(
-                                                itemData.name.toString(),
+                                                itemData?.name.toString() ?? "",
                                                 style: CustomTextStyles
                                                     .titleMediumBlack900),
                                             trailing: Row(
@@ -115,10 +124,11 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
                                               children: <Widget>[
                                                 InkWell(
                                                   onTap: () {
-                                                    if (itemData.qty != 0) {
-                                                      itemData.qty =
+                                                    if ((itemData?.qty ?? 0) >
+                                                        0) {
+                                                      itemData?.qty =
                                                           itemData.qty! - 1;
-                                                      if (data.items!.any(
+                                                      if (data!.items!.any(
                                                           (DatumItem element) =>
                                                               element
                                                                   .items![
@@ -131,7 +141,7 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
                                                         data.doesItemsHaveQty =
                                                             false;
                                                       }
-                                                      productData.items
+                                                      productData?.items
                                                           ?.forEach((e) {
                                                         int qty = e.qty ?? 0;
                                                         double price =
@@ -144,8 +154,10 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
                                                         provider.totalItmes =
                                                             provider.totalItmes -
                                                                 1;
-                                                        provider.totalPrice =
-                                                            provider.totalPrice -
+                                                        createOrderProvider
+                                                                .totalPrice =
+                                                            createOrderProvider
+                                                                    .totalPrice -
                                                                 price;
                                                       });
                                                       createOrderProvider
@@ -161,14 +173,16 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
                                                       child: CustomIcon(
                                                         size: 30,
                                                         Icons.remove,
-                                                        color: itemData.qty == 0
+                                                        color: itemData?.qty ==
+                                                                0
                                                             ? appTheme.gray400
                                                             : appTheme.green400,
                                                       )),
                                                 ),
                                                 SizedBox(width: 10.h),
                                                 Text(
-                                                  itemData.qty.toString(),
+                                                  (itemData?.qty ?? 0)
+                                                      .toString(),
                                                   // item.qty.toString(),
                                                   style: CustomTextStyles
                                                       .titleMediumBlack900,
@@ -176,13 +190,16 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
                                                 SizedBox(width: 10.h),
                                                 InkWell(
                                                   onTap: () {
-                                                    itemData.qty =
-                                                        itemData.qty! + 1;
-                                                    data.doesItemsHaveQty =
+                                                    itemData?.qty =
+                                                        (itemData.qty ?? 0) + 1;
+
+                                                    data?.doesItemsHaveQty =
                                                         true;
-                                                    productData.items
+                                                    productData?.items
                                                         ?.forEach((e) {
                                                       int qty = e.qty ?? 0;
+
+                                                      // e.qty = itemData?.qty;
                                                       double price =
                                                           double.tryParse(
                                                                   e.pricePerKm ??
@@ -193,8 +210,10 @@ class PackerAdditemsOnePageState extends State<PackerAdditemsOnePage>
                                                       provider.totalItmes =
                                                           provider.totalItmes +
                                                               1;
-                                                      provider.totalPrice =
-                                                          provider.totalPrice +
+                                                      createOrderProvider
+                                                              .totalPrice =
+                                                          createOrderProvider
+                                                                  .totalPrice +
                                                               price;
                                                     });
                                                     createOrderProvider

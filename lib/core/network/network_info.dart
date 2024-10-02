@@ -1,4 +1,6 @@
 // For checking internet connectivity
+import '../app_export.dart';
+
 abstract class NetworkInfoI {
   Future<bool> isConnected();
 

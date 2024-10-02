@@ -7,6 +7,7 @@ import '../../core/utils/enums.dart';
 import '../../core/utils/logger.dart';
 import '../local_storage/local_storage.dart';
 import '../models/create_order_request_model.dart';
+import '../models/get_item_data_response_model.dart';
 import '../models/sign_in_model/sign_in_request_model.dart';
 import '../models/sign_up_model.dart';
 import 'common_api_call.dart';
@@ -94,7 +95,8 @@ class ApiServices {
     }
   }
 
-  Future<CustomResponse> createOrder(CreateOrderModel createOrderModel) async {
+  Future<CustomResponse> createOrder(
+      CreateOrderRequestModel createOrderModel) async {
     try {
       final CustomResponse customResponse = await ApiCalling().callApi(
           apiTypes: ApiTypes.post,
@@ -119,6 +121,23 @@ class ApiServices {
     } on Exception catch (e) {
       Logger.logError(e);
       return CustomResponse();
+    }
+  }
+
+  Future<GetItemDataResponseModel> getAllItems() async {
+    try {
+      final CustomResponse customResponse = await ApiCalling().callApi(
+          apiTypes: ApiTypes.get,
+          url: AppUrls.getAllProductList,
+          token: _getToken());
+      print("133 Working ${customResponse.response?.data}");
+      GetItemDataResponseModel getItemDataResponseModel =
+          GetItemDataResponseModel.fromMap(customResponse.response?.data);
+      print("134 Working ${customResponse.response?.data}");
+      return getItemDataResponseModel;
+    } on Exception catch (e) {
+      Logger.logError(e);
+      return GetItemDataResponseModel();
     }
   }
 }

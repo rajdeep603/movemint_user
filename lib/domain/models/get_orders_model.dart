@@ -43,7 +43,7 @@ class Order {
   String? city;
   String? vehicle;
   String? driver;
-  int? total;
+  num? total;
   String? status;
   List<Datum>? data;
   Payment? payment;

@@ -31,9 +31,17 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
   @override
   void initState() {
     super.initState();
-    PackerAddItemsProvider provider = PackerAddItemsProvider(context);
-    tabviewController =
-        TabController(length: provider.itemData.data?.length ?? 0, vsync: this);
+
+    tabData();
+  }
+
+  tabData() async {
+    PackerAddItemsProvider provider =
+        Provider.of<PackerAddItemsProvider>(context, listen: false);
+    await provider.getAllItems();
+    tabviewController = TabController(
+        length: provider.getItemDataResponseModel?.data?.length ?? 0,
+        vsync: this);
   }
 
   late PackerAddItemsProvider provider;
@@ -43,8 +51,7 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
   Widget build(BuildContext context) {
     provider = Provider.of<PackerAddItemsProvider>(context);
     createOrderProvider = Provider.of<CreateOrderProvider>(context);
-    print("44 working ${provider.itemData.data?.length}");
-    print("45 working ${provider.getItemDataResponseModel?.data?.length}");
+    print("44 working ${provider.getItemDataResponseModel?.data?.length}");
     return PopScope(
       onPopInvoked: (bool? value) {
         context.read<CreateOrderProvider>().disposeValues();
@@ -215,30 +222,31 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
     );
   }
 
-  int calculateTotalQty(List<ProductDetailModel> list) {
-    int totalQty = 0;
-
-    for (var product in list) {
-      if (product.doesItemsHaveQty) {
-        for (var item in product.items) {
-          totalQty += item.qty;
-        }
-      }
-    }
-
-    return totalQty;
-  }
+  // int calculateTotalQty(List<ProductDetail> list) {
+  //   int totalQty = 0;
+  //
+  //   for (var product in list) {
+  //     if (product.doesItemsHaveQty) {
+  //       for (var item in product.items) {
+  //         totalQty += item.qty;
+  //       }
+  //     }
+  //   }
+  //
+  //   return totalQty;
+  // }
 
   /// Section Widget
   Widget _buildActionBottom2(BuildContext context) {
     CreateOrderProvider createOrderProvider = Provider.of(context);
+    print("check data${provider.getItemDataResponseModel?.data?.length}");
     return Container(
       decoration: AppDecoration.outlineGray300,
       padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 20.v),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Container(
+          SizedBox(
             height: 45,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,7 +279,7 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
                         style: CustomTextStyles.titleMediumInterff71727a,
                       ),
                       TextSpan(
-                        text: provider.totalPrice.toString(),
+                        text: createOrderProvider.totalPrice.toString(),
                         // calculateTotalQty(createOrderProvider.productDetail)
                         //     .toString(),
                         style: CustomTextStyles.titleMediumInterff000000,
@@ -286,7 +294,8 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
           CustomElevatedButton(
             isLoading: createOrderProvider.isLoading,
             // onPressed: () => provider.onPayEvent(),
-            onPressed: () => createOrderProvider.createOrder(),
+            onPressed: () => createOrderProvider
+                .createOrder(provider.getItemDataResponseModel?.data ?? []),
             width: 224.h,
             text: 'Submit',
           ),
@@ -358,48 +367,16 @@ class PackerAdditemsScreenState extends State<PackerAdditemsScreen>
               12.h,
             ),
           ),
-          tabs: provider.itemData.data!.map((dummyData) {
+          tabs: provider.getItemDataResponseModel!.data!.map((e) {
+            // tabs: provider.itemData.data!.map((dummyData) {
             return Tab(
               child: Center(
                 child: Text(
-                  "${dummyData.categoryName ?? ""}".tr,
+                  (e.categoryName ?? "").tr,
                 ),
               ),
             );
           }).toList(),
-          // tabs: [
-          //   // Tab(
-          //   //   child: Center(
-          //   //     child: Text(
-          //   //       "data".tr,
-          //   //       // dummyData.categoryName ?? "",
-          //   //     ),
-          //   //   ),
-          //   // ),
-          //   // Tab(
-          //   //   child: Center(
-          //   //     child: Text(
-          //   //       'lbl_commercial'.tr,
-          //   //     ),
-          //   //   ),
-          //   // ),
-          //
-          //   ListView.builder(
-          //       itemCount: provider.itemData.data?.length ?? 0,
-          //       scrollDirection: Axis.horizontal,
-          //       itemBuilder: (BuildContext context, int index) {
-          //         final dummyData = provider.itemData.data![index];
-          //
-          //         return Tab(
-          //           child: Center(
-          //             child: Text(
-          //               "${dummyData.categoryName ?? ""}".tr,
-          //               style: TextStyle(color: Colors.white),
-          //             ),
-          //           ),
-          //         );
-          //       }),
-          // ],
         ),
       ),
     );
